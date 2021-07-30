@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
@@ -41,29 +42,28 @@ class PersonalDetailsPage extends StatelessWidget {
             WaterlooTextField(
                 value: i.name,
                 put: state.setName,
-                label: 'Name',
+                label: getter.getLabel(name),
                 validator: validateName,
                 ),
             WaterlooTextField(
                 value: i.email,
                 put: state.setEmail,
-                label: 'Email Address',
+                label: getter.getLabel(email),
                 validator: validateEmail,
                 ),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
-                text: 'Previous',
+                text: getter.getButtonText(previous),
                 exceptionHandler: exceptionHandler,
                 onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
               ),
               WaterlooTextButton(
-                  text: 'Next',
+                  text: getter.getButtonText(next),
                   exceptionHandler: exceptionHandler,
                   onPressed: () {
                     var formState = key.currentState as FormState;
                     if (formState.validate()) {
-                      var output = PersonalDetailsStateOutput(state.name, state.email);
-                      eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
+                      eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
                     }
                   })
             ])
@@ -78,15 +78,15 @@ abstract class PersonalDetailsStateInput implements StepInput {
   String get messageReference;
 }
 
-class PersonalDetailsStateOutput implements StepOutput {
-  final String name;
-  final String email;
-
-  PersonalDetailsStateOutput(this.name, this.email);
+abstract class PersonalDetailsStateOutput implements StepOutput {
+  String get name;
+  String get email;
 }
 
-class PersonalDetailsDynamicState {
+class PersonalDetailsDynamicState implements PersonalDetailsStateOutput {
+  @override
   String name;
+  @override
   String email;
 
   setName(String n) => name = n;

@@ -4,6 +4,7 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
+import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
@@ -27,10 +28,11 @@ class PersonalDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final i = inputState as PersonalDetailsStateInput;
     final state = PersonalDetailsDynamicState(i.name, i.email);
+    final getter = Provider.of<ConfigurationGetter>(context);
     GlobalKey key = GlobalKey();
 
     return Scaffold(
-        appBar: WaterlooAppBar.get(title: getPageTitle(titleRef)),
+        appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(
           formKey: key,
           exceptionHandler: exceptionHandler,

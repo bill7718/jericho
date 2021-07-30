@@ -2,14 +2,17 @@
 
 import 'package:jericho/journeys/register/personal_details_page.dart';
 
-Map<String, String> screenText = <String, String> {
 
-  PersonalDetailsPage.titleRef : 'Personal Details'
 
-};
+class ConfigurationGetter {
 
-String getPageTitle(String id) {
+  Map<String, String> screenText = <String, String>{
 
-  return screenText[id] ?? '';
+    PersonalDetailsPage.titleRef: 'Personal Details'
+  };
+
+  String getPageTitle(String id) {
+    return screenText[id] ?? '';
+  }
 
 }

@@ -4,6 +4,8 @@ import 'dart:async';
 
 class UserServices {
 
+
+
   Future<ValidateUserResponse> validateUser(ValidateUserRequest request) {
     var c = Completer<ValidateUserResponse>();
 
@@ -14,7 +16,7 @@ class UserServices {
   Future<CreateUserResponse> createUser(CreateUserRequest request) {
     var c = Completer<CreateUserResponse>();
 
-    c.complete(CreateUserResponse(true, '12345678'));
+    c.complete(CreateUserResponse(true, userId: '12345678'));
     return c.future;
   }
 
@@ -56,6 +58,6 @@ class CreateUserResponse extends UserServiceResponse {
 
   final String userId;
 
-  CreateUserResponse( bool valid, this.userId, {  String message = '', String reference = ''}) : super(valid, message, reference);
+  CreateUserResponse( bool valid, { this.userId = '',  String message = '', String reference = ''}) : super(valid, message, reference);
 
 }

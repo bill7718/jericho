@@ -12,4 +12,8 @@ const String next = 'Next';
 const String previous = 'Previous';
 
 
+// error references
+
+const String duplicateUser = 'duplicateUser';
+
 

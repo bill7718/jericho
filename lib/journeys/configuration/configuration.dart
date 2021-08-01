@@ -20,6 +20,10 @@ class ConfigurationGetter {
     /// button text
     next: 'Next',
     previous: 'Previous',
+
+
+    /// error messages
+    duplicateUser : 'This email address is already in use. Please try again.'
   };
 
   String getPageTitle(String id) {
@@ -31,6 +35,10 @@ class ConfigurationGetter {
   }
 
   String getButtonText(String id) {
+    return screenText[id] ?? '';
+  }
+
+  String getErrorMessage(String id) {
     return screenText[id] ?? '';
   }
 

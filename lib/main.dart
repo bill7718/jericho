@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 var navigator = UserJourneyNavigator();
 var getter = ConfigurationGetter();
+var session = SessionState();
 
 void main() {
   runApp(const MyApp());
@@ -32,7 +33,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final j = Provider.of<UserJourneyNavigator>(context);
     scheduleMicrotask(() {
-      j.gotDownToNextJourney(context, UserJourneyController.registerUserJourney);
+      j.gotDownToNextJourney(context, UserJourneyController.registerUserJourney, session);
     });
 
     return Container();

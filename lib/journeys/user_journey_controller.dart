@@ -27,30 +27,30 @@ abstract class UserJourneyController implements EventHandler {
 
 class UserJourneyNavigator {
 
-  void goTo(BuildContext context, String route, EventHandler handler, StepInput input) {
+  void goTo(dynamic context, String route, EventHandler handler, StepInput input) {
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return getPage(route, handler, input);
     }));
   }
 
-  void goDownTo(BuildContext context, String route, EventHandler handler, StepInput input) {
+  void goDownTo(dynamic context, String route, EventHandler handler, StepInput input) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return getPage(route, handler, input);
     }));
   }
 
-  void goUp(BuildContext context) {
+  void goUp(dynamic context) {
     Navigator.pop(context);
   }
 
-  void gotoNextJourney(BuildContext context, String journeyRoute) {
-    var journey = getJourney(journeyRoute);
+  void gotoNextJourney(dynamic context, String journeyRoute, SessionState session) {
+    var journey = getJourney(journeyRoute, session);
     journey.handleEvent(context, event: UserJourneyController.startEvent);
   }
 
-  void gotDownToNextJourney(BuildContext context, String journeyRoute) {
-    var journey = getJourney(journeyRoute);
+  void gotDownToNextJourney(dynamic context, String journeyRoute, SessionState session) {
+    var journey = getJourney(journeyRoute, session);
     journey.handleEvent(context, event: UserJourneyController.initialEvent);
   }
 
@@ -64,10 +64,10 @@ class UserJourneyNavigator {
     }
   }
 
-  UserJourneyController getJourney(String route) {
+  UserJourneyController getJourney(String route, SessionState session) {
     switch (route) {
       case UserJourneyController.registerUserJourney:
-        return RegisterJourneyController(this, UserServices());
+        return RegisterJourneyController(this, UserServices(), session);
       default:
         throw Exception ('bad route');
     }
@@ -75,7 +75,6 @@ class UserJourneyNavigator {
   }
 
 }
-
 
 class UserJourneyException implements Exception {
   final String _message;
@@ -89,4 +88,30 @@ class UserJourneyException implements Exception {
 
 
 
+class SessionState  {
 
+  String _userId = '';
+
+  String get userId=>_userId;
+
+  set userId(String s) {
+    if (_userId.isEmpty || s == _userId) {
+      _userId = s;
+    } else {
+      throw SessionStateException('Cannot amend userId $_userId : $s');
+    }
+
+  }
+
+}
+
+
+
+class SessionStateException implements Exception {
+  final String _message;
+
+  SessionStateException(this._message);
+
+  @override
+  String toString() => _message;
+}

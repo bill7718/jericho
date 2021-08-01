@@ -9,19 +9,18 @@ abstract class CapturePasswordStateInput implements StepInput {
 
   String get password;
   String get messageReference;
+  String get message;
 
 
 }
 
-class CapturePasswordStateOutput implements StepOutput {
-  final String password;
-
-  CapturePasswordStateOutput(this.password);
-
+abstract class CapturePasswordStateOutput implements StepOutput {
+  String get password;
 }
 
-class  CapturePasswordDynamicState {
+class  CapturePasswordDynamicState implements CapturePasswordStateOutput {
 
+  @override
   String password;
   String copyPassword;
 

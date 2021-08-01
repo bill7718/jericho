@@ -5,7 +5,7 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 
 abstract class EventHandler {
 
-  void handleEvent( BuildContext context,
+  Future<void> handleEvent( dynamic context,
       {String event = '', StepOutput output = UserJourneyController.emptyOutput});
 }
 

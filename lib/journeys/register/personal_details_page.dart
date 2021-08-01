@@ -31,14 +31,17 @@ class PersonalDetailsPage extends StatelessWidget {
     final state = PersonalDetailsDynamicState(i.name, i.email);
     final getter = Provider.of<ConfigurationGetter>(context);
     GlobalKey key = GlobalKey();
+    final error = FormError();
+    if (i.messageReference.isNotEmpty) {
+      error.error = getter.getErrorMessage(i.messageReference);
+    }
 
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(
           formKey: key,
-          exceptionHandler: exceptionHandler,
           children: <Widget>[
-            const WaterlooFormMessage(),
+            WaterlooFormMessage(error: error,),
             WaterlooTextField(
                 value: i.name,
                 put: state.setName,

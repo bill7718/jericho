@@ -4,25 +4,30 @@ const String nameError = 'Please provide a name';
 const String emailError = 'Please provide a valid email address';
 
 
-String? validateName(String name, { bool mandatory = true}) {
+String? validateName(String? name) {
 
-  if (name.isEmpty && mandatory) {
+  var n = makeNotNull(name);
+
+  if (n.isEmpty) {
     return nameError;
   }
 
   return null;
 }
 
-String? validateEmail(String email, { bool mandatory = true}) {
-  if (email.isEmpty && mandatory) {
+String? validateEmail(String? email) {
+
+  var e = makeNotNull(email);
+
+  if (e.isEmpty) {
     return emailError;
   }
 
-  if (email.isNotEmpty) {
-    if (!EmailValidator.validate(email)) {
-      return emailError;
-    }
+  if (!EmailValidator.validate(e)) {
+    return emailError;
   }
 
   return null;
 }
+
+String makeNotNull(String? i)=>(i ?? '');

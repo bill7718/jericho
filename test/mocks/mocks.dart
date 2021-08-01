@@ -108,3 +108,19 @@ class MockCapturePasswordStateOutput extends CapturePasswordStateOutput {
   MockCapturePasswordStateOutput(this.password);
 
 }
+
+class MockEventHandler implements EventHandler {
+
+  String lastEvent = '';
+  StepOutput lastOutput = UserJourneyController.emptyOutput;
+
+  @override
+  Future<void> handleEvent(context, {String event = '', StepOutput output = UserJourneyController.emptyOutput}) {
+    var c = Completer<void>();
+    lastEvent = event;
+    lastOutput = output;
+    c.complete();
+    return c.future;
+  }
+
+}

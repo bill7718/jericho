@@ -4,7 +4,7 @@ import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
-import '../../mocks.dart';
+import '../../mocks/mocks.dart';
 import '../../util.dart';
 
 void main() {

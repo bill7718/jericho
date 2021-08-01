@@ -12,6 +12,7 @@ import 'package:jericho/services/user/user_services.dart';
 /// a. On entry the system shows the page that captures the email and name of the new user
 /// b. Then the system shows the password page.
 /// c. Then the system creates the user
+/// d. Then the system continues on to the CaptureOrganisation journey
 ///
 class RegisterJourneyController extends UserJourneyController {
   static const String personalDetailsRoute = '/personalDetails';
@@ -26,14 +27,13 @@ class RegisterJourneyController extends UserJourneyController {
   RegisterJourneyController(this._navigator, this._services, this._session);
 
   @override
-  Future<void> handleEvent( dynamic context,
-      { String event = UserJourneyController.initialEvent, StepOutput output = UserJourneyController.emptyOutput }) {
+  Future<void> handleEvent(dynamic context,
+      {String event = UserJourneyController.initialEvent, StepOutput output = UserJourneyController.emptyOutput}) {
     var c = Completer<void>();
     try {
       switch (_currentRoute) {
         case '':
           switch (event) {
-
             case UserJourneyController.initialEvent:
               _currentRoute = personalDetailsRoute;
               _navigator.goDownTo(context, _currentRoute, this, _state);
@@ -42,15 +42,12 @@ class RegisterJourneyController extends UserJourneyController {
 
             default:
               throw UserJourneyException('Invalid Event for Register Journey $event');
-
           }
           break;
 
         case personalDetailsRoute:
-          switch (event)  {
-
+          switch (event) {
             case UserJourneyController.nextEvent:
-
               var o = output as PersonalDetailsStateOutput;
               _state.email = o.email;
               _state.name = o.name;
@@ -58,7 +55,7 @@ class RegisterJourneyController extends UserJourneyController {
               _state.messageReference = '';
 
               var fr = _services.validateUser(_state);
-              fr.then ((response) {
+              fr.then((response) {
                 if (response.valid) {
                   _currentRoute = capturePasswordRoute;
                   _navigator.goTo(context, _currentRoute, this, _state);
@@ -78,19 +75,16 @@ class RegisterJourneyController extends UserJourneyController {
 
             default:
               throw UserJourneyException('Invalid Event for Register Journey $event and route $_currentRoute');
-
           }
-
 
           break;
 
         case capturePasswordRoute:
-          switch (event)  {
-
+          switch (event) {
             case UserJourneyController.nextEvent:
-
               if (_session.userId.isNotEmpty) {
-                throw UserJourneyException('Cannot create a new user for a session with an existing user: ${_session.userId} ');
+                throw UserJourneyException(
+                    'Cannot create a new user for a session with an existing user: ${_session.userId} ');
               }
 
               var o = output as CapturePasswordStateOutput;
@@ -99,7 +93,7 @@ class RegisterJourneyController extends UserJourneyController {
               _state.messageReference = '';
 
               var fr = _services.createUser(_state);
-              fr.then ((response) {
+              fr.then((response) {
                 if (response.valid) {
                   _session.userId = response.userId;
                   _navigator.gotoNextJourney(context, UserJourneyController.captureOrganisationJourney, _session);
@@ -120,25 +114,19 @@ class RegisterJourneyController extends UserJourneyController {
 
             default:
               throw UserJourneyException('Invalid Event for Register Journey $event and route $_currentRoute');
-
           }
-
 
           break;
 
         default:
           throw UserJourneyException('Invalid current route for Register Journey $_currentRoute');
       }
-
-
-
     } catch (ex) {
       if (ex is UserJourneyException) {
         c.completeError(ex);
       } else {
         c.completeError(UserJourneyException(ex.toString()));
       }
-
     }
     return c.future;
   }
@@ -147,11 +135,13 @@ class RegisterJourneyController extends UserJourneyController {
   String get currentRoute => _currentRoute;
 }
 
-class RegisterUserState  implements PersonalDetailsStateInput, CapturePasswordStateInput,  StepInput,
-    ValidateUserRequest, CreateUserRequest {
-
+///
+/// Holds the internal state of the register user journey
+///
+class RegisterUserState
+    implements PersonalDetailsStateInput, CapturePasswordStateInput, StepInput, ValidateUserRequest, CreateUserRequest {
   @override
-  String  name = '';
+  String name = '';
   @override
   String email = '';
   @override
@@ -159,9 +149,6 @@ class RegisterUserState  implements PersonalDetailsStateInput, CapturePasswordSt
 
   @override
   String messageReference = '';
+  @override
   String message = '';
-
-
-
-
 }

@@ -14,9 +14,8 @@ import 'package:waterloo/waterloo_text_field.dart';
 import '../exception_handler.dart';
 
 class PersonalDetailsPage extends StatelessWidget {
-  
   static const String titleRef = 'personalDetailsPage';
-  
+
   final dynamic inputState;
   final EventHandler eventHandler;
 
@@ -36,24 +35,34 @@ class PersonalDetailsPage extends StatelessWidget {
       error.error = getter.getErrorMessage(i.messageReference);
     }
 
+    var nameEditor = TextEditingController(text: i.name);
+    nameEditor.addListener(() {
+      state.name = nameEditor.text;
+    });
+
+    var emailEditor = TextEditingController(text: i.email);
+    nameEditor.addListener(() {
+      state.email = nameEditor.text;
+    });
+
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(
           formKey: key,
           children: <Widget>[
-            WaterlooFormMessage(error: error,),
+            WaterlooFormMessage(
+              error: error,
+            ),
             WaterlooTextField(
-                value: i.name,
-                put: state.setName,
-                label: getter.getLabel(name),
-                validator: validateName,
-                ),
+              editor: nameEditor,
+              label: getter.getLabel(name),
+              validator: validateName,
+            ),
             WaterlooTextField(
-                value: i.email,
-                put: state.setEmail,
-                label: getter.getLabel(email),
-                validator: validateEmail,
-                ),
+              editor: emailEditor,
+              label: getter.getLabel(email),
+              validator: validateEmail,
+            ),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
                 text: getter.getButtonText(previous),
@@ -91,9 +100,6 @@ class PersonalDetailsDynamicState implements PersonalDetailsStateOutput {
   String name;
   @override
   String email;
-
-  setName(String n) => name = n;
-  setEmail(String e) => email = e;
 
   PersonalDetailsDynamicState(this.name, this.email);
 }

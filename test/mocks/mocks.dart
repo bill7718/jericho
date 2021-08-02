@@ -106,11 +106,26 @@ class MockPersonalDetails extends PersonalDetailsStateOutput implements Personal
 
 }
 
-class MockCapturePasswordStateOutput extends CapturePasswordStateOutput {
+class MockCapturePasswordStateOutput extends CapturePasswordStateOutput  {
   @override
   final String password;
 
   MockCapturePasswordStateOutput(this.password);
+
+}
+
+class MockCapturePasswordStateInput implements CapturePasswordStateInput {
+
+  @override
+  final String message;
+
+  @override
+  final String messageReference;
+
+  @override
+  final String password;
+
+  MockCapturePasswordStateInput({this.password = '', this.messageReference = '', this.message = ''});
 
 }
 

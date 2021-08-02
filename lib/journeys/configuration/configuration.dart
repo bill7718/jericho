@@ -14,6 +14,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
 
     /// page titles
     PersonalDetailsPage.titleRef: 'Personal Details',
+    CapturePasswordPage.titleRef: 'Create Password',
 
     /// labels
     emailLabel: 'Email Address',

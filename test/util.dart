@@ -60,9 +60,9 @@ Finder findUnexpectedTextInputFields(List<String> expectedLabels) {
   return f;
 }
 
-void checkTextInputFields(List<String> expectedLabels) {
+void checkTextInputFields(List<String> expectedLabels, { bool obscure = false }) {
   for (var label in expectedLabels) {
-    Finder f = find.byWidgetPredicate((widget) => widget is WaterlooTextField && widget.label == label);
+    Finder f = find.byWidgetPredicate((widget) => widget is WaterlooTextField && widget.label == label && widget.obscure == obscure);
     expect(f, findsOneWidget);
   }
 

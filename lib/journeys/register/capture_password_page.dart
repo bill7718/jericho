@@ -55,14 +55,14 @@ class CapturePasswordPage extends StatelessWidget {
               initialValue: state.password,
               valueBinder: state.setPassword,
               label: getter.getLabel(passwordLabel),
-              validator: validator.validateName,
+              validator: validator.validatePassword,
               obscure: true,
             ),
             WaterlooTextField(
               initialValue: state.copyPassword,
               valueBinder: state.setCopyPassword,
               label: getter.getLabel(confirmPasswordLabel),
-              validator: validator.validateEmail,
+              validator: validator.validatePassword,
               obscure: true,
             ),
             WaterlooButtonRow(children: <Widget>[

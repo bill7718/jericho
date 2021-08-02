@@ -4,6 +4,7 @@ class Validator {
 
   static const String nameError = 'nameError';
   static const String emailError = 'emailError';
+  static const String passwordError = 'passwordError';
 
   final ErrorMessageGetter _getter;
 
@@ -28,6 +29,16 @@ class Validator {
 
     if (!EmailValidator.validate(e)) {
       return _getter.getErrorMessage(emailError);
+    }
+
+    return null;
+  }
+
+  String? validatePassword(String? password) {
+    var p = password ?? '';
+
+    if (p.isEmpty) {
+      return _getter.getErrorMessage(passwordError);
     }
 
     return null;

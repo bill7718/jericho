@@ -1,9 +1,104 @@
 
 
-
-
-
+import 'package:flutter/material.dart';
+import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/exception_handler.dart';
+import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/journeys/validators.dart';
+import 'package:provider/provider.dart';
+import 'package:waterloo/waterloo_form_container.dart';
+import 'package:waterloo/waterloo_form_message.dart';
+import 'package:waterloo/waterloo_text_button.dart';
+import 'package:waterloo/waterloo_text_field.dart';
+
+
+///
+/// Show a page that captures the users password.
+/// Check that the passwords are the same before passing them to the [EventHandler] for processing.
+///
+class CapturePasswordPage extends StatelessWidget {
+  static const String titleRef = 'capturePasswordPage';
+  static const String confirmPasswordLabel = 'confirmPassword';
+  static const String passwordMismatch = 'mismatchError';
+
+  final dynamic inputState;
+  final EventHandler eventHandler;
+
+  const CapturePasswordPage({Key? key, required this.inputState, required this.eventHandler})
+      : super(
+    key: key,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    final i = inputState as CapturePasswordStateInput;
+    final state = CapturePasswordDynamicState(i.password);
+    final getter = Provider.of<ConfigurationGetter>(context);
+    final validator = Provider.of<Validator>(context);
+    GlobalKey key = GlobalKey();
+    final error = FormError();
+    if (i.messageReference.isNotEmpty) {
+      error.error = getter.getErrorMessage(i.messageReference);
+    }
+
+    var passwordEditor = TextEditingController(text: i.password);
+    passwordEditor.addListener(() {
+      state.password = passwordEditor.text;
+    });
+
+    var confirmPasswordEditor = TextEditingController();
+    confirmPasswordEditor.addListener(() {
+      state.copyPassword = confirmPasswordEditor.text;
+    });
+
+    return Scaffold(
+        appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
+        body: WaterlooFormContainer(
+          formKey: key,
+          children: <Widget>[
+            WaterlooFormMessage(
+              error: error,
+            ),
+            WaterlooTextField(
+              editor: passwordEditor,
+              label: getter.getLabel(passwordLabel),
+              validator: validator.validateName,
+              obscure: true,
+            ),
+            WaterlooTextField(
+              editor: confirmPasswordEditor,
+              label: getter.getLabel(confirmPasswordLabel),
+              validator: validator.validateEmail,
+              obscure: true,
+            ),
+            WaterlooButtonRow(children: <Widget>[
+              WaterlooTextButton(
+                text: getter.getButtonText(previousButton),
+                exceptionHandler: exceptionHandler,
+                onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
+              ),
+              WaterlooTextButton(
+                  text: getter.getButtonText(nextButton),
+                  exceptionHandler: exceptionHandler,
+                  onPressed: () {
+                    var formState = key.currentState as FormState;
+                    if (formState.validate()) {
+                      if (state.password == state.copyPassword) {
+                        eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
+                      } else {
+                        error.error = getter.getErrorMessage(passwordMismatch);
+                      }
+
+                    }
+                  })
+            ])
+          ],
+        ));
+  }
+}
+
 
 abstract class CapturePasswordStateInput implements StepInput {
 
@@ -22,8 +117,8 @@ class  CapturePasswordDynamicState implements CapturePasswordStateOutput {
 
   @override
   String password;
-  String copyPassword;
+  String copyPassword = '';
 
-  CapturePasswordDynamicState(this.password, this.copyPassword);
+  CapturePasswordDynamicState(this.password);
 
 }

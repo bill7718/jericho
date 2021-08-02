@@ -1,5 +1,6 @@
 
 
+import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/validators.dart';
 
@@ -17,6 +18,8 @@ class ConfigurationGetter implements ErrorMessageGetter {
     /// labels
     emailLabel: 'Email Address',
     nameLabel: 'Name',
+    passwordLabel: 'Password',
+    CapturePasswordPage.confirmPasswordLabel: 'Confirm Password',
 
     /// button text
     nextButton: 'Next',
@@ -26,8 +29,10 @@ class ConfigurationGetter implements ErrorMessageGetter {
     /// error messages
     duplicateUser : 'This email address is already in use. Please try again.',
 
-    Validator.nameError: 'Please provide a valid name',
-    Validator.emailError: 'Please provide a valid email address'
+    Validator.nameError: 'Please provide a valid name.',
+    Validator.emailError: 'Please provide a valid email address.',
+    Validator.passwordError: 'Please provide a valid password',
+    CapturePasswordPage.passwordMismatch: 'The two passwords must be the same.'
 
 
   };

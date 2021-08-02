@@ -4,6 +4,7 @@
 
 const String emailLabel = 'email';
 const String nameLabel = 'name';
+const String passwordLabel = 'password';
 
 
 /// Button Text

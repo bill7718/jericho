@@ -17,6 +17,7 @@ dependencies:
 
   email_validator: ^2.0.1
   provider: ^5.0.0
+  flutter_gherkin: ^2.0.0
 
   flutter:
     sdk: flutter
@@ -25,6 +26,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.0
+  flutter_driver:
+    sdk: flutter
+  test: any
 
 
 # The following section is specific to Flutter.

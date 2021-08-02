@@ -1,31 +1,81 @@
-
-
 import 'dart:async';
 
+import 'package:email_validator/email_validator.dart';
+import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/services/firebase_service.dart';
+import 'package:jericho/services/key_generator.dart';
+
 class UserServices {
+  static const String _userCollectionName = 'User';
 
+  static const String _emailFieldName = 'email';
+  static const String _nameFieldName = 'name';
+  static const String _uidFieldName = 'uid';
 
+  final FirebaseService _fb;
+  final KeyGenerator _gen;
+  final AuthenticationService _auth;
 
-  Future<ValidateUserResponse> validateUser(ValidateUserRequest request) {
+  UserServices(this._fb, this._auth, this._gen);
+
+  ///
+  /// Validates the requested User by checking that the
+  /// - email address is in a valid format
+  /// - email address is unique
+  ///
+  Future<ValidateUserResponse> validateUser(ValidateUserRequest request) async {
     var c = Completer<ValidateUserResponse>();
+    try {
+      if (request.email.isEmpty) {
+       throw(UserServicesException('Email must not be empty'));
+      }
 
-    c.complete(ValidateUserResponse(true, message: 'Email is already in use', reference: 'duplicateUser'));
+      if (!EmailValidator.validate(request.email)) {
+        throw(UserServicesException('Email must is a valid format ${request.email} '));
+      }
+
+      var l = await _fb.query(_userCollectionName, field: _emailFieldName, value: request.email);
+      if (l.isEmpty) {
+        c.complete(ValidateUserResponse(true));
+      } else {
+        c.complete(ValidateUserResponse(true, message: 'Email is already in use', reference: 'duplicateUser'));
+      }
+    } catch (ex) {
+      c.completeError(ex);
+    }
     return c.future;
   }
 
-  Future<CreateUserResponse> createUser(CreateUserRequest request) {
+  Future<CreateUserResponse> createUser(CreateUserRequest request) async {
     var c = Completer<CreateUserResponse>();
+    try {
+      var r = await validateUser(request);
+      if (r.valid) {
+        var uid = await _auth.createUser(request.email, request.password);
+
+        var m = <String, dynamic>{};
+        m[_emailFieldName] = request.email;
+        m[_nameFieldName] = request.name;
+        m[_uidFieldName] = uid;
+        m[idFieldName] = _gen.getKey();
+        await _fb.set(_userCollectionName + '/' + m[idFieldName] , m);
+        c.complete(CreateUserResponse(true));
+
+      } else {
+        throw UserServicesException(r.message);
+      }
+
+
+    } catch (ex) {
+      c.completeError(ex);
+    }
 
     c.complete(CreateUserResponse(true, userId: '12345678'));
     return c.future;
   }
-
-
-
 }
 
 abstract class UserServiceResponse {
-
   final bool valid;
   final String message;
   final String reference;
@@ -33,31 +83,40 @@ abstract class UserServiceResponse {
   UserServiceResponse(this.valid, this.message, this.reference);
 }
 
-
 abstract class ValidateUserRequest {
   String get name;
   String get email;
-
 }
-
 
 class ValidateUserResponse extends UserServiceResponse {
-  ValidateUserResponse( bool valid, {  String message = '', String reference = ''}) : super(valid, message, reference);
-
+  ValidateUserResponse(bool valid, {String message = '', String reference = ''}) : super(valid, message, reference);
 }
 
-abstract class CreateUserRequest {
-
+abstract class CreateUserRequest implements ValidateUserRequest {
   String get name;
   String get email;
   String get password;
-
 }
 
 class CreateUserResponse extends UserServiceResponse {
-
   final String userId;
 
-  CreateUserResponse( bool valid, { this.userId = '',  String message = '', String reference = ''}) : super(valid, message, reference);
+  CreateUserResponse(bool valid, {this.userId = '', String message = '', String reference = ''})
+      : super(valid, message, reference);
+}
+
+class UserServicesException implements Exception {
+  final String _message;
+
+  UserServicesException(this._message);
+
+  @override
+  String toString() => _message;
+}
+
+
+abstract class AuthenticationService {
+
+  Future<String> createUser(String email, String password);
 
 }

@@ -1,8 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/services/key_generator.dart';
+import 'package:jericho/services/mock_firebase_service.dart';
+import 'package:jericho/services/user/mock_authentication_service.dart';
+import 'package:jericho/services/user/user_services.dart';
 import 'package:provider/provider.dart';
 
 import 'journeys/validators.dart';
@@ -12,6 +17,8 @@ var navigator = UserJourneyNavigator();
 var getter = ConfigurationGetter();
 var session = SessionState();
 var validator = Validator(getter);
+var firebase = MockFirebaseService();
+
 
 void main() {
   runApp(const MyApp());
@@ -42,4 +49,15 @@ class HomePage extends StatelessWidget {
 
     return Container();
   }
+}
+void registerDependencies() {
+
+  Injector.appInstance.registerSingleton<KeyGenerator>(() => KeyGenerator());
+  Injector.appInstance.registerSingleton<AuthenticationService>(() => MockAuthenticationService());
+
+  Injector.appInstance.registerSingleton<UserServices>(() => UserServices(
+    firebase,
+      Injector.appInstance.get<AuthenticationService>(),
+      Injector.appInstance.get<KeyGenerator>()));
+
 }

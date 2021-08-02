@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:injector/injector.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
@@ -71,7 +72,7 @@ class UserJourneyNavigator {
   UserJourneyController getJourney(String route, SessionState session) {
     switch (route) {
       case UserJourneyController.registerUserJourney:
-        return RegisterJourneyController(this, UserServices(), session);
+        return RegisterJourneyController(this, Injector.appInstance.get<UserServices>() , session);
       default:
         throw Exception ('bad route');
     }

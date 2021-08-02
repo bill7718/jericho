@@ -17,4 +17,6 @@ const String previousButton = 'Previous';
 
 const String duplicateUser = 'duplicateUser';
 
+/// miscellaneous
 
+const String idFieldName = 'id';

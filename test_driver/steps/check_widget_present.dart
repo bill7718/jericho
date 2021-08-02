@@ -8,10 +8,8 @@ StepDefinitionGeneric IsTextInputPresent()  {
   return when1<String, FlutterWorld>(
     RegExp('I expect the {string} to be present'),
         (label, context) async {
-      //final locator = find.text(label);
 
       final locator = find.ancestor(of: find.text(label), matching: find.byType('WaterlooTextField'));
-
       context.expectMatch(await FlutterDriverUtils.isPresent(context.world.driver, locator), true);
     },
   );

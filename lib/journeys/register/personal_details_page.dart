@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
@@ -39,16 +41,6 @@ class PersonalDetailsPage extends StatelessWidget {
       error.error = getter.getErrorMessage(i.messageReference);
     }
 
-    var nameEditor = TextEditingController(text: i.name);
-    nameEditor.addListener(() {
-      state.name = nameEditor.text;
-    });
-
-    var emailEditor = TextEditingController(text: i.email);
-    nameEditor.addListener(() {
-      state.email = emailEditor.text;
-    });
-
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(
@@ -58,12 +50,14 @@ class PersonalDetailsPage extends StatelessWidget {
               error: error,
             ),
             WaterlooTextField(
-              editor: nameEditor,
+              initialValue: state.name,
+              valueBinder: state.setName,
               label: getter.getLabel(nameLabel),
               validator: validator.validateName,
             ),
             WaterlooTextField(
-              editor: emailEditor,
+              initialValue: state.email,
+              valueBinder: state.setEmail,
               label: getter.getLabel(emailLabel),
               validator: validator.validateEmail,
             ),
@@ -79,7 +73,9 @@ class PersonalDetailsPage extends StatelessWidget {
                   onPressed: () {
                     var formState = key.currentState as FormState;
                     if (formState.validate()) {
-                      eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
+                      scheduleMicrotask( () {
+                        eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
+                      });
                     }
                   })
             ])
@@ -104,6 +100,9 @@ class PersonalDetailsDynamicState implements PersonalDetailsStateOutput {
   String name;
   @override
   String email;
+
+  setName(String? n)=>name = n ?? '';
+  setEmail(String? e)=>email = e ?? '';
 
   PersonalDetailsDynamicState(this.name, this.email);
 }

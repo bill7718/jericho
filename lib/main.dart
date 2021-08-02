@@ -21,6 +21,7 @@ var firebase = MockFirebaseService();
 
 
 void main() {
+  registerDependencies();
   runApp(const MyApp());
 }
 

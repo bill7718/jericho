@@ -43,16 +43,6 @@ class CapturePasswordPage extends StatelessWidget {
       error.error = getter.getErrorMessage(i.messageReference);
     }
 
-    var passwordEditor = TextEditingController(text: i.password);
-    passwordEditor.addListener(() {
-      state.password = passwordEditor.text;
-    });
-
-    var confirmPasswordEditor = TextEditingController();
-    confirmPasswordEditor.addListener(() {
-      state.copyPassword = confirmPasswordEditor.text;
-    });
-
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(
@@ -62,13 +52,15 @@ class CapturePasswordPage extends StatelessWidget {
               error: error,
             ),
             WaterlooTextField(
-              editor: passwordEditor,
+              initialValue: state.password,
+              valueBinder: state.setPassword,
               label: getter.getLabel(passwordLabel),
               validator: validator.validateName,
               obscure: true,
             ),
             WaterlooTextField(
-              editor: confirmPasswordEditor,
+              initialValue: state.copyPassword,
+              valueBinder: state.setCopyPassword,
               label: getter.getLabel(confirmPasswordLabel),
               validator: validator.validateEmail,
               obscure: true,
@@ -118,6 +110,9 @@ class  CapturePasswordDynamicState implements CapturePasswordStateOutput {
   @override
   String password;
   String copyPassword = '';
+
+  setPassword(String? p)=>password = p ?? '';
+  setCopyPassword(String? p)=>copyPassword = p ?? '';
 
   CapturePasswordDynamicState(this.password);
 

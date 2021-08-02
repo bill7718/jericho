@@ -2,14 +2,14 @@
 
 /// Labels
 
-const String email = 'email';
-const String name = 'name';
+const String emailLabel = 'email';
+const String nameLabel = 'name';
 
 
 /// Button Text
 
-const String next = 'Next';
-const String previous = 'Previous';
+const String nextButton = 'Next';
+const String previousButton = 'Previous';
 
 
 // error references

@@ -1,33 +1,40 @@
 import 'package:email_validator/email_validator.dart';
 
-const String nameError = 'Please provide a name';
-const String emailError = 'Please provide a valid email address';
+class Validator {
 
+  static const String nameError = 'Please provide a name';
+  static const String emailError = 'Please provide a valid email address';
 
-String? validateName(String? name) {
+  final ErrorMessageGetter _getter;
 
-  var n = makeNotNull(name);
+  Validator(this._getter);
 
-  if (n.isEmpty) {
-    return nameError;
+  String? validateName(String? name) {
+    var n = name ?? '';
+
+    if (n.isEmpty) {
+      return nameError;
+    }
+
+    return null;
   }
 
-  return null;
+  String? validateEmail(String? email) {
+    var e = email ?? '';
+
+    if (e.isEmpty) {
+      return emailError;
+    }
+
+    if (!EmailValidator.validate(e)) {
+      return emailError;
+    }
+
+    return null;
+  }
 }
 
-String? validateEmail(String? email) {
+abstract class ErrorMessageGetter {
 
-  var e = makeNotNull(email);
-
-  if (e.isEmpty) {
-    return emailError;
-  }
-
-  if (!EmailValidator.validate(e)) {
-    return emailError;
-  }
-
-  return null;
+  String getErrorMessage(String id);
 }
-
-String makeNotNull(String? i)=>(i ?? '');

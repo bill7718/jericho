@@ -29,6 +29,7 @@ class PersonalDetailsPage extends StatelessWidget {
     final i = inputState as PersonalDetailsStateInput;
     final state = PersonalDetailsDynamicState(i.name, i.email);
     final getter = Provider.of<ConfigurationGetter>(context);
+    final validator = Provider.of<Validator>(context);
     GlobalKey key = GlobalKey();
     final error = FormError();
     if (i.messageReference.isNotEmpty) {
@@ -55,22 +56,22 @@ class PersonalDetailsPage extends StatelessWidget {
             ),
             WaterlooTextField(
               editor: nameEditor,
-              label: getter.getLabel(name),
-              validator: validateName,
+              label: getter.getLabel(nameLabel),
+              validator: validator.validateName,
             ),
             WaterlooTextField(
               editor: emailEditor,
-              label: getter.getLabel(email),
-              validator: validateEmail,
+              label: getter.getLabel(emailLabel),
+              validator: validator.validateEmail,
             ),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
-                text: getter.getButtonText(previous),
+                text: getter.getButtonText(previousButton),
                 exceptionHandler: exceptionHandler,
                 onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
               ),
               WaterlooTextButton(
-                  text: getter.getButtonText(next),
+                  text: getter.getButtonText(nextButton),
                   exceptionHandler: exceptionHandler,
                   onPressed: () {
                     var formState = key.currentState as FormState;

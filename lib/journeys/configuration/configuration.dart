@@ -1,12 +1,13 @@
 
 
 import 'package:jericho/journeys/register/personal_details_page.dart';
+import 'package:jericho/journeys/validators.dart';
 
 import 'constants.dart';
 
 
 
-class ConfigurationGetter {
+class ConfigurationGetter implements ErrorMessageGetter {
 
   Map<String, String> screenText = <String, String>{
 
@@ -14,12 +15,12 @@ class ConfigurationGetter {
     PersonalDetailsPage.titleRef: 'Personal Details',
 
     /// labels
-    email: 'Email Address',
-    name: 'Name',
+    emailLabel: 'Email Address',
+    nameLabel: 'Name',
 
     /// button text
-    next: 'Next',
-    previous: 'Previous',
+    nextButton: 'Next',
+    previousButton: 'Previous',
 
 
     /// error messages

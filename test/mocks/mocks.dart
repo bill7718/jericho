@@ -90,14 +90,19 @@ class MockUserServices implements UserServices {
 
 }
 
-class MockPersonalDetailsOutput extends PersonalDetailsStateOutput {
+class MockPersonalDetails extends PersonalDetailsStateOutput implements PersonalDetailsStateInput {
   @override
   final String email;
 
   @override
   final String name;
 
-  MockPersonalDetailsOutput(this.name, this.email);
+
+  @override
+  final String messageReference;
+
+  MockPersonalDetails(this.name, this.email, { this.messageReference = ''} );
+
 
 }
 

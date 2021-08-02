@@ -45,10 +45,10 @@ void main() {
   });
 
   group('Current route is Personal Details', () {
-    MockPersonalDetailsOutput output = MockPersonalDetailsOutput('Bill', 'a@b.com');
+    MockPersonalDetails output = MockPersonalDetails('Bill', 'a@b.com');
     setUp(() async {
       await controller.handleEvent(context, event: UserJourneyController.initialEvent);
-      output = MockPersonalDetailsOutput('Bill', 'a@b.com');
+      output = MockPersonalDetails('Bill', 'a@b.com');
     });
 
     testWidgets('When the system receives a valid name and email the case moves on to the password page',
@@ -60,7 +60,7 @@ void main() {
 
     testWidgets('When the system receives an invalid email then the case stays on the personal details page',
         (WidgetTester tester) async {
-      output = MockPersonalDetailsOutput('Bill', 'a@bademail.com');
+      output = MockPersonalDetails('Bill', 'a@bademail.com');
       await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
       expect(navigator.currentRoute, RegisterJourneyController.personalDetailsRoute);
       var i = navigator.currentInput as PersonalDetailsStateInput;
@@ -88,12 +88,12 @@ void main() {
   });
 
   group('Current route is Capture Password', () {
-    MockPersonalDetailsOutput output = MockPersonalDetailsOutput('Bill', 'a@b.com');
+    MockPersonalDetails output = MockPersonalDetails('Bill', 'a@b.com');
     MockCapturePasswordStateOutput passwordOut = MockCapturePasswordStateOutput('hello123');
 
     setUp(() async {
       await controller.handleEvent(context, event: UserJourneyController.initialEvent);
-      output = MockPersonalDetailsOutput('Bill', 'a@b.com');
+      output = MockPersonalDetails('Bill', 'a@b.com');
       await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
     });
 

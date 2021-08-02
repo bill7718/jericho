@@ -13,6 +13,9 @@ import 'package:waterloo/waterloo_text_field.dart';
 
 import '../exception_handler.dart';
 
+///
+/// Show a page that captures email address and name. This is then passed into the [EventHandler] for processing.
+///
 class PersonalDetailsPage extends StatelessWidget {
   static const String titleRef = 'personalDetailsPage';
 
@@ -43,7 +46,7 @@ class PersonalDetailsPage extends StatelessWidget {
 
     var emailEditor = TextEditingController(text: i.email);
     nameEditor.addListener(() {
-      state.email = nameEditor.text;
+      state.email = emailEditor.text;
     });
 
     return Scaffold(

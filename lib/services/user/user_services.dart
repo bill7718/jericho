@@ -27,18 +27,18 @@ class UserServices {
     var c = Completer<ValidateUserResponse>();
     try {
       if (request.email.isEmpty) {
-       throw(UserServicesException('Email must not be empty'));
+        throw (UserServicesException('Email must not be empty'));
       }
 
       if (!EmailValidator.validate(request.email)) {
-        throw(UserServicesException('Email must is a valid format ${request.email} '));
+        throw (UserServicesException('Email must is a valid format ${request.email} '));
       }
 
       var l = await _fb.query(_userCollectionName, field: _emailFieldName, value: request.email);
       if (l.isEmpty) {
         c.complete(ValidateUserResponse(true));
       } else {
-        c.complete(ValidateUserResponse(true, message: 'Email is already in use', reference: 'duplicateUser'));
+        c.complete(ValidateUserResponse(false, message: 'Email is already in use', reference: 'duplicateUser'));
       }
     } catch (ex) {
       c.completeError(ex);
@@ -58,19 +58,15 @@ class UserServices {
         m[_nameFieldName] = request.name;
         m[_uidFieldName] = uid;
         m[idFieldName] = _gen.getKey();
-        await _fb.set(_userCollectionName + '/' + m[idFieldName] , m);
-        c.complete(CreateUserResponse(true));
-
+        await _fb.set(_userCollectionName + '/' + m[idFieldName], m);
+        c.complete(CreateUserResponse(true, userId: m[idFieldName]));
       } else {
         throw UserServicesException(r.message);
       }
-
-
     } catch (ex) {
       c.completeError(ex);
     }
 
-    c.complete(CreateUserResponse(true, userId: '12345678'));
     return c.future;
   }
 }
@@ -114,9 +110,6 @@ class UserServicesException implements Exception {
   String toString() => _message;
 }
 
-
 abstract class AuthenticationService {
-
   Future<String> createUser(String email, String password);
-
 }

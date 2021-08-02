@@ -5,7 +5,6 @@ import 'package:jericho/journeys/register/register_journey_controller.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
 import '../../mocks/mocks.dart';
-import '../../util.dart';
 
 void main() {
   MockUserNavigator navigator = MockUserNavigator();

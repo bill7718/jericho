@@ -15,7 +15,7 @@ Future<void> main() {
       //ProgressReporter(),
       TestRunSummaryReporter(),
       JsonReporter(path: 'test_driver/report.json'),
-      StdoutReporter()
+      //StdoutReporter()
     ] // you can include the "StdoutReporter()" without the message level parameter for verbose log information
     ..hooks = [ AttachScreenshotOnExpectAndTapHook(), ]
     ..stepDefinitions = [IsTextInputPresent(), CurrentPage(), enterText(), tapButton()]

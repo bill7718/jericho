@@ -40,7 +40,7 @@ class MockPage extends StatelessWidget {
       p.addAll(defaultProviders);
     }
 
-    return MultiProvider(providers: p, child: MaterialApp(home: Card(child: child)));
+    return MultiProvider(providers: p, child: MaterialApp(home: child));
   }
 }
 
@@ -85,6 +85,7 @@ Future<void> tap(String text, WidgetTester tester) async {
   var f = find.byWidgetPredicate((widget) => widget is WaterlooTextButton && widget.text == text);
   expect(f, findsOneWidget);
   await tester.tap(f);
+  await tester.pumpAndSettle();
   c.complete();
   return c.future;
 }

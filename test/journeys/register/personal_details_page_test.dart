@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/journeys/validators.dart';
 
 
 import '../../mocks/journeys/configuration/mock_configuration.dart';
@@ -48,7 +49,8 @@ void main() {
           await tester.pumpWidget(page);
           await tap(page.getter.getButtonText(nextButton), tester);
           expect(handler.lastEvent, '');
-
+          expect(find.text(page.getter.getErrorMessage(Validator.emailError)), findsOneWidget);
+          expect(find.text(page.getter.getErrorMessage(Validator.nameError)), findsOneWidget);
         });
 
 

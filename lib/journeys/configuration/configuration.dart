@@ -24,7 +24,12 @@ class ConfigurationGetter implements ErrorMessageGetter {
 
 
     /// error messages
-    duplicateUser : 'This email address is already in use. Please try again.'
+    duplicateUser : 'This email address is already in use. Please try again.',
+
+    Validator.nameError: 'Please provide a valid name',
+    Validator.emailError: 'Please provide a valid email address'
+
+
   };
 
   String getPageTitle(String id) {
@@ -39,6 +44,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     return screenText[id] ?? '';
   }
 
+  @override
   String getErrorMessage(String id) {
     return screenText[id] ?? '';
   }

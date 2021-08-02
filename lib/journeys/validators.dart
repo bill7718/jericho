@@ -2,8 +2,8 @@ import 'package:email_validator/email_validator.dart';
 
 class Validator {
 
-  static const String nameError = 'Please provide a name';
-  static const String emailError = 'Please provide a valid email address';
+  static const String nameError = 'nameError';
+  static const String emailError = 'emailError';
 
   final ErrorMessageGetter _getter;
 
@@ -13,7 +13,7 @@ class Validator {
     var n = name ?? '';
 
     if (n.isEmpty) {
-      return nameError;
+      return _getter.getErrorMessage(nameError);
     }
 
     return null;
@@ -23,11 +23,11 @@ class Validator {
     var e = email ?? '';
 
     if (e.isEmpty) {
-      return emailError;
+      return _getter.getErrorMessage(emailError);
     }
 
     if (!EmailValidator.validate(e)) {
-      return emailError;
+      return _getter.getErrorMessage(emailError);
     }
 
     return null;

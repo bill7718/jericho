@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:jericho/services/organisation/organisation_services.dart';
+import 'package:jericho/services/organisation_services.dart';
 
 class MockOrganisationServices implements OrganisationServices {
 

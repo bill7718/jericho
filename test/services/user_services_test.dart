@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/services/firebase_service.dart';
 import 'package:jericho/services/key_generator.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
-import 'package:jericho/services/user/mock_authentication_service.dart';
-import 'package:jericho/services/user/user_services.dart';
+import 'package:jericho/services/mock_authentication_service.dart';
+import 'package:jericho/services/user_services.dart';
 
 void main() {
 

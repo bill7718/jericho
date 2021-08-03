@@ -4,7 +4,7 @@ import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:jericho/services/user/user_services.dart';
+import 'package:jericho/services/user_services.dart';
 
 ///
 /// Controls the flow of control when a user is registered

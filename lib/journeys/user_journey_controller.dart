@@ -5,7 +5,7 @@ import 'package:injector/injector.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
-import 'package:jericho/services/user/user_services.dart';
+import 'package:jericho/services/user_services.dart';
 
 import 'event_handler.dart';
 

@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:jericho/services/user/user_services.dart';
+import 'package:jericho/services/user_services.dart';
 
 class MockAuthenticationService implements AuthenticationService {
 

@@ -6,8 +6,8 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/key_generator.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
-import 'package:jericho/services/user/mock_authentication_service.dart';
-import 'package:jericho/services/user/user_services.dart';
+import 'package:jericho/services/mock_authentication_service.dart';
+import 'package:jericho/services/user_services.dart';
 import 'package:provider/provider.dart';
 
 import 'journeys/validators.dart';

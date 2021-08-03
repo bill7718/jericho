@@ -57,5 +57,17 @@ class MockOrganisationServices implements OrganisationServices {
     return c.future;
   }
 
+  @override
+  Future<CreateOrganisationInvitationResponse> createOrganisationInvitation(CreateOrganisationInvitationRequest request) {
+    // TODO: implement createOrganisationInvitation
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<GetOrganisationResponse> getOrganisation(GetOrganisationRequest request) {
+    // TODO: implement getOrganisation
+    throw UnimplementedError();
+  }
+
 
 }

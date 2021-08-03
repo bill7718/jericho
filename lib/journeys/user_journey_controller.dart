@@ -13,6 +13,10 @@ abstract class UserJourneyController implements EventHandler {
 
   static const registerUserJourney = 'registerUser';
   static const captureOrganisationJourney = 'captureOrganisation';
+  static const landingPageJourney = 'landingPage';
+
+
+  static const welcomePageRoute = 'welcomePage';
 
 
   static const String initialEvent = 'initial';
@@ -33,6 +37,13 @@ class UserJourneyNavigator {
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return getPage(route, handler, input);
+    }));
+  }
+
+  void leaveJourney(dynamic context, String route) {
+
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return getPageWithoutJourney(route);
     }));
   }
 
@@ -69,6 +80,13 @@ class UserJourneyNavigator {
     }
   }
 
+  Widget getPageWithoutJourney(String route) {
+    switch (route) {
+      default:
+        throw Exception ('bad route');
+    }
+  }
+
   UserJourneyController getJourney(String route, SessionState session) {
     switch (route) {
       case UserJourneyController.registerUserJourney:
@@ -97,6 +115,10 @@ class SessionState  {
 
   String _userId = '';
   String _email = '';
+  String name = '';
+
+  String organisationId = '';
+  String organisationName = '';
 
   String get userId=>_userId;
   String get email=>_email;

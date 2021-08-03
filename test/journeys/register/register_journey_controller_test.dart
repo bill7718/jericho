@@ -104,6 +104,7 @@ void main() {
       expect(navigator.level, 1);
       expect(session.userId, 'uid_a@b.com');
       expect(session.email, 'a@b.com');
+      expect(session.name, 'Bill');
     });
 
     testWidgets('When the system cannot create the user the system remain on the same page',

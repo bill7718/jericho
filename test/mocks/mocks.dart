@@ -57,6 +57,18 @@ class MockUserNavigator implements UserJourneyNavigator {
     currentJourney = journeyRoute;
   }
 
+  @override
+  Widget getPageWithoutJourney(String route) {
+    // TODO: implement getPageWithoutJourney
+    throw UnimplementedError();
+  }
+
+  @override
+  void leaveJourney(context, String route) {
+    currentRoute = route;
+    currentJourney = '';
+  }
+
 }
 
 class MockUserServices implements UserServices {

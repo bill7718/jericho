@@ -20,3 +20,4 @@ const String duplicateUser = 'duplicateUser';
 /// miscellaneous
 
 const String idFieldName = 'id';
+const String userIdFieldName = 'userId';

@@ -96,14 +96,25 @@ class UserJourneyException implements Exception {
 class SessionState  {
 
   String _userId = '';
+  String _email = '';
 
   String get userId=>_userId;
+  String get email=>_email;
 
   set userId(String s) {
     if (_userId.isEmpty || s == _userId) {
       _userId = s;
     } else {
       throw SessionStateException('Cannot amend userId $_userId : $s');
+    }
+
+  }
+
+  set email(String e) {
+    if (_email.isEmpty || e == _email) {
+      _email = e;
+    } else {
+      throw SessionStateException('Cannot amend email $_email : $e');
     }
 
   }

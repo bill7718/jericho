@@ -96,6 +96,7 @@ class RegisterJourneyController extends UserJourneyController {
               fr.then((response) {
                 if (response.valid) {
                   _session.userId = response.userId;
+                  _session.email = _state.email;
                   _navigator.gotoNextJourney(context, UserJourneyController.captureOrganisationJourney, _session);
                 } else {
                   _state.message = response.message;

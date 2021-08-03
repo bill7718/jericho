@@ -77,15 +77,16 @@ class CaptureOrganisationController extends UserJourneyController {
               _session.organisationName = _state.organisationName;
 
               _navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
-
+              c.complete();
               break;
 
             case UserJourneyController.backEvent:
               _navigator.leaveJourney(context, UserJourneyController.welcomePageRoute);
+              c.complete();
               break;
 
             default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event');
+              throw UserJourneyException('Invalid Event for Capture Organisation $event - ${_currentRoute}');
           }
 
           break;
@@ -102,15 +103,16 @@ class CaptureOrganisationController extends UserJourneyController {
               _session.organisationId = response.organisationId;
               _session.organisationName = r.organisationName;
               _navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
-
+              c.complete();
               break;
 
             case UserJourneyController.backEvent:
               _navigator.leaveJourney(context, UserJourneyController.welcomePageRoute);
+              c.complete();
               break;
 
             default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event');
+              throw UserJourneyException('Invalid Event for Capture Organisation $event - ${_currentRoute}');
           }
 
           break;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 
 class OrganisationServices {
@@ -239,6 +240,8 @@ class GetOrganisationResponse extends OrganisationServiceResponse {
       : super(valid, message: message, reference: reference);
 }
 
+
+
 class OrganisationServicesException implements Exception {
   final String _message;
 
@@ -246,4 +249,25 @@ class OrganisationServicesException implements Exception {
 
   @override
   String toString() => _message;
+}
+
+
+class OrganisationValidator {
+
+  static const String nameError = 'organisationNameError';
+
+  final ErrorMessageGetter _getter;
+
+  OrganisationValidator(this._getter);
+
+  String? validateOrganisationName(String? name) {
+    var n = name ?? '';
+
+    if (n.isEmpty) {
+      return _getter.getErrorMessage(nameError);
+    }
+
+    return null;
+  }
+
 }

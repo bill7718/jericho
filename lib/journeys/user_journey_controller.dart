@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:jericho/journeys/capture_organisation/capture_organisation_controller.dart';
+import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
@@ -75,8 +77,11 @@ class UserJourneyNavigator {
       case RegisterJourneyController.capturePasswordRoute:
         return CapturePasswordPage(inputState: input, eventHandler: handler,);
 
+      case CaptureOrganisationController.newOrganisationRoute:
+        return NewOrganisationPage(inputState: input, eventHandler: handler,);
+
       default:
-        throw Exception ('bad route');
+        throw Exception ('Bad route in get page - $route');
     }
   }
 

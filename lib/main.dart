@@ -7,6 +7,7 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/key_generator.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
 import 'package:jericho/services/mock_authentication_service.dart';
+import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,7 @@ var getter = ConfigurationGetter();
 var session = SessionState();
 var validator = Validator(getter);
 var firebase = MockFirebaseService();
+var organisationValidator = OrganisationValidator(getter);
 
 
 void main() {
@@ -33,7 +35,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(providers: [
       Provider<UserJourneyNavigator>.value(value: navigator),
       Provider<ConfigurationGetter>.value(value: getter),
-      Provider<Validator>.value(value: validator)
+      Provider<Validator>.value(value: validator),
+      Provider<OrganisationValidator>.value(value: organisationValidator)
     ], child: const MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
   }
 }

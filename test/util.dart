@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
+import 'package:jericho/services/organisation_services.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
@@ -28,10 +29,12 @@ class MockPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Validator validator = Validator(getter);
+    final OrganisationValidator orgValidator = OrganisationValidator(getter);
     var defaultProviders = <Provider>[
       Provider<UserJourneyNavigator>.value(value: navigator),
       Provider<ConfigurationGetter>.value(value: getter),
-      Provider<Validator>.value(value: validator)
+      Provider<Validator>.value(value: validator),
+      Provider<OrganisationValidator>.value(value: orgValidator),
     ];
 
     var p = <Provider>[];

@@ -109,7 +109,7 @@ void main() {
     testWidgets(
         'When the system receives a next event then the system creates the organisation and goes to the landing page  ',
         (WidgetTester tester) async {
-      var output = NewOrganisationDynamicState();
+      var output = NewOrganisationDynamicState('');
       output.organisationName = 'Great new org';
       await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
       expect(navigator.currentJourney, UserJourneyController.landingPageJourney);

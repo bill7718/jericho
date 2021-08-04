@@ -46,6 +46,16 @@ class ConfigurationGetter implements ErrorMessageGetter {
     return screenText[id] ?? '';
   }
 
+  String getScreenText(String id, { List<String> parameters = const []}) {
+    var response =  screenText[id] ?? '';
+
+    for (var item in parameters) {
+      response = response.replaceFirst('{string}', item);
+    }
+
+    return response;
+  }
+
   String getLabel(String id) {
     return screenText[id] ?? '';
   }

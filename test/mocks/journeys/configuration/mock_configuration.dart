@@ -1,5 +1,3 @@
-
-
 import 'package:jericho/journeys/configuration/configuration.dart';
 
 class MockConfigurationGetter implements ConfigurationGetter {
@@ -18,5 +16,16 @@ class MockConfigurationGetter implements ConfigurationGetter {
 
   @override
   String getPageTitle(String id)=>'title_$id';
+
+  @override
+  String getScreenText(String id, { List<String> parameters = const []}) {
+
+    var response = 'screenText_$id';
+    for (var item in parameters) {
+      response = response + ':' + item;
+    }
+
+    return response;
+  }
 
 }

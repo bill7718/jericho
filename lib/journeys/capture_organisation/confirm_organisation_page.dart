@@ -36,15 +36,22 @@ class ConfirmOrganisationPage extends StatelessWidget {
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: WaterlooFormContainer(formKey: key, children: <Widget>[
           WaterlooFormMessage(
-            text: getter.getScreenText(confirmOrganisationTextRef, parameters: [ i.organisationName ]),
+            text: getter.getScreenText(confirmOrganisationTextRef, parameters: [i.organisationName]),
             error: error,
           ),
-          WaterlooTextButton(
-              text: getter.getButtonText(nextButton),
+          WaterlooButtonRow(children: <Widget>[
+            WaterlooTextButton(
+              text: getter.getButtonText(previousButton),
               exceptionHandler: exceptionHandler,
-              onPressed: () {
-                eventHandler.handleEvent(context, event: UserJourneyController.nextEvent);
-              })
+              onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
+            ),
+            WaterlooTextButton(
+                text: getter.getButtonText(nextButton),
+                exceptionHandler: exceptionHandler,
+                onPressed: () {
+                  eventHandler.handleEvent(context, event: UserJourneyController.nextEvent);
+                })
+          ])
         ]));
   }
 }

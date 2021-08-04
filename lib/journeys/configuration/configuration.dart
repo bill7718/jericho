@@ -1,5 +1,6 @@
 
 
+import 'package:jericho/journeys/capture_organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
@@ -39,6 +40,8 @@ class ConfigurationGetter implements ErrorMessageGetter {
     CapturePasswordPage.passwordMismatch: 'The two passwords must be the same.',
     OrganisationValidator.nameError: 'Please provide a name for your organisation',
 
+    /// generic screen text
+    ConfirmOrganisationPage.confirmOrganisationTextRef: 'You have been invited to to join {string}. Please tap Next to confirm and continue',
 
   };
 

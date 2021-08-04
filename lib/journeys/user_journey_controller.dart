@@ -9,6 +9,7 @@ import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
 import 'package:jericho/services/user_services.dart';
 
+import 'capture_organisation/confirm_organisation_page.dart';
 import 'event_handler.dart';
 
 abstract class UserJourneyController implements EventHandler {
@@ -79,6 +80,9 @@ class UserJourneyNavigator {
 
       case CaptureOrganisationController.newOrganisationRoute:
         return NewOrganisationPage(inputState: input, eventHandler: handler,);
+
+      case CaptureOrganisationController.confirmOrganisationRoute:
+        return ConfirmOrganisationPage(inputState: input, eventHandler: handler,);
 
       default:
         throw Exception ('Bad route in get page - $route');

@@ -3,7 +3,7 @@
 
 #### Core Journeys
 
-
+- Write the exception handler
 - Add to BDD scenario
 - Create a BDD scenario where the user is invited
 

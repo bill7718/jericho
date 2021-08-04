@@ -6,4 +6,7 @@ Feature: Register User
     When I enter "bill@bill.com" in "Email Address"
     And I enter "Bill" in "Name"
     Then I tap the "Next" button
+    When I enter "hello1234" in "Password"
+    And I enter "hello1234" in "Confirm Password"
+    And I tap the "Next" button
 

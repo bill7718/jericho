@@ -8,6 +8,12 @@ import 'steps/enter_text.dart';
 import 'steps/tap_widget.dart';
 
 
+
+///
+/// Run the test by running
+/// dart test_driver/app_test.dart
+///
+///
 Future<void> main() {
   final config = FlutterTestConfiguration()
     ..features = [Glob(r"test_driver/features/*.feature")]

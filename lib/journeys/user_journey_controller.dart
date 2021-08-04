@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:jericho/journeys/capture_organisation/capture_organisation_controller.dart';
 import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
+import 'package:jericho/journeys/landing/landing_controller.dart';
+import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
+import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
 
 import 'capture_organisation/confirm_organisation_page.dart';
@@ -84,6 +87,9 @@ class UserJourneyNavigator {
       case CaptureOrganisationController.confirmOrganisationRoute:
         return ConfirmOrganisationPage(inputState: input, eventHandler: handler,);
 
+      case LandingController.landingPageRoute:
+        return LandingPage(inputState: input, eventHandler: handler,);
+
       default:
         throw Exception ('Bad route in get page - $route');
     }
@@ -100,6 +106,13 @@ class UserJourneyNavigator {
     switch (route) {
       case UserJourneyController.registerUserJourney:
         return RegisterJourneyController(this, Injector.appInstance.get<UserServices>() , session);
+
+      case UserJourneyController.captureOrganisationJourney:
+        return CaptureOrganisationController(this, Injector.appInstance.get<OrganisationServices>() , session);
+
+      case UserJourneyController.landingPageJourney:
+        return LandingController(this, session);
+
       default:
         throw Exception ('bad route');
     }

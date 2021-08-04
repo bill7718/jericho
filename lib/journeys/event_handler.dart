@@ -21,3 +21,7 @@ class EmptyStepOutput implements StepOutput {
 abstract class StepInput {
 
 }
+
+class EmptyStepInput implements StepInput {
+  const EmptyStepInput();
+}

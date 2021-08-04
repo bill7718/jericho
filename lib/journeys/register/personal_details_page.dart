@@ -69,7 +69,7 @@ class PersonalDetailsPage extends StatelessWidget {
               ),
               WaterlooTextButton(
                   text: getter.getButtonText(nextButton),
-                  exceptionHandler: exceptionHandler,
+                  exceptionHandler: eventHandler.handleException,
                   onPressed: () {
                     var formState = key.currentState as FormState;
                     if (formState.validate()) {

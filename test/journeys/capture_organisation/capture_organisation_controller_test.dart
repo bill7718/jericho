@@ -32,7 +32,7 @@ void main() {
         (WidgetTester tester) async {
       session.email = MockOrganisationServices.invitedEmail;
       session.userId = MockOrganisationServices.invitedUserId;
-      await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+      await controller.handleEvent(context, event: UserJourneyController.startEvent);
       expect(navigator.currentRoute, CaptureOrganisationController.confirmOrganisationRoute);
       var i = navigator.currentInput as ConfirmOrganisationStateInput;
       expect(i.organisationName, MockOrganisationServices.invitedOrganisationIName);
@@ -43,7 +43,7 @@ void main() {
         (WidgetTester tester) async {
       session.email = 'a@b.com';
       session.userId = 'anyone';
-      await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+      await controller.handleEvent(context, event: UserJourneyController.startEvent);
       expect(navigator.currentRoute, CaptureOrganisationController.newOrganisationRoute);
       var i = navigator.currentInput as NewOrganisationStateInput;
       expect(i.organisationName, '');
@@ -65,7 +65,7 @@ void main() {
     setUp(() async {
       session.email = MockOrganisationServices.invitedEmail;
       session.userId = MockOrganisationServices.invitedUserId;
-      await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+      await controller.handleEvent(context, event: UserJourneyController.startEvent);
     });
 
     testWidgets(
@@ -89,11 +89,11 @@ void main() {
         'When the system provides an invalid event at the confirm organisation route the system throws an exception',
         (WidgetTester tester) async {
       try {
-        await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+        await controller.handleEvent(context, event: UserJourneyController.startEvent);
         expect(true, false);
       } catch (ex) {
         expect(ex is UserJourneyException, true);
-        expect(ex.toString().contains(UserJourneyController.initialEvent), true);
+        expect(ex.toString().contains(UserJourneyController.startEvent), true);
         expect(ex.toString().contains(CaptureOrganisationController.confirmOrganisationRoute), true);
       }
     });
@@ -103,7 +103,7 @@ void main() {
     setUp(() async {
       session.email = 'a@b.com';
       session.userId = 'anyone';
-      await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+      await controller.handleEvent(context, event: UserJourneyController.startEvent);
     });
 
     testWidgets(

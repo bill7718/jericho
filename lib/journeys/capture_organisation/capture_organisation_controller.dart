@@ -34,14 +34,14 @@ class CaptureOrganisationController extends UserJourneyController {
 
   @override
   Future<void> handleEvent(dynamic context,
-      {String event = UserJourneyController.initialEvent,
+      {String event = UserJourneyController.startEvent,
       StepOutput output = UserJourneyController.emptyOutput}) async {
     var c = Completer<void>();
     try {
       switch (_currentRoute) {
         case '':
           switch (event) {
-            case UserJourneyController.initialEvent:
+            case UserJourneyController.startEvent:
               var response =
                   await _services.checkOrganisationInvitation(CheckOrganisationInvitationRequest(_session.email));
 

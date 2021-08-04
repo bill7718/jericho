@@ -155,4 +155,9 @@ class MockEventHandler implements EventHandler {
     return c.future;
   }
 
+  @override
+  void handleException(context, Exception ex, StackTrace? st) {
+    // TODO: implement handleException
+  }
+
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:jericho/journeys/capture_organisation/capture_organisation_controller.dart';
 import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
+import 'package:jericho/journeys/exception_page.dart';
 import 'package:jericho/journeys/landing/landing_controller.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
@@ -34,6 +35,13 @@ abstract class UserJourneyController implements EventHandler {
 
 
   String get currentRoute;
+
+
+  void handleException(dynamic context, Exception ex, StackTrace? st ) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return ExceptionPage(ex, st: st);
+    }));
+  }
 
 }
 

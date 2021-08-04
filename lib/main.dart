@@ -60,9 +60,19 @@ void registerDependencies() {
   Injector.appInstance.registerSingleton<KeyGenerator>(() => KeyGenerator());
   Injector.appInstance.registerSingleton<AuthenticationService>(() => MockAuthenticationService());
 
+  Injector.appInstance.registerSingleton<DataService>(() => DataService(
+    firebase,
+    Injector.appInstance.get<KeyGenerator>()
+  ));
+
   Injector.appInstance.registerSingleton<UserServices>(() => UserServices(
          Injector.appInstance.get<DataService>(),
     Injector.appInstance.get<AuthenticationService>(),
       ));
+
+
+  Injector.appInstance.registerSingleton<OrganisationServices>(() => OrganisationServices(
+    Injector.appInstance.get<DataService>(),
+  ));
 
 }

@@ -1,12 +1,12 @@
 
-
-import 'package:flutter/material.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
 abstract class EventHandler {
 
   Future<void> handleEvent( dynamic context,
       {String event = '', StepOutput output = UserJourneyController.emptyOutput});
+
+  void handleException(dynamic context, Exception ex, StackTrace? st );
 }
 
 abstract class StepOutput {

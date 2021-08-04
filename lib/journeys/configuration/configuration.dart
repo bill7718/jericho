@@ -23,6 +23,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     ConfirmOrganisationPage.titleRef: 'Confirm Your Invitation',
     LandingPage.titleRef: 'Main Menu',
 
+
     /// labels
     emailLabel: 'Email Address',
     nameLabel: 'Name',

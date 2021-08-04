@@ -11,7 +11,7 @@ class MockAuthenticationService implements AuthenticationService {
   Map<String, String> _users = <String, String>{};
 
   MockAuthenticationService() {
-    _users[preExistingUser] = 'hello123';
+    _users[preExistingUser] = 'hello1234';
   }
 
   @override
@@ -32,6 +32,24 @@ class MockAuthenticationService implements AuthenticationService {
 
     return c.future;
 
+  }
+
+   @override
+   Future<bool> login(String email, String password) {
+
+    var c = Completer<bool>();
+
+    if (_users.keys.contains(email)) {
+      if (_users[email] == password) {
+        c.complete(true);
+      } else {
+        c.completeError(Exception('Invalid password for $email : $password'));
+      }
+    } else {
+      c.completeError(Exception('User not known $email'));
+    }
+
+    return c.future;
   }
 
 

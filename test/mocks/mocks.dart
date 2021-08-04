@@ -65,36 +65,7 @@ class MockUserNavigator implements UserJourneyNavigator {
 
 }
 
-class MockUserServices implements UserServices {
 
-  String? email;
-  String? name;
-
-  @override
-  Future<CreateUserResponse> createUser(CreateUserRequest request) {
-    var c = Completer<CreateUserResponse>();
-    if (request.password.contains('bad')) {
-      c.complete(CreateUserResponse(false, message: 'bad password', reference: 'createFailed'));
-    } else {
-      c.complete(CreateUserResponse(true, userId: 'uid_' + request.email));
-    }
-    return c.future;
-  }
-
-  @override
-  Future<ValidateUserResponse> validateUser(ValidateUserRequest request) {
-    var c = Completer<ValidateUserResponse>();
-    if (request.email.contains('bademail.com')) {
-      c.complete(ValidateUserResponse(false, reference: duplicateUser));
-    } else {
-      c.complete(ValidateUserResponse(true));
-    }
-    return c.future;
-  }
-
-
-
-}
 
 class MockPersonalDetails extends PersonalDetailsStateOutput implements PersonalDetailsStateInput {
   @override

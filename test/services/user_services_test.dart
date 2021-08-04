@@ -1,4 +1,3 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/firebase_service.dart';
@@ -12,6 +11,12 @@ void main() {
   FirebaseService fb = MockFirebaseService();
   DataService data = DataService(fb, KeyGenerator());
   UserServices services = UserServices(data, MockAuthenticationService());
+
+  setUp( () {
+    fb = MockFirebaseService();
+    data = DataService(fb, KeyGenerator());
+    services = UserServices(data, MockAuthenticationService());
+  });
 
   group('Validate User', ()
   {
@@ -98,6 +103,41 @@ void main() {
           }
         });
   });
+
+  group('Login', ()
+  {
+    testWidgets(
+        'When the system attempts a login with a valid user and password then the system responds with the userId and name',
+            (WidgetTester tester) async {
+          try {
+            var createResponse = await services.createUser(MockCreateUserRequest('a@bc.com', 'Bill', 'hello123'));
+
+            var response = await services.login(MockLoginRequest('a@bc.com', 'hello123'));
+            expect(response.valid, true);
+            expect(response.userId, createResponse.userId);
+            expect(response.name, 'Bill');
+
+          } catch (ex) {
+            expect(true, false, reason: ex.toString());
+          }
+        });
+
+    testWidgets(
+        'When the system attempts a login with an invalid user/password then the system responds with a failed login ',
+            (WidgetTester tester) async {
+          try {
+            var createResponse = await services.createUser(MockCreateUserRequest('a@bc.com', 'Bill', 'hello123'));
+
+            var response = await services.login(MockLoginRequest('a@bc.com', 'hello12345'));
+            expect(response.valid, false);
+            expect(response.userId, '');
+            expect(response.name, '');
+
+          } catch (ex) {
+            expect(true, false, reason: ex.toString());
+          }
+        });
+  });
   
 }
 
@@ -118,4 +158,14 @@ class MockCreateUserRequest extends MockValidateUserRequest implements CreateUse
 
   MockCreateUserRequest(String email, String name, this.password) : super(email, name);
 
+}
+
+class MockLoginRequest implements LoginRequest {
+  @override
+  final String email;
+
+  @override
+  final String password;
+
+  MockLoginRequest(this.email, this.password);
 }

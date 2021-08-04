@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:email_validator/email_validator.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/services/data_service.dart';
-import 'package:jericho/services/firebase_service.dart';
-import 'package:jericho/services/key_generator.dart';
 
 class UserServices {
   static const String _userCollectionName = 'User';
@@ -58,13 +56,32 @@ class UserServices {
         m[_nameFieldName] = request.name;
         m[_uidFieldName] = uid;
 
-        var id = await _data.set(_userCollectionName , m);
+        var id = await _data.set(_userCollectionName, m);
         c.complete(CreateUserResponse(true, userId: id));
       } else {
         throw UserServicesException(r.message);
       }
     } catch (ex) {
       c.completeError(ex);
+    }
+
+    return c.future;
+  }
+
+  Future<LoginResponse> login(LoginRequest request) async {
+    var c = Completer<LoginResponse>();
+    try {
+      await _auth.login(request.email, request.password);
+      var l = await _data.query(_userCollectionName, field: _emailFieldName, value: request.email);
+
+      if (l.isEmpty) {
+        throw UserServicesException('${request.email} not found in the user Collection');
+      } else {
+        c.complete(LoginResponse(true, userId: l.first[idFieldName], name: l.first[_nameFieldName]));
+      }
+
+    } catch (ex) {
+      c.complete(LoginResponse(false));
     }
 
     return c.future;
@@ -110,6 +127,21 @@ class UserServicesException implements Exception {
   String toString() => _message;
 }
 
+abstract class LoginRequest {
+  String get email;
+  String get password;
+}
+
+class LoginResponse extends UserServiceResponse {
+  final String userId;
+  final String name;
+
+  LoginResponse(bool valid, {this.userId = '', this.name = '', String message = '', String reference = ''})
+      : super(valid, message, reference);
+}
+
 abstract class AuthenticationService {
   Future<String> createUser(String email, String password);
+
+  Future<bool> login(String email, String password);
 }

@@ -3,13 +3,11 @@
 
 #### Core Journeys
 
-- Invite a new user
 
-  - develop / unit test invite a new user
     
 - Login
 
-- Create a BDD scenario where the user is invited
+
 
 - Create Liturgy
 - Create Service
@@ -23,6 +21,7 @@
 - add yt video to a service
 - play yt video in a service
 
+- Create a BDD scenario where the user is invited
 
 #### Peripheral / debt
 
@@ -51,6 +50,8 @@
 - Write the exception handler
 - Add to BDD scenario
 
+- Invite a new user
+  - develop / unit test invite a new user
   - amend landing page
 
 ### Options to make available from the landing page

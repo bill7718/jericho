@@ -12,7 +12,7 @@
 - Unit test Validator
 - Unit test organisationservice validator
 - Unit test Configuration - especially get screen text
-- Amend userServices to use Dataservice
+
 
 
 
@@ -23,3 +23,5 @@
 - Create and unit test ConfirmOrganisation
 - Create a basic landing page
 - Create a basic landing page journey
+
+- Amend userServices to use Dataservice

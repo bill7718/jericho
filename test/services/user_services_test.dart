@@ -1,5 +1,6 @@
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/firebase_service.dart';
 import 'package:jericho/services/key_generator.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
@@ -9,7 +10,8 @@ import 'package:jericho/services/user_services.dart';
 void main() {
 
   FirebaseService fb = MockFirebaseService();
-  UserServices services = UserServices(fb, MockAuthenticationService(), KeyGenerator());
+  DataService data = DataService(fb, KeyGenerator());
+  UserServices services = UserServices(data, MockAuthenticationService());
 
   group('Validate User', ()
   {

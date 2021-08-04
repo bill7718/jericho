@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/firebase_service.dart';
 import 'package:jericho/services/key_generator.dart';
 
@@ -12,11 +13,10 @@ class UserServices {
   static const String _nameFieldName = 'name';
   static const String _uidFieldName = 'uid';
 
-  final FirebaseService _fb;
-  final KeyGenerator _gen;
+  final DataService _data;
   final AuthenticationService _auth;
 
-  UserServices(this._fb, this._auth, this._gen);
+  UserServices(this._data, this._auth);
 
   ///
   /// Validates the requested User by checking that the
@@ -34,7 +34,7 @@ class UserServices {
         throw (UserServicesException('Email must is a valid format ${request.email} '));
       }
 
-      var l = await _fb.query(_userCollectionName, field: _emailFieldName, value: request.email);
+      var l = await _data.query(_userCollectionName, field: _emailFieldName, value: request.email);
       if (l.isEmpty) {
         c.complete(ValidateUserResponse(true));
       } else {
@@ -57,9 +57,9 @@ class UserServices {
         m[_emailFieldName] = request.email;
         m[_nameFieldName] = request.name;
         m[_uidFieldName] = uid;
-        m[idFieldName] = _gen.getKey();
-        await _fb.set(_userCollectionName + '/' + m[idFieldName], m);
-        c.complete(CreateUserResponse(true, userId: m[idFieldName]));
+
+        var id = await _data.set(_userCollectionName , m);
+        c.complete(CreateUserResponse(true, userId: id));
       } else {
         throw UserServicesException(r.message);
       }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/key_generator.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
 import 'package:jericho/services/mock_authentication_service.dart';
@@ -60,8 +61,8 @@ void registerDependencies() {
   Injector.appInstance.registerSingleton<AuthenticationService>(() => MockAuthenticationService());
 
   Injector.appInstance.registerSingleton<UserServices>(() => UserServices(
-    firebase,
-      Injector.appInstance.get<AuthenticationService>(),
-      Injector.appInstance.get<KeyGenerator>()));
+         Injector.appInstance.get<DataService>(),
+    Injector.appInstance.get<AuthenticationService>(),
+      ));
 
 }

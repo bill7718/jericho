@@ -44,7 +44,9 @@ class LandingController extends UserJourneyController {
           break;
 
 
-
+        case landingPageRoute:
+          _navigator.gotoNextJourney(context, event, _session);
+          break;
 
         default:
           throw UserJourneyException('Invalid current route for Landing Journey $_currentRoute');

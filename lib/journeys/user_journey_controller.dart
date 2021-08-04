@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
-import 'package:jericho/journeys/capture_organisation/capture_organisation_controller.dart';
-import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
+import 'package:jericho/journeys/organisation/capture_organisation_controller.dart';
+import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/exception_page.dart';
 import 'package:jericho/journeys/landing/landing_controller.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
@@ -13,7 +13,7 @@ import 'package:jericho/journeys/register/register_journey_controller.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
 
-import 'capture_organisation/confirm_organisation_page.dart';
+import 'organisation/confirm_organisation_page.dart';
 import 'event_handler.dart';
 
 abstract class UserJourneyController implements EventHandler {

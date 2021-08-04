@@ -3,14 +3,33 @@
 
 #### Core Journeys
 
-
+- Invite a new user
+  - amend landing page
+  - develop / unit test invite a new user
+    
 - Create a BDD scenario where the user is invited
+
+- Create Liturgy
+- Create Service
+- Play Service with only liturgy
+
+- create pdf
+- add pdf to service
+- play pdf in a service
+
+- create youtube video
+- add yt video to a service
+- play yt video in a service
 
 #### Peripheral / debt
 
 - Unit test Validator
 - Unit test organisationservice validator
 - Unit test Configuration - especially get screen text
+- add ability to test for screen text in the BDD
+- add checks in unit tests that the config object is created properly
+- styling of the core solution
+- styling of the playing of services 
 
 
 
@@ -34,7 +53,7 @@
 
 - invite a new user
 - change organisation name
-- maintain displau profile
+- maintain display profile
 
 - Song
     - create 

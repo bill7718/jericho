@@ -1,7 +1,7 @@
 
 
-import 'package:jericho/journeys/capture_organisation/confirm_organisation_page.dart';
-import 'package:jericho/journeys/capture_organisation/new_organisation_page.dart';
+import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
+import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';

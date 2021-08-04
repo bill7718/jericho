@@ -9,4 +9,6 @@ Feature: Register User
     When I enter "hello1234" in "Password"
     And I enter "hello1234" in "Confirm Password"
     And I tap the "Next" button
+    And I enter "Happy Path Organisation" in "Your Organisation Name"
+    And I tap the "Next" button
 

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
-import 'package:jericho/journeys/exception_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:provider/provider.dart';
@@ -68,12 +67,12 @@ class CapturePasswordPage extends StatelessWidget {
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
                 text: getter.getButtonText(previousButton),
-                exceptionHandler: exceptionHandler,
+                exceptionHandler: eventHandler.handleException,
                 onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
               ),
               WaterlooTextButton(
                   text: getter.getButtonText(nextButton),
-                  exceptionHandler: exceptionHandler,
+                  exceptionHandler: eventHandler.handleException,
                   onPressed: () {
                     var formState = key.currentState as FormState;
                     if (formState.validate()) {

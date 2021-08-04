@@ -22,7 +22,6 @@ import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/waterloo_text_field.dart';
 
-import '../exception_handler.dart';
 
 ///
 /// Show a page that captures the organisation to be used by this user. This is then passed into the [EventHandler] for processing.
@@ -66,12 +65,12 @@ class NewOrganisationPage extends StatelessWidget {
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
                 text: getter.getButtonText(previousButton),
-                exceptionHandler: exceptionHandler,
+                exceptionHandler: eventHandler.handleException,
                 onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
               ),
               WaterlooTextButton(
                   text: getter.getButtonText(nextButton),
-                  exceptionHandler: exceptionHandler,
+                  exceptionHandler: eventHandler.handleException,
                   onPressed: () {
                     var formState = key.currentState as FormState;
                     if (formState.validate()) {

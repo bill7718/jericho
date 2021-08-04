@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
-import 'package:jericho/journeys/exception_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
@@ -39,12 +38,12 @@ class LandingPage extends StatelessWidget {
           WaterlooButtonRow(children: <Widget>[
             WaterlooTextButton(
               text: getter.getButtonText(previousButton),
-              exceptionHandler: exceptionHandler,
+              exceptionHandler: eventHandler.handleException,
               onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
             ),
             WaterlooTextButton(
                 text: getter.getButtonText(nextButton),
-                exceptionHandler: exceptionHandler,
+                exceptionHandler: eventHandler.handleException,
                 onPressed: () {
                   eventHandler.handleEvent(context, event: UserJourneyController.nextEvent);
                 })
@@ -53,6 +52,6 @@ class LandingPage extends StatelessWidget {
   }
 }
 
-abstract class LandingPageStateInput implements StepInput {
+class LandingPageStateInput implements StepInput {
 
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
 
@@ -22,17 +23,17 @@ class LandingController extends UserJourneyController {
 
   @override
   Future<void> handleEvent(dynamic context,
-      {String event = UserJourneyController.initialEvent,
+      {String event = UserJourneyController.startEvent,
       StepOutput output = UserJourneyController.emptyOutput}) async {
     var c = Completer<void>();
     try {
       switch (_currentRoute) {
         case '':
           switch (event) {
-            case UserJourneyController.initialEvent:
+            case UserJourneyController.startEvent:
 
               _currentRoute = landingPageRoute;
-              _navigator.goTo(context, _currentRoute, this, EmptyStepInput());
+              _navigator.goTo(context, _currentRoute, this, LandingPageStateInput());
 
               c.complete();
               break;

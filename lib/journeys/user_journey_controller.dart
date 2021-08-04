@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:jericho/journeys/organisation/capture_organisation_controller.dart';
+import 'package:jericho/journeys/organisation/invite_to_organisation_controller.dart';
+import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/exception_page.dart';
 import 'package:jericho/journeys/landing/landing_controller.dart';
@@ -51,7 +53,7 @@ class UserJourneyNavigator {
   void goTo(dynamic context, String route, EventHandler handler, StepInput input) {
 
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-      return getPage(route, handler, input);
+      return _getPage(route, handler, input);
     }));
   }
 
@@ -64,7 +66,7 @@ class UserJourneyNavigator {
 
   void goDownTo(dynamic context, String route, EventHandler handler, StepInput input) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return getPage(route, handler, input);
+      return _getPage(route, handler, input);
     }));
   }
 
@@ -82,7 +84,7 @@ class UserJourneyNavigator {
     journey.handleEvent(context, event: UserJourneyController.initialEvent);
   }
 
-  Widget getPage(String route, EventHandler handler, StepInput input) {
+  Widget _getPage(String route, EventHandler handler, StepInput input) {
     switch (route) {
       case RegisterJourneyController.personalDetailsRoute:
         return PersonalDetailsPage(inputState: input, eventHandler: handler,);
@@ -98,6 +100,9 @@ class UserJourneyNavigator {
 
       case LandingController.landingPageRoute:
         return LandingPage(inputState: input, eventHandler: handler,);
+
+      case InviteToOrganisationController.inviteToOrganisationRoute:
+        return InviteToOrganisationPage(inputState: input, eventHandler: handler,);
 
       default:
         throw Exception ('Bad route in get page - $route');

@@ -32,7 +32,7 @@ void main() {
       await controller.handleEvent(context, event: UserJourneyController.startEvent);
       expect(navigator.currentRoute, CaptureOrganisationController.confirmOrganisationRoute);
       var i = navigator.currentInput as ConfirmOrganisationStateInput;
-      expect(i.organisationName, MockOrganisationServices.invitedOrganisationIName);
+      expect(i.organisationName, MockOrganisationServices.invitedOrganisationName);
     });
 
     testWidgets(

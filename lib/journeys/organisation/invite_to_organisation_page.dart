@@ -48,7 +48,7 @@ class InviteToOrganisationPage extends StatelessWidget {
             ),
             WaterlooTextField(
               valueBinder: state.setEmail,
-              label: getter.getLabel(organisationNameLabel),
+              label: getter.getLabel(emailLabel),
               validator: validator.validateEmail,
             ),
             WaterlooButtonRow(children: <Widget>[

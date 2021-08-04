@@ -4,7 +4,7 @@
 #### Core Journeys
 
 - Invite a new user
-  - amend landing page
+
   - develop / unit test invite a new user
     
 - Login
@@ -35,7 +35,7 @@
 - styling of the playing of services 
 - where the email isa duplicate offer the user the option to login instead
 
-
+- unit test and docs for eventhandlerbutton
 
 
  ### DONE
@@ -51,7 +51,7 @@
 - Write the exception handler
 - Add to BDD scenario
 
-
+  - amend landing page
 
 ### Options to make available from the landing page
 

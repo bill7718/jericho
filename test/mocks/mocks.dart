@@ -25,12 +25,6 @@ class MockUserNavigator implements UserJourneyNavigator {
   }
 
   @override
-  Widget getPage(String route, EventHandler handler, StepInput input) {
-    // TODO: implement getPage
-    throw UnimplementedError();
-  }
-
-  @override
   void goDownTo(dynamic context, String route, EventHandler handler, StepInput input) {
     currentRoute = route;
     level++;

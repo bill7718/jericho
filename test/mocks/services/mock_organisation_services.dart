@@ -9,7 +9,7 @@ class MockOrganisationServices implements OrganisationServices {
   static const String invitedEmail = 'invited@b.com';
   static const String invitedUserId = 'invite';
   static const String invitedOrganisationId = 'invitedOrg';
-  static const String invitedOrganisationIName = 'All Welcome';
+  static const String invitedOrganisationName = 'All Welcome';
 
   List<String> serviceCalls = <String>[];
 
@@ -37,7 +37,7 @@ class MockOrganisationServices implements OrganisationServices {
     var c = Completer<CheckOrganisationInvitationResponse>();
 
     if (request.email == invitedEmail) {
-      c.complete(CheckOrganisationInvitationResponse(organisationId: invitedOrganisationId, organisationName: invitedOrganisationIName));
+      c.complete(CheckOrganisationInvitationResponse(organisationId: invitedOrganisationId, organisationName: invitedOrganisationName));
     } else {
       c.complete(CheckOrganisationInvitationResponse());
     }
@@ -59,8 +59,14 @@ class MockOrganisationServices implements OrganisationServices {
 
   @override
   Future<CreateOrganisationInvitationResponse> createOrganisationInvitation(CreateOrganisationInvitationRequest request) {
-    // TODO: implement createOrganisationInvitation
-    throw UnimplementedError();
+    var c = Completer<CreateOrganisationInvitationResponse>();
+    email = request.email;
+    organisationId = request.organisationId;
+    organisationName = request.organisationName;
+    serviceCalls.add('createOrganisationInvitation');
+    c.complete(CreateOrganisationInvitationResponse(true));
+    return c.future;
+
   }
 
   @override

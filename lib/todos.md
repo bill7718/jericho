@@ -3,8 +3,7 @@
 
 #### Core Journeys
 
-- Write the exception handler
-- Add to BDD scenario
+
 - Create a BDD scenario where the user is invited
 
 #### Peripheral / debt
@@ -25,3 +24,63 @@
 - Create a basic landing page journey
 
 - Amend userServices to use Dataservice
+
+- Write the exception handler
+- Add to BDD scenario
+
+
+
+### Options to make available from the landing page
+
+- invite a new user
+- change organisation name
+- maintain displau profile
+
+- Song
+    - create 
+    - amend 
+    - delete
+
+- Liturgy
+    - create
+    - amend
+    - delete
+    - clone
+    
+- Service
+    - create
+    - amend
+    - delete
+    - clone
+    - play
+    
+- Notice
+    - create
+    - amend
+    - delete
+    - clone
+    - play current notices
+   
+- Reading
+    - create
+    - amend
+    - delete
+    - make a part reading
+    
+- You Tube Video
+    - create
+    - amend
+    - delete
+    - play
+    
+- pdf document (from slides)
+    - create
+    - amend 
+    - delete
+    - play
+    
+- image
+    - create
+    - amend
+    - delete
+    - play

@@ -21,6 +21,7 @@ abstract class UserJourneyController implements EventHandler {
   static const registerUserJourney = 'registerUser';
   static const captureOrganisationJourney = 'captureOrganisation';
   static const landingPageJourney = 'landingPage';
+  static const inviteToOrganisationJourney = 'invite';
 
 
   static const welcomePageRoute = 'welcomePage';

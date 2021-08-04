@@ -33,6 +33,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     /// button text
     nextButton: 'Next',
     previousButton: 'Previous',
+    LandingPage.inviteButtonTextRef: 'Invite User',
 
 
     /// error messages

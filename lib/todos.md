@@ -7,6 +7,8 @@
   - amend landing page
   - develop / unit test invite a new user
     
+- Login
+
 - Create a BDD scenario where the user is invited
 
 - Create Liturgy
@@ -21,6 +23,7 @@
 - add yt video to a service
 - play yt video in a service
 
+
 #### Peripheral / debt
 
 - Unit test Validator
@@ -30,6 +33,7 @@
 - add checks in unit tests that the config object is created properly
 - styling of the core solution
 - styling of the playing of services 
+- where the email isa duplicate offer the user the option to login instead
 
 
 

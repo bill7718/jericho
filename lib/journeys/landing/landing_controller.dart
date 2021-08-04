@@ -14,7 +14,13 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 class LandingController extends UserJourneyController {
   static const String landingPageRoute = '/landing';
 
+
+
   String _currentRoute = '';
+
+  final Map<String, String> eventJourney = <String, String> {
+    LandingPage.inviteToOrganisationEvent: UserJourneyController.inviteToOrganisationJourney
+  };
 
   final UserJourneyNavigator _navigator;
   final SessionState _session;
@@ -45,7 +51,7 @@ class LandingController extends UserJourneyController {
 
 
         case landingPageRoute:
-          _navigator.gotoNextJourney(context, event, _session);
+          _navigator.gotDownToNextJourney(context, eventJourney[event] ?? '', _session);
           break;
 
         default:

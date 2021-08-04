@@ -3,16 +3,21 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/widgets/event_handler_button.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
-import 'package:waterloo/waterloo_text_button.dart';
+
 
 ///
 /// The main Landing Page for the application
 ///
 class LandingPage extends StatelessWidget {
   static const String titleRef = 'landingPage';
+
+  static const String inviteButtonTextRef = 'inviteButton';
+
+  static const String inviteToOrganisationEvent = 'inviteUser';
 
   final dynamic inputState;
   final EventHandler eventHandler;
@@ -36,17 +41,15 @@ class LandingPage extends StatelessWidget {
             error: error,
           ),
           WaterlooButtonRow(children: <Widget>[
-            WaterlooTextButton(
+            EventHandlerButton(
               text: getter.getButtonText(previousButton),
-              exceptionHandler: eventHandler.handleException,
-              onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
-            ),
-            WaterlooTextButton(
-                text: getter.getButtonText(nextButton),
-                exceptionHandler: eventHandler.handleException,
-                onPressed: () {
-                  eventHandler.handleEvent(context, event: UserJourneyController.nextEvent);
-                })
+              handler: eventHandler,
+              event: UserJourneyController.backEvent),
+            EventHandlerButton(
+                text: getter.getButtonText(inviteButtonTextRef),
+                handler: eventHandler,
+                event: inviteToOrganisationEvent),
+
           ])
         ]));
   }

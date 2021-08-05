@@ -1,5 +1,6 @@
 
 
+import 'package:jericho/journeys/login/login_controller.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
@@ -45,6 +46,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     Validator.passwordError: 'Please provide a valid password',
     CapturePasswordPage.passwordMismatch: 'The two passwords must be the same.',
     OrganisationValidator.nameError: 'Please provide a name for your organisation',
+    LoginController.loginFailure : 'The email and password do not match those we have on record. Please try again.',
 
     /// generic screen text
     ConfirmOrganisationPage.confirmOrganisationTextRef: 'You have been invited to to join {string}. Please tap Next to confirm and continue',

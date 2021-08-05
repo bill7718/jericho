@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:jericho/journeys/login/login_page.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
@@ -14,14 +15,16 @@ import 'package:jericho/services/user_services.dart';
 ///
 class LoginController extends UserJourneyController {
   static const String loginRoute = '/login';
+  static const String loginFailure = 'loginFailure';
 
   String _currentRoute = '';
   final LoginState _state = LoginState();
   final UserJourneyNavigator _navigator;
   final UserServices _services;
+  final OrganisationServices _orgServices;
   final SessionState _session;
 
-  LoginController(this._navigator, this._services, this._session);
+  LoginController(this._navigator, this._services, this._orgServices, this._session);
 
   @override
   Future<void> handleEvent(dynamic context,
@@ -49,14 +52,28 @@ class LoginController extends UserJourneyController {
         case loginRoute:
           switch (event) {
             case UserJourneyController.nextEvent:
-              var r = output as InviteToOrganisationOutputState;
+              var r = output as LoginStateOutput;
+              _state.messageReference = '';
               _state.email = r.email;
+              _state.password = r.password;
               var response = await _services.login(_state);
-              _session.userId = response.userId;
-              _session.email = _state.email;
+
+              if (response.valid) {
+                _state.userId = response.userId;
+                _session.userId = response.userId;
+                _session.email = _state.email;
+                var orgResponse = await _orgServices.getOrganisation(_state);
+                _session.organisationId = orgResponse.organisationId;
+                _session.organisationName = orgResponse.organisationName;
+                _navigator.goUp(context);
+              } else {
+                _state.messageReference = loginFailure;
+                _navigator.goTo(context, _currentRoute, this, _state);
+              }
 
 
-              _navigator.goUp(context);
+
+
               c.complete();
               break;
 
@@ -91,8 +108,12 @@ class LoginController extends UserJourneyController {
 ///
 /// Holds the internal state of the capture organisation journey
 ///
-class LoginState implements StepInput, LoginRequest {
+class LoginState implements StepInput, LoginRequest, GetOrganisationRequest, LoginStateInput {
 
+  String userId = '';
   String email = '';
   String password = '';
+
+  @override
+  String messageReference = '';
 }

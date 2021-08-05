@@ -1,9 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jericho/journeys/organisation/capture_organisation_controller.dart';
-import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_controller.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
-import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
 import '../../mocks/mocks.dart';

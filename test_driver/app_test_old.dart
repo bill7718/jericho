@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   group('Test App', () {
 
-    final buttonFinder = find.byValueKey('increment');
+    find.byValueKey('increment');
 
     late FlutterDriver driver;
 

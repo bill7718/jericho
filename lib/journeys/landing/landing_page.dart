@@ -29,7 +29,6 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final i = inputState as LandingPageStateInput;
     final getter = Provider.of<ConfigurationGetter>(context);
     GlobalKey key = GlobalKey();
     final error = FormError();

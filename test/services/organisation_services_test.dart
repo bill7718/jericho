@@ -114,7 +114,7 @@ void main() {
             var response = await services.createOrganisation(request);
             expect(response.organisationId.isEmpty, false);
 
-            var getResponse = await services.getOrganisation(GetOrganisationRequest('myId2'));
+            await services.getOrganisation(GetOrganisationRequest('myId2'));
             expect(true, false);
           } catch (ex) {
             expect(ex is OrganisationServicesException, true, reason: ex.toString());

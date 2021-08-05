@@ -3,12 +3,10 @@
 import 'dart:async';
 
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:jericho/services/user_services.dart';
 
 class MockUserNavigator implements UserJourneyNavigator {
 

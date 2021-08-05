@@ -120,7 +120,7 @@ void checkFormError(String message) {
 Future<void> wait({Duration duration = const Duration(milliseconds: 500)}) {
   final c = Completer<void>();
 
-  var t = Timer(duration, () {
+  Timer(duration, () {
     c.complete();
   });
 

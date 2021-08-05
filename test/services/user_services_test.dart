@@ -126,7 +126,7 @@ void main() {
         'When the system attempts a login with an invalid user/password then the system responds with a failed login ',
             (WidgetTester tester) async {
           try {
-            var createResponse = await services.createUser(MockCreateUserRequest('a@bc.com', 'Bill', 'hello123'));
+            await services.createUser(MockCreateUserRequest('a@bc.com', 'Bill', 'hello123'));
 
             var response = await services.login(MockLoginRequest('a@bc.com', 'hello12345'));
             expect(response.valid, false);

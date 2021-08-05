@@ -1,9 +1,6 @@
 import 'dart:async';
 
 import 'package:jericho/journeys/login/login_page.dart';
-import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
-import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
-import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/organisation_services.dart';

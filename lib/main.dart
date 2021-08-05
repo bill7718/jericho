@@ -13,6 +13,7 @@ import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
 import 'package:provider/provider.dart';
 
+import 'journeys/poc_page.dart';
 import 'journeys/validators.dart';
 
 
@@ -39,7 +40,10 @@ class MyApp extends StatelessWidget {
       Provider<ConfigurationGetter>.value(value: getter),
       Provider<Validator>.value(value: validator),
       Provider<OrganisationValidator>.value(value: organisationValidator)
-    ], child: const MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()));
+    ], child: const MaterialApp(debugShowCheckedModeBanner: false,
+    //    home: HomePage()
+      home: POCPage()
+    ));
   }
 }
 

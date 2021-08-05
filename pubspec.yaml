@@ -19,6 +19,7 @@ dependencies:
   provider: ^5.0.0
   flutter_gherkin: ^2.0.0
   injector: ^2.0.0
+  zefyrka: ^1.0.10
 
   flutter:
     sdk: flutter

@@ -36,6 +36,10 @@ class POCPage extends StatelessWidget {
     GlobalKey key = GlobalKey();
     final error = FormError();
     ZefyrController controller = ZefyrController();
+    controller.addListener(() {
+      var json = controller.document.toJson();
+      var i = 1;
+    });
 
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
@@ -43,16 +47,62 @@ class POCPage extends StatelessWidget {
           WaterlooFormMessage(
             error: error,
           ),
-          ZefyrEditor(controller: controller),
+          ZefyrToolbar.basic(controller: controller,
+            hideHeadingStyle: true,
+            hideStrikeThrough: true,
+            hideCodeBlock: true,
+            hideHorizontalRule: true,),
+          Card(
+              child: ZefyrEditor(
+                minHeight: 400,
+                controller: controller,
+              )),
+          ChangeNotifierProvider<ZefyrController>.value(
+              value: controller,
+              child: Consumer<ZefyrController>(
+                  builder: (consumerContext, controller, _) {
+                    var spans = <TextSpan>[];
+
+                    for (var node in controller.document.root.children) {
+                      spans.addAll(getSpans(node));
+                    }
+
+                    return RichText(text: TextSpan(children: spans),);
+                  })
+
+          ),
           WaterlooTextButton(
             text: getter.getButtonText(nextButton),
             exceptionHandler: handler.handleException,
             onPressed: () {
               handler.handleEvent(context, event: UserJourneyController.nextEvent);
             },
+
           )
         ]));
   }
+
+  List<TextSpan> getSpans(Node node) {
+    var response = <TextSpan>[];
+    if (node is TextNode) {
+      if (node.style.contains(NotusAttribute.bold)) {
+        response.add(TextSpan(text: node.toPlainText(), style: TextStyle(fontWeight: FontWeight.bold)));
+      } else {
+        response.add(TextSpan(text: node.toPlainText()));
+      }
+    } else {
+      if (node is LineNode) {
+        response.add(TextSpan(text: '\n\n'));
+        for (var n in node.children) {
+          response.addAll(getSpans(n));
+        }
+      }
+    }
+
+    return response;
+  }
+
+
 }
 
 class POCEventHandler implements EventHandler {

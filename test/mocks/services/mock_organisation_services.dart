@@ -4,12 +4,17 @@ import 'dart:async';
 
 import 'package:jericho/services/organisation_services.dart';
 
+import 'mock_user_services.dart';
+
 class MockOrganisationServices implements OrganisationServices {
 
   static const String invitedEmail = 'invited@b.com';
   static const String invitedUserId = 'invite';
   static const String invitedOrganisationId = 'invitedOrg';
   static const String invitedOrganisationName = 'All Welcome';
+
+  static const String existingOrganisationId = 'orgId';
+  static const String existingOrganisationName = 'orgName';
 
   List<String> serviceCalls = <String>[];
 
@@ -71,8 +76,15 @@ class MockOrganisationServices implements OrganisationServices {
 
   @override
   Future<GetOrganisationResponse> getOrganisation(GetOrganisationRequest request) {
-    // TODO: implement getOrganisation
-    throw UnimplementedError();
+    var c = Completer<GetOrganisationResponse>();
+
+    if (request.userId == MockUserServices.existingUserId) {
+      c.complete(GetOrganisationResponse(true, organisationId: existingOrganisationId, organisationName: existingOrganisationName));
+    } else {
+      c.completeError('User note found');
+    }
+
+    return c.future;
   }
 
 

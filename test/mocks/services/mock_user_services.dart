@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 
 import 'package:jericho/journeys/configuration/constants.dart';
@@ -7,13 +5,14 @@ import 'package:jericho/services/user_services.dart';
 
 class MockUserServices implements UserServices {
 
+  static const existingEmail = 'a@b.com';
+  static const existingUserId = 'uid_a@b.com';
+
   String? email;
   String? name;
   String? password;
 
-  Map<String, String> emailToId = <String, String>{
-    'a@b.com' : 'aid'
-  };
+  Map<String, String> emailToId = <String, String>{ existingEmail :  existingUserId  };
 
 
   @override
@@ -22,6 +21,7 @@ class MockUserServices implements UserServices {
     if (request.password.contains('bad')) {
       c.complete(CreateUserResponse(false, message: 'bad password', reference: 'createFailed'));
     } else {
+      emailToId[request.email] = 'uid_' + request.email;
       c.complete(CreateUserResponse(true, userId: 'uid_' + request.email));
     }
     return c.future;
@@ -47,12 +47,9 @@ class MockUserServices implements UserServices {
     if (emailToId.keys.contains(request.email)) {
       c.complete(LoginResponse(true, userId: emailToId[request.email] ?? ''));
     } else {
-      c.completeError('Login failed');
+      c.complete(LoginResponse(false));
     }
 
     return c.future;
   }
-
-
-
 }

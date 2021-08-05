@@ -25,6 +25,7 @@ class MockUserNavigator implements UserJourneyNavigator {
   @override
   void goDownTo(dynamic context, String route, EventHandler handler, StepInput input) {
     currentRoute = route;
+    currentInput = input;
     level++;
   }
 
@@ -41,12 +42,14 @@ class MockUserNavigator implements UserJourneyNavigator {
 
   @override
   void gotDownToNextJourney(dynamic context, String journeyRoute, SessionState session) {
-    // TODO: implement gotDownToNextJourney
+    currentJourney = journeyRoute;
+    currentRoute = '';
   }
 
   @override
   void gotoNextJourney(dynamic context, String journeyRoute, SessionState session) {
     currentJourney = journeyRoute;
+    currentRoute = '';
   }
 
   @override

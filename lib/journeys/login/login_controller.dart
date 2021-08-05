@@ -62,14 +62,11 @@ class LoginController extends UserJourneyController {
                 var orgResponse = await _orgServices.getOrganisation(_state);
                 _session.organisationId = orgResponse.organisationId;
                 _session.organisationName = orgResponse.organisationName;
-                _navigator.goUp(context);
+                _navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
               } else {
                 _state.messageReference = loginFailure;
                 _navigator.goTo(context, _currentRoute, this, _state);
               }
-
-
-
 
               c.complete();
               break;

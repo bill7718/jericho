@@ -6,6 +6,7 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/key_generator.dart';
+import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/mock_firebase_service.dart';
 import 'package:jericho/services/mock_authentication_service.dart';
 import 'package:jericho/services/organisation_services.dart';
@@ -72,6 +73,10 @@ void registerDependencies() {
 
 
   Injector.appInstance.registerSingleton<OrganisationServices>(() => OrganisationServices(
+    Injector.appInstance.get<DataService>(),
+  ));
+
+  Injector.appInstance.registerSingleton<LiturgyServices>(() => LiturgyServices(
     Injector.appInstance.get<DataService>(),
   ));
 

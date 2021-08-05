@@ -19,7 +19,8 @@ class LandingController extends UserJourneyController {
   String _currentRoute = '';
 
   final Map<String, String> eventJourney = <String, String> {
-    LandingPage.inviteToOrganisationEvent: UserJourneyController.inviteToOrganisationJourney
+    LandingPage.inviteToOrganisationEvent: UserJourneyController.inviteToOrganisationJourney,
+    LandingPage.createLiturgyEvent: UserJourneyController.createLiturgyJourney,
   };
 
   final UserJourneyNavigator _navigator;

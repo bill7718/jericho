@@ -53,8 +53,8 @@ Finder findAppBarByTitle(String title) {
   return f2;
 }
 
-Finder findTextInputFieldByLabel(String label) {
-  Finder f = find.byWidgetPredicate((widget) => widget is WaterlooTextField && widget.label == label);
+Finder findTextInputFieldByLabel(String label, { bool obscure  = false}) {
+  Finder f = find.byWidgetPredicate((widget) => widget is WaterlooTextField && widget.label == label && widget.obscure == obscure);
   return f;
 }
 
@@ -72,9 +72,9 @@ void checkTextInputFields(List<String> expectedLabels, { bool obscure = false })
   expect(findUnexpectedTextInputFields(expectedLabels), findsNothing);
 }
 
-Future<void> enterText(WidgetTester tester, String label, String text) {
+Future<void> enterText(WidgetTester tester, String label, String text, { obscure = false}) {
   var c = Completer<void>();
-  tester.enterText(findTextInputFieldByLabel(label), text).then((v) {
+  tester.enterText(findTextInputFieldByLabel(label, obscure: obscure), text).then((v) {
     tester.pumpAndSettle().then((value) {
       c.complete();
     });

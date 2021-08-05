@@ -76,8 +76,8 @@ void main() {
             (WidgetTester tester) async {
           MockPage page = MockPage( CapturePasswordPage (eventHandler: handler, inputState:  MockCapturePasswordStateInput(),));
           await tester.pumpWidget(page);
-          await enterText(tester, page.getter.getLabel(passwordLabel), 'hello123');
-          await enterText(tester, page.getter.getLabel(CapturePasswordPage.confirmPasswordLabel), 'hello124');
+          await enterText(tester, page.getter.getLabel(passwordLabel), 'hello123', obscure: true);
+          await enterText(tester, page.getter.getLabel(CapturePasswordPage.confirmPasswordLabel), 'hello124', obscure: true);
           await tap(page.getter.getButtonText(nextButton), tester);
           expect(handler.lastEvent, '');
           checkFormError(page.getter.getErrorMessage(CapturePasswordPage.passwordMismatch));
@@ -89,8 +89,8 @@ void main() {
             (WidgetTester tester) async {
           MockPage page = MockPage( CapturePasswordPage (eventHandler: handler, inputState: MockCapturePasswordStateInput(),));
           await tester.pumpWidget(page);
-          await enterText(tester, page.getter.getLabel(passwordLabel), 'hello123');
-          await enterText(tester, page.getter.getLabel(CapturePasswordPage.confirmPasswordLabel), 'hello123');
+          await enterText(tester, page.getter.getLabel(passwordLabel), 'hello123', obscure: true);
+          await enterText(tester, page.getter.getLabel(CapturePasswordPage.confirmPasswordLabel), 'hello123', obscure: true);
           await tap(page.getter.getButtonText(nextButton), tester);
           expect(handler.lastEvent, UserJourneyController.nextEvent);
           var output = handler.lastOutput as CapturePasswordStateOutput;

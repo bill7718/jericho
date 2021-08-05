@@ -5,11 +5,19 @@
 
 
     
-- Login
+
 
 
 
 - Create Liturgy
+  - write tests for LiturgyService
+  - POC for RichText Editor
+  - write the journey controller
+  - write the pages
+  - POC for viewer
+  - write the viewer
+
+
 - Create Service
 - Play Service with only liturgy
 
@@ -53,6 +61,8 @@
 - Invite a new user
   - develop / unit test invite a new user
   - amend landing page
+
+- Login
 
 ### Options to make available from the landing page
 

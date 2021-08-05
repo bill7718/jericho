@@ -16,8 +16,10 @@ class LandingPage extends StatelessWidget {
   static const String titleRef = 'landingPage';
 
   static const String inviteButtonTextRef = 'inviteButton';
+  static const String createLiturgyButtonTextRef = 'createLiturgyButton';
 
   static const String inviteToOrganisationEvent = 'inviteUser';
+  static const String createLiturgyEvent = 'createLiturgy';
 
   final dynamic inputState;
   final EventHandler eventHandler;
@@ -39,7 +41,7 @@ class LandingPage extends StatelessWidget {
           WaterlooFormMessage(
             error: error,
           ),
-          WaterlooButtonRow(children: <Widget>[
+
             EventHandlerButton(
               text: getter.getButtonText(previousButton),
               handler: eventHandler,
@@ -48,9 +50,13 @@ class LandingPage extends StatelessWidget {
                 text: getter.getButtonText(inviteButtonTextRef),
                 handler: eventHandler,
                 event: inviteToOrganisationEvent),
+          EventHandlerButton(
+              text: getter.getButtonText(inviteButtonTextRef),
+              handler: eventHandler,
+              event: inviteToOrganisationEvent)
 
           ])
-        ]));
+        );
   }
 }
 

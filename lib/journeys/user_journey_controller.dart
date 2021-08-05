@@ -24,6 +24,7 @@ abstract class UserJourneyController implements EventHandler {
   static const captureOrganisationJourney = 'captureOrganisation';
   static const landingPageJourney = 'landingPage';
   static const inviteToOrganisationJourney = 'invite';
+  static const createLiturgyJourney = 'createLiturgy';
 
 
   static const welcomePageRoute = 'welcomePage';
@@ -126,6 +127,10 @@ class UserJourneyNavigator {
 
       case UserJourneyController.landingPageJourney:
         return LandingController(this, session);
+
+      case UserJourneyController.createLiturgyJourney:
+        //return LandingController(this, session);
+
 
       default:
         throw Exception ('bad route');

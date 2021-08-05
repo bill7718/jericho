@@ -1,6 +1,7 @@
 
 
 import 'package:jericho/journeys/login/login_controller.dart';
+import 'package:jericho/journeys/login/login_page.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
@@ -23,6 +24,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     NewOrganisationPage.titleRef: 'Create a New Organisation',
     ConfirmOrganisationPage.titleRef: 'Confirm Your Invitation',
     LandingPage.titleRef: 'Main Menu',
+    LoginPage.titleRef: 'Login',
 
 
     /// labels

@@ -1,25 +1,21 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:zefyrka/zefyrka.dart';
 
-class PreviewLiturgyPage extends StatelessWidget {
-  final dynamic inputState;
-  final EventHandler eventHandler;
 
-  PreviewLiturgyPage({Key? key, required this.inputState, required this.eventHandler})
+class PreviewContent extends StatelessWidget {
+
+  final List<TextSpan> spans;
+
+  PreviewContent({Key? key, required this.spans})
       : super(
-          key: key,
-        );
+    key: key,
+  );
 
   @override
   Widget build(BuildContext context) {
-    var i = inputState as PreviewLiturgyStateInput;
-    final NotusDocument doc = NotusDocument.fromJson(JsonDecoder().convert(i.content));
-    var spans = _buildTextSpans(doc);
     final splits = SpanSplit();
 
     return Column(
@@ -52,35 +48,6 @@ class PreviewLiturgyPage extends StatelessWidget {
     );
   }
 
-  List<TextSpan> _buildTextSpans(NotusDocument doc) {
-    var response = <TextSpan>[];
-
-    for (var node in doc.root.children) {
-      response.addAll(_getSpans(node));
-    }
-
-    return response;
-  }
-
-  List<TextSpan> _getSpans(Node node) {
-    var response = <TextSpan>[];
-    if (node is TextNode) {
-      if (node.style.contains(NotusAttribute.bold)) {
-        response.add(TextSpan(text: node.toPlainText(), style: TextStyle(fontWeight: FontWeight.bold)));
-      } else {
-        response.add(TextSpan(text: node.toPlainText()));
-      }
-    } else {
-      if (node is LineNode) {
-        response.add(TextSpan(text: '\n\n'));
-        for (var n in node.children) {
-          response.addAll(_getSpans(n));
-        }
-      }
-    }
-
-    return response;
-  }
 }
 
 class SpanSplit extends ChangeNotifier {

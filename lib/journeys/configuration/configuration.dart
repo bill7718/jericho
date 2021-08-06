@@ -43,6 +43,8 @@ class ConfigurationGetter implements ErrorMessageGetter {
     /// button text
     nextButton: 'Next',
     previousButton: 'Previous',
+    cancelButton: 'Cancel',
+    confirmButton: 'Confirm',
     LandingPage.inviteButtonTextRef: 'Invite User',
 
 

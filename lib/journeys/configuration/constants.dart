@@ -11,6 +11,8 @@ const String passwordLabel = 'password';
 
 const String nextButton = 'Next';
 const String previousButton = 'Previous';
+const String cancelButton = 'Cancel';
+const String confirmButton = 'Confirm';
 
 
 // error references

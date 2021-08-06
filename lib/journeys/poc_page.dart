@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
@@ -38,7 +39,14 @@ class POCPage extends StatelessWidget {
     ZefyrController controller = ZefyrController();
     controller.addListener(() {
       var json = controller.document.toJson();
+      var encoded = JsonEncoder().convert(json);
+
+      var decoded = JsonDecoder().convert(encoded);
+
+      NotusDocument doc = NotusDocument.fromJson(decoded);
+
       var i = 1;
+
     });
 
     return Scaffold(

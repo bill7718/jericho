@@ -14,7 +14,7 @@ import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/waterloo_text_field.dart';
 
 ///
-/// Show a page that captures the organisation to be used by this user. This is then passed into the [EventHandler] for processing.
+/// Show a page that captures the name for the liturgy to be used by this user. This is then passed into the [EventHandler] for processing.
 ///
 class RecordLiturgyNamePage extends StatelessWidget {
   static const String titleRef = 'recordLiturgyNamePage';

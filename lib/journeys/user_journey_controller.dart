@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:jericho/journeys/liturgy/add_liturgy_controller.dart';
+import 'package:jericho/journeys/liturgy/record_liturgy_name_page.dart';
 import 'package:jericho/journeys/organisation/capture_organisation_controller.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_controller.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
@@ -34,6 +36,8 @@ abstract class UserJourneyController implements EventHandler {
   static const String startEvent = 'start';
   static const String nextEvent = 'next';
   static const String backEvent = 'back';
+  static const String cancelEvent = 'cancel';
+  static const String confirmEvent = 'confirm';
 
   static const StepOutput emptyOutput = EmptyStepOutput();
 
@@ -104,6 +108,9 @@ class UserJourneyNavigator {
 
       case InviteToOrganisationController.inviteToOrganisationRoute:
         return InviteToOrganisationPage(inputState: input, eventHandler: handler,);
+
+      case AddLiturgyController.recordLiturgyNameRoute:
+        return RecordLiturgyNamePage(inputState: input, eventHandler: handler,);
 
       default:
         throw Exception ('Bad route in get page - $route');

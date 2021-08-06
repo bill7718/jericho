@@ -6,7 +6,7 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:jericho/journeys/validators.dart';
+import 'package:jericho/services/liturgy_services.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
@@ -14,25 +14,27 @@ import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/waterloo_text_field.dart';
 
 ///
-/// Show a page that captures the email address of the user who is to be invited
+/// Show a page that captures the organisation to be used by this user. This is then passed into the [EventHandler] for processing.
 ///
-class InviteToOrganisationPage extends StatelessWidget {
-  static const String titleRef = 'inviteToOrganisationPage';
+class RecordLiturgyNamePage extends StatelessWidget {
+  static const String titleRef = 'recordLiturgyNamePage';
+
+  static const String liturgyNameLabel = 'liturgyName';
 
   final dynamic inputState;
   final EventHandler eventHandler;
 
-  const InviteToOrganisationPage({Key? key, required this.inputState, required this.eventHandler})
+  const RecordLiturgyNamePage({Key? key, required this.inputState, required this.eventHandler})
       : super(
     key: key,
   );
 
   @override
   Widget build(BuildContext context) {
-
-    final state = InviteToOrganisationDynamicState();
+    final i = inputState as RecordLiturgyNameStateInput;
+    final state = RecordLiturgyNameDynamicState(i.name);
     final getter = Provider.of<ConfigurationGetter>(context);
-    final validator = Provider.of<Validator>(context);
+    final validator = Provider.of<LiturgyValidator>(context);
     GlobalKey key = GlobalKey();
     final error = FormError();
 
@@ -45,9 +47,10 @@ class InviteToOrganisationPage extends StatelessWidget {
               error: error,
             ),
             WaterlooTextField(
-              valueBinder: state.setEmail,
-              label: getter.getLabel(emailLabel),
-              validator: validator.validateEmail,
+              initialValue: state.name,
+              valueBinder: state.setName,
+              label: getter.getLabel(liturgyNameLabel),
+              validator: validator.validateOrganisationName,
             ),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
@@ -73,18 +76,21 @@ class InviteToOrganisationPage extends StatelessWidget {
 }
 
 
-class InviteToOrganisationDynamicState implements InviteToOrganisationOutputState {
 
-  String email;
-
-  setEmail(String? e)=>email = e ?? '';
-
-  InviteToOrganisationDynamicState({this.email = ''});
-
+abstract class RecordLiturgyNameStateInput implements StepInput {
+  String get name;
+  String get messageReference;
 }
 
+class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
 
-abstract class InviteToOrganisationOutputState implements StepOutput {
+  String name = '';
 
-  String get email;
+  setName(String n)=>name=n;
+
+  RecordLiturgyNameDynamicState(this.name);
+}
+
+abstract class RecordLiturgyNameStateOutput implements StepOutput {
+  String get name;
 }

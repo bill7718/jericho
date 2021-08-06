@@ -1,8 +1,10 @@
 
 
+import 'package:jericho/journeys/liturgy/record_liturgy_name_page.dart';
 import 'package:jericho/journeys/login/login_controller.dart';
 import 'package:jericho/journeys/login/login_page.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
+import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
@@ -25,6 +27,9 @@ class ConfigurationGetter implements ErrorMessageGetter {
     ConfirmOrganisationPage.titleRef: 'Confirm Your Invitation',
     LandingPage.titleRef: 'Main Menu',
     LoginPage.titleRef: 'Login',
+    InviteToOrganisationPage.titleRef: 'Invite Users',
+    RecordLiturgyNamePage.titleRef: 'Liturgy Name',
+
 
 
     /// labels
@@ -33,6 +38,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     passwordLabel: 'Password',
     CapturePasswordPage.confirmPasswordLabel: 'Confirm Password',
     NewOrganisationPage.organisationNameLabel: 'Your Organisation Name',
+    RecordLiturgyNamePage.liturgyNameLabel: 'Liturgy Name',
 
     /// button text
     nextButton: 'Next',

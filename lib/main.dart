@@ -23,6 +23,7 @@ var session = SessionState();
 var validator = Validator(getter);
 var firebase = MockFirebaseService();
 var organisationValidator = OrganisationValidator(getter);
+var liturgyValidator = LiturgyValidator(getter);
 
 
 void main() {
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
       Provider<UserJourneyNavigator>.value(value: navigator),
       Provider<ConfigurationGetter>.value(value: getter),
       Provider<Validator>.value(value: validator),
-      Provider<OrganisationValidator>.value(value: organisationValidator)
+      Provider<OrganisationValidator>.value(value: organisationValidator),
+      Provider<LiturgyValidator>.value(value: liturgyValidator)
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
     //    home: HomePage()
       home: POCPage()

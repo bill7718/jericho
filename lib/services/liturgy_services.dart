@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 
 class LiturgyServices {
@@ -46,7 +47,7 @@ class LiturgyServices {
   }
 
 
-  Future<CreateLiturgyResponse> createOrganisation(CreateLiturgyRequest request) async {
+  Future<CreateLiturgyResponse> createLiturgy(CreateLiturgyRequest request) async {
     var c = Completer<CreateLiturgyResponse>();
     try {
       if (request.text.isEmpty || request.organisationId.isEmpty || request.name.isEmpty) {
@@ -125,4 +126,24 @@ class LiturgyServicesException implements Exception {
 
   @override
   String toString() => _message;
+}
+
+class LiturgyValidator {
+
+  static const String nameError = 'liturgyNameError';
+
+  final ErrorMessageGetter _getter;
+
+  LiturgyValidator(this._getter);
+
+  String? validateOrganisationName(String? name) {
+    var n = name ?? '';
+
+    if (n.isEmpty) {
+      return _getter.getErrorMessage(nameError);
+    }
+
+    return null;
+  }
+
 }

@@ -1,6 +1,7 @@
 
 
 import 'package:jericho/journeys/liturgy/preivew_liturgy_page.dart';
+import 'package:jericho/journeys/liturgy/record_liturgy_content_page.dart';
 import 'package:jericho/journeys/liturgy/record_liturgy_name_page.dart';
 import 'package:jericho/journeys/login/login_controller.dart';
 import 'package:jericho/journeys/login/login_page.dart';
@@ -32,6 +33,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     InviteToOrganisationPage.titleRef: 'Invite Users',
     RecordLiturgyNamePage.titleRef: 'Liturgy Name',
     PreviewLiturgyPage.titleRef : 'Preview and Confirm',
+    RecordLiturgyContentPage.titleRef : 'Liturgy Content',
 
 
 
@@ -65,6 +67,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
 
     /// generic screen text
     ConfirmOrganisationPage.confirmOrganisationTextRef: 'You have been invited to to join {string}. Please tap Next to confirm and continue',
+    RecordLiturgyContentPage.initialMessage: 'Enter the content for the Liturgy here. The App splits the content up so that it fits on the screen.\n\n You can see a preview on the next page.'
 
   };
 

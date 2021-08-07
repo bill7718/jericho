@@ -4,50 +4,52 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-
 class PreviewContent extends StatelessWidget {
-
   final List<TextSpan> spans;
 
   PreviewContent({Key? key, required this.spans})
       : super(
-    key: key,
-  );
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
     final splits = SpanSplit();
 
-    return Column(
-      children: [
-        TextSplitter(spans: spans, callback: splits.setSplits),
-        ChangeNotifierProvider<SpanSplit>.value(
-            value: splits,
-            child: Consumer<SpanSplit>(builder: (consumerContext, splits, _) {
-              if (splits.split.isEmpty) {
-                return Container();
+    return ChangeNotifierProvider<SpanSplit>.value(
+        value: splits,
+        child: Consumer<SpanSplit>(builder: (consumerContext, splits, _) {
+          if (splits.split.isEmpty) {
+            return TextSplitter(spans: spans, callback: splits.setSplits);
+          } else {
+            var widgets = <Widget>[];
+            var i = 0;
+            while (i < splits.split.length) {
+              var currentSpans = <TextSpan>[];
+              if (i > 0) {
+                currentSpans.addAll(spans.getRange(splits.split[i - 1], splits.split[i]));
               } else {
-                var widgets = <Widget>[];
-                var i = 0;
-                while (i < splits.split.length) {
-                  var currentSpans = <TextSpan>[];
-                  if (i > 0) {
-                    currentSpans.addAll(spans.getRange(splits.split[i - 1], splits.split[i]));
-                  } else {
-                    currentSpans.addAll(spans.getRange(0, splits.split[i]));
-                  }
-                  widgets.add(RichText(text: TextSpan(children: currentSpans)));
-                  i++;
-                }
-                return Column(
-                  children: widgets,
-                );
+                currentSpans.addAll(spans.getRange(0, splits.split[i]));
               }
-            }))
-      ],
-    );
+              widgets.add(Container(
+                  width: 200,
+                  height: 150,
+                  color: Colors.black,
+                  child: RichText(
+                    text: TextSpan(children: currentSpans),
+                    textScaleFactor: 0.25,
+                  )));
+              //child: ScalableRichText(scale: 0.1, spans: currentSpans)));
+              i++;
+            }
+            return SimpleGridView(
+              children: widgets,
+              numberOfColumns: 2,
+              spacing: EdgeInsets.all(5),
+            );
+          }
+        }));
   }
-
 }
 
 class SpanSplit extends ChangeNotifier {
@@ -61,8 +63,6 @@ class SpanSplit extends ChangeNotifier {
 
   List<int> get split => _split;
 }
-
-
 
 ///
 /// Adds an [Offstage] widget to the tree.
@@ -102,8 +102,8 @@ class HeightMeasurer extends StatelessWidget {
 }
 
 class TextSplitter extends StatefulWidget {
-  static const double defaultWidth = 600.0;
-  static const double defaultHeight = 800.0;
+  static const double defaultWidth = 800.0;
+  static const double defaultHeight = 600.0;
 
   final double width;
   final List<TextSpan> spans;
@@ -149,7 +149,7 @@ class _TextSplitterState extends State<TextSplitter> {
     } else {
       separators.add(rangeEnd);
       rangeStart = rangeEnd;
-      rangeEnd = widget.spans.length - 1;
+      rangeEnd = widget.spans.length;
       if (rangeStart == rangeEnd || attemptCount > maxAttemptCount) {
         widget.callback(
           separators,
@@ -158,5 +158,72 @@ class _TextSplitterState extends State<TextSplitter> {
         setState(() {});
       }
     }
+  }
+}
+
+class SimpleGridView extends StatelessWidget {
+  final List<Widget> children;
+  final int numberOfColumns;
+  final EdgeInsets spacing;
+
+  SimpleGridView({required this.children, this.numberOfColumns = 1, this.spacing = const EdgeInsets.all(0)});
+
+  @override
+  Widget build(BuildContext context) {
+    // build the rows
+    var i = 0;
+    var rows = <Widget>[];
+    while (i < children.length) {
+      if (i <= children.length - 3) {
+        var row = Row(
+          children: [
+            Container(
+              margin: spacing,
+            ),
+            children[i],
+            Container(
+              margin: spacing,
+            ),
+            children[i + 1],
+            Container(
+              margin: spacing,
+            ),
+            children[i + 2],
+          ],
+        );
+        rows.add(row);
+      } else {
+        if (i <= children.length - 2) {
+          var row = Row(children: [
+            Container(
+              margin: spacing,
+            ),
+            children[i],
+            Container(
+              margin: spacing,
+            ),
+            children[i + 1],
+          ]);
+          rows.add(row);
+        } else {
+          if (i <= children.length - 1) {
+            var row = Row(children: [
+              Container(
+                margin: spacing,
+              ),
+              children[i],
+            ]);
+            rows.add(row);
+          }
+        }
+      }
+      rows.add(Container(
+        margin: spacing,
+      ));
+      i = i + 3;
+    }
+    return Column(
+      children: rows,
+    );
   }
 }

@@ -48,12 +48,12 @@ class PreviewLiturgyPage extends StatelessWidget {
 
     return Scaffold(
       appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
-      body: WaterlooLongFormContainer(formKey: key, children: <Widget>[
+      body: Column(children: <Widget>[
       WaterlooFormMessage(
       error: error,
 
     ),
-        PreviewContent(spans: spans,),
+     PreviewContent(spans: spans,),
         WaterlooButtonRow(children: <Widget>[
           WaterlooTextButton(
             text: getter.getButtonText(previousButton),

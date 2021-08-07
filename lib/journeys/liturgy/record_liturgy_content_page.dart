@@ -69,7 +69,9 @@ class RecordLiturgyContentPage extends StatelessWidget {
           Card(
               child: ZefyrEditor(
             minHeight: 400,
+            maxHeight: 600,
             controller: controller,
+                scrollable: true,
           )),
           WaterlooButtonRow(children: <Widget>[
             WaterlooTextButton(

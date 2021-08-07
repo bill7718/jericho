@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/event_handler.dart';
+
 import 'package:provider/provider.dart';
 
 
@@ -20,7 +20,7 @@ class PreviewContent extends StatelessWidget {
 
     return Column(
       children: [
-        HeightMeasurer(width: 600.00, spans: spans, heightCallback: splits.setSplits),
+        TextSplitter(spans: spans, callback: splits.setSplits),
         ChangeNotifierProvider<SpanSplit>.value(
             value: splits,
             child: Consumer<SpanSplit>(builder: (consumerContext, splits, _) {
@@ -62,11 +62,7 @@ class SpanSplit extends ChangeNotifier {
   List<int> get split => _split;
 }
 
-abstract class PreviewLiturgyStateInput implements StepInput {
-  String get name;
-  String get messageReference;
-  String get content;
-}
+
 
 ///
 /// Adds an [Offstage] widget to the tree.

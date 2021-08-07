@@ -1,5 +1,6 @@
 
 
+import 'package:jericho/journeys/liturgy/preivew_liturgy_page.dart';
 import 'package:jericho/journeys/liturgy/record_liturgy_name_page.dart';
 import 'package:jericho/journeys/login/login_controller.dart';
 import 'package:jericho/journeys/login/login_page.dart';
@@ -10,6 +11,7 @@ import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/validators.dart';
+import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/organisation_services.dart';
 
 import 'constants.dart';
@@ -29,6 +31,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     LoginPage.titleRef: 'Login',
     InviteToOrganisationPage.titleRef: 'Invite Users',
     RecordLiturgyNamePage.titleRef: 'Liturgy Name',
+    PreviewLiturgyPage.titleRef : 'Preview and Confirm',
 
 
 
@@ -39,6 +42,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     CapturePasswordPage.confirmPasswordLabel: 'Confirm Password',
     NewOrganisationPage.organisationNameLabel: 'Your Organisation Name',
     RecordLiturgyNamePage.liturgyNameLabel: 'Liturgy Name',
+
 
     /// button text
     nextButton: 'Next',
@@ -56,6 +60,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     Validator.passwordError: 'Please provide a valid password',
     CapturePasswordPage.passwordMismatch: 'The two passwords must be the same.',
     OrganisationValidator.nameError: 'Please provide a name for your organisation',
+    LiturgyValidator.nameError: 'Please provide a name for this piece of liturgy',
     LoginController.loginFailure : 'The email and password do not match those we have on record. Please try again.',
 
     /// generic screen text

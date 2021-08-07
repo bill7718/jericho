@@ -6,7 +6,6 @@ import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:jericho/services/liturgy_services.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
@@ -37,17 +36,25 @@ class RecordLiturgyContentPage extends StatelessWidget {
     GlobalKey key = GlobalKey();
     final error = FormError();
 
-    ZefyrController controller = ZefyrController(NotusDocument.fromJson(JsonDecoder().convert(i.content)));
+    ZefyrController controller = ZefyrController();
+    if (i.content.isNotEmpty) {
+      var list = JsonDecoder().convert(i.content);
+      var list2 = [];
+      for (var item in list) {
+        var newItem = item;
+        newItem['insert'] = item['insert'] + '\n';
+        list2.add(newItem);
+    }
+      controller = ZefyrController(NotusDocument.fromJson(list2));
+    }
     controller.addListener(() {
       var json = controller.document.toJson();
-      state.content = JsonEncoder().convert(json);
-      print(state.content);
-      var decoded = JsonDecoder().convert(state.content);
+      state.content = JsonEncoder().convert(json).replaceAll('\n', '');
     });
 
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
-        body: WaterlooFormContainer(formKey: key, children: <Widget>[
+        body: WaterlooLongFormContainer(formKey: key, children: <Widget>[
           WaterlooFormMessage(
             text: getter.getScreenText(initialMessage),
             error: error,
@@ -101,6 +108,8 @@ class RecordLiturgyContentDynamicState implements RecordLiturgyContentStateOutpu
   String content;
 
   RecordLiturgyContentDynamicState({this.content = ''});
+
+  String toString()=>content;
 }
 
 abstract class RecordLiturgyContentStateOutput implements StepOutput {

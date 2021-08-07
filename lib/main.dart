@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/key_generator.dart';
@@ -11,6 +12,8 @@ import 'package:jericho/services/mock_firebase_service.dart';
 import 'package:jericho/services/mock_authentication_service.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
+import 'package:jericho/test_pages/generic_journey.dart';
+import 'package:jericho/test_pages/test_record_liturgy.dart';
 import 'package:provider/provider.dart';
 
 import 'journeys/poc_page.dart';
@@ -43,21 +46,36 @@ class MyApp extends StatelessWidget {
       Provider<OrganisationValidator>.value(value: organisationValidator),
       Provider<LiturgyValidator>.value(value: liturgyValidator)
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-    //    home: HomePage()
-      home: POCPage()
+        home: HomePage(initialiser: testPreviewLiturgy,)
+      // home: POCPage()
     ));
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+
+  final String journey;
+  final Function initialiser;
+
+  const HomePage({Key? key, this.journey = UserJourneyController.registerUserJourney, this.initialiser = dummy}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final j = Provider.of<UserJourneyNavigator>(context);
-    scheduleMicrotask(() {
-      j.gotDownToNextJourney(context, UserJourneyController.registerUserJourney, session);
-    });
+
+    GenericJourneyInput g = initialiser();
+    if (g.route.isEmpty) {
+      final j = Provider.of<UserJourneyNavigator>(context);
+      scheduleMicrotask(() {
+        j.gotDownToNextJourney(context, journey, session);
+      });
+    } else {
+      final n = Provider.of<UserJourneyNavigator>(context);
+      final j = GenericJourney(n, g.route, g.input);
+
+      scheduleMicrotask(() {
+        j.handleEvent(context);
+      });
+    }
 
     return Container();
   }
@@ -87,3 +105,5 @@ void registerDependencies() {
   ));
 
 }
+
+GenericJourneyInput dummy()=>GenericJourneyInput('', EmptyStepInput());

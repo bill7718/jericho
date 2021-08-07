@@ -4,6 +4,9 @@ import 'dart:async';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 
+///
+/// Services for the Create, Update and Delete of Liturgy
+///
 class LiturgyServices {
 
   static const String _liturgyCollectionName = 'Liturgy';
@@ -16,6 +19,22 @@ class LiturgyServices {
 
   LiturgyServices(this._data);
 
+  ///
+  /// Retrieves liturgy if found
+  /// Accepts either
+  /// - an id
+  /// - both an orgnisationId and a name
+  ///
+  /// If found then the response contains
+  /// - valid = true
+  /// - id
+  /// - name
+  /// - text
+  ///
+  /// If not found the response contains
+  /// - valid = false
+  ///  - all other fields are not populated
+  ///
   Future<GetLiturgyResponse> getLiturgy(GetLiturgyRequest request) async {
     var c = Completer<GetLiturgyResponse>();
 
@@ -136,7 +155,7 @@ class LiturgyValidator {
 
   LiturgyValidator(this._getter);
 
-  String? validateOrganisationName(String? name) {
+  String? validateLiturgyName(String? name) {
     var n = name ?? '';
 
     if (n.isEmpty) {

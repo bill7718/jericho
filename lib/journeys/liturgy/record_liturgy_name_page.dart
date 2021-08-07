@@ -50,7 +50,7 @@ class RecordLiturgyNamePage extends StatelessWidget {
               initialValue: state.name,
               valueBinder: state.setName,
               label: getter.getLabel(liturgyNameLabel),
-              validator: validator.validateOrganisationName,
+              validator: validator.validateLiturgyName,
             ),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
@@ -89,8 +89,12 @@ class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
   setName(String n)=>name=n;
 
   RecordLiturgyNameDynamicState(this.name);
+
+
+  String toString()=>'Name $name';
 }
 
 abstract class RecordLiturgyNameStateOutput implements StepOutput {
   String get name;
+
 }

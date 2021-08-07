@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jericho/journeys/configuration/constants.dart';
 
 import 'package:provider/provider.dart';
 
@@ -23,28 +24,23 @@ class PreviewContent extends StatelessWidget {
             return TextSplitter(spans: spans, callback: splits.setSplits);
           } else {
             var widgets = <Widget>[];
-            var i = 0;
-            while (i < splits.split.length) {
+            for (var range in splits.split) {
               var currentSpans = <TextSpan>[];
-              if (i > 0) {
-                currentSpans.addAll(spans.getRange(splits.split[i - 1], splits.split[i]));
-              } else {
-                currentSpans.addAll(spans.getRange(0, splits.split[i]));
-              }
+              currentSpans.addAll(spans.getRange(range.start, range.end));
               widgets.add(Container(
-                  width: 200,
-                  height: 150,
+                  width: previewScale * screenWidth,
+                  height: previewScale * screenHeight,
+                  padding: EdgeInsets.all(margin * previewScale),
                   color: Colors.black,
                   child: RichText(
                     text: TextSpan(children: currentSpans),
-                    textScaleFactor: 0.25,
+                    textScaleFactor: previewScale,
                   )));
-              //child: ScalableRichText(scale: 0.1, spans: currentSpans)));
-              i++;
             }
+
             return SimpleGridView(
               children: widgets,
-              numberOfColumns: 2,
+              numberOfColumns: 3,
               spacing: EdgeInsets.all(5),
             );
           }
@@ -53,15 +49,15 @@ class PreviewContent extends StatelessWidget {
 }
 
 class SpanSplit extends ChangeNotifier {
-  List<int> _split = <int>[];
+  List<SpanRange> _split = <SpanRange>[];
 
-  setSplits(List<int> s) {
+  setSplits(List<SpanRange> s) {
     _split.clear();
     _split.addAll(s);
     notifyListeners();
   }
 
-  List<int> get split => _split;
+  List<SpanRange> get split => _split;
 }
 
 ///
@@ -71,7 +67,7 @@ class SpanSplit extends ChangeNotifier {
 /// reports in a callback.
 ///
 class HeightMeasurer extends StatelessWidget {
-  static const delay = Duration(milliseconds: 50);
+  static const delay = Duration(milliseconds: 5);
 
   final double width;
   final List<TextSpan> spans;
@@ -102,8 +98,8 @@ class HeightMeasurer extends StatelessWidget {
 }
 
 class TextSplitter extends StatefulWidget {
-  static const double defaultWidth = 800.0;
-  static const double defaultHeight = 600.0;
+  static const double defaultWidth = screenWidth - 2 * margin;
+  static const double defaultHeight = screenHeight - 2 * margin;
 
   final double width;
   final List<TextSpan> spans;
@@ -121,7 +117,7 @@ class TextSplitter extends StatefulWidget {
 class _TextSplitterState extends State<TextSplitter> {
   static const int maxAttemptCount = 999;
 
-  List<int> separators = <int>[];
+  List<SpanRange> separators = <SpanRange>[];
   int rangeStart = 0;
   int rangeEnd = 0;
 
@@ -130,6 +126,11 @@ class _TextSplitterState extends State<TextSplitter> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.spans.first.text == '\n\n') {
+      rangeStart = 1;
+    }
+
     rangeEnd = widget.spans.length - 1;
   }
 
@@ -147,18 +148,29 @@ class _TextSplitterState extends State<TextSplitter> {
         rangeEnd--;
       });
     } else {
-      separators.add(rangeEnd);
+      separators.add(SpanRange(rangeStart, rangeEnd));
       rangeStart = rangeEnd;
+
       rangeEnd = widget.spans.length;
       if (rangeStart == rangeEnd || attemptCount > maxAttemptCount) {
         widget.callback(
           separators,
         );
       } else {
+        if (widget.spans[rangeStart].text == '\n\n') {
+          rangeStart++;
+        }
         setState(() {});
       }
     }
   }
+}
+
+class SpanRange {
+  final int start;
+  final int end;
+
+  SpanRange(this.start, this.end);
 }
 
 class SimpleGridView extends StatelessWidget {
@@ -166,62 +178,44 @@ class SimpleGridView extends StatelessWidget {
   final int numberOfColumns;
   final EdgeInsets spacing;
 
-  SimpleGridView({required this.children, this.numberOfColumns = 1, this.spacing = const EdgeInsets.all(0)});
+  SimpleGridView({required this.children, this.numberOfColumns = 3, this.spacing = const EdgeInsets.all(0)});
 
   @override
   Widget build(BuildContext context) {
-    // build the rows
-    var i = 0;
     var rows = <Widget>[];
-    while (i < children.length) {
-      if (i <= children.length - 3) {
-        var row = Row(
-          children: [
-            Container(
-              margin: spacing,
-            ),
-            children[i],
-            Container(
-              margin: spacing,
-            ),
-            children[i + 1],
-            Container(
-              margin: spacing,
-            ),
-            children[i + 2],
-          ],
-        );
-        rows.add(row);
-      } else {
-        if (i <= children.length - 2) {
-          var row = Row(children: [
-            Container(
-              margin: spacing,
-            ),
-            children[i],
-            Container(
-              margin: spacing,
-            ),
-            children[i + 1],
-          ]);
-          rows.add(row);
-        } else {
-          if (i <= children.length - 1) {
-            var row = Row(children: [
-              Container(
-                margin: spacing,
-              ),
-              children[i],
-            ]);
-            rows.add(row);
-          }
-        }
-      }
-      rows.add(Container(
+    var rowContents = <Widget>[];
+    rowContents.add(
+      Container(
         margin: spacing,
-      ));
-      i = i + 3;
+      ),
+    );
+    for (var item in children) {
+      rowContents.add(item);
+      rowContents.add(
+        Container(
+          margin: spacing,
+        ),
+      );
+      if (rowContents.length == 2 * numberOfColumns + 1) {
+        rows.add(Row(
+          children: rowContents,
+        ));
+        rows.add(Container(
+          margin: spacing,
+        ));
+        rowContents = <Widget>[];
+        rowContents.add(
+          Container(
+            margin: spacing,
+          ),
+        );
+      }
     }
+
+    rows.add(Row(
+      children: rowContents,
+    ));
+
     return Column(
       children: rows,
     );

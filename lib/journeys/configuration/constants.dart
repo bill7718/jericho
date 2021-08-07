@@ -23,3 +23,10 @@ const String duplicateUser = 'duplicateUser';
 
 const String idFieldName = 'id';
 const String userIdFieldName = 'userId';
+
+/// screen size
+const double screenHeight = 600;
+const double screenWidth = 800;
+const double margin = 10;
+const double fontSize = 58;
+const double previewScale = 0.30;

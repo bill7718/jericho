@@ -2,9 +2,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:zefyrka/zefyrka.dart';
 
-const TextStyle coreStyle = TextStyle( fontSize: 50, color: Colors.white, fontFamily: 'Raleway');
+const TextStyle coreStyle = TextStyle( fontSize: fontSize, color: Colors.white, fontFamily: 'Raleway');
 
 List<TextSpan> buildTextSpans(NotusDocument doc) {
   var response = <TextSpan>[];

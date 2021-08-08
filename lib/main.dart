@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
       Provider<OrganisationValidator>.value(value: organisationValidator),
       Provider<LiturgyValidator>.value(value: liturgyValidator)
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-        home: HomePage(initialiser: testPreviewLiturgy,)
-      // home: POCPage()
+        //home: HomePage(initialiser: testPreviewLiturgy,)
+       home: POCPage()
     ));
   }
 }

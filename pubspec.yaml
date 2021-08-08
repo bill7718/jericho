@@ -20,6 +20,8 @@ dependencies:
   flutter_gherkin: ^2.0.0
   injector: ^2.0.0
   zefyrka: ^1.0.10
+  native_pdf_view: ^4.1.0
+
 
   flutter:
     sdk: flutter
@@ -36,3 +38,6 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/test.pdf

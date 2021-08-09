@@ -20,6 +20,7 @@ dependencies:
   flutter_gherkin: ^2.0.0
   injector: ^2.0.0
   zefyrka: ^1.0.10
+  file_picker: ^3.0.4
 
 
 

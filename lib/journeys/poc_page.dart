@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:waterloo/waterloo_file_uploader.dart';
 import 'package:waterloo/waterloo_text_button.dart';
 
 
@@ -27,23 +27,11 @@ class POCPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-/*
-    var f = FilePicker.platform.pickFiles(withData: true);
-    f.then( (result) {
-      print(result?.files.first.name);
-      var bytes = result?.files.first.bytes;
+    return WaterlooFileUploader(exceptionHandler: handler.handleEvent, callback: (data) {
+      print(data.fileName);
     });
 
 
- */
-    return WaterlooTextButton(text: 'Hi', exceptionHandler: handler.handleException,
-        onPressed: () {
-          var f = FilePicker.platform.pickFiles(withData: true);
-          f.then( (result) {
-            print(result?.files.first.name);
-            var bytes = result?.files.first.bytes;
-          });
-        });
   }
 }
 

@@ -9,6 +9,5 @@ abstract class FirebaseService {
 
   Future<Map<String, dynamic>> get(String ref);
 
-
   Future<Map<String, dynamic>> delete(String ref);
 }

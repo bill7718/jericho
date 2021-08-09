@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:native_pdf_renderer/native_pdf_renderer.dart';
-import 'package:flutter/services.dart';
-import 'package:native_pdf_view/native_pdf_view.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:waterloo/waterloo_text_button.dart';
+
 
 ///
 /// The main Landing Page for the application
@@ -15,11 +14,6 @@ import 'package:native_pdf_view/native_pdf_view.dart';
 class POCPage extends StatelessWidget {
   static const String titleRef = 'landingPage';
 
-  static const String inviteButtonTextRef = 'inviteButton';
-  static const String createLiturgyButtonTextRef = 'createLiturgyButton';
-
-  static const String inviteToOrganisationEvent = 'inviteUser';
-  static const String createLiturgyEvent = 'createLiturgy';
 
   final EventHandler handler;
 
@@ -32,22 +26,24 @@ class POCPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //const url = "https://drive.google.com/file/d/19y6rO1Ck7dQ0aRk5XOGx68mtS3iJyMf-/view?usp=sharing";
 
-    //launch(url, webOnlyWindowName: '_self');
-
-
-    var pageNumber = 1;
-    PdfController controller = PdfController(document: PdfDocument.openAsset('assets/test.pdf'),
-      initialPage: pageNumber,
-    );
+/*
+    var f = FilePicker.platform.pickFiles(withData: true);
+    f.then( (result) {
+      print(result?.files.first.name);
+      var bytes = result?.files.first.bytes;
+    });
 
 
-    return PdfView(controller: controller,
-      documentLoader: Center(child: CircularProgressIndicator()),
-      pageLoader: Center(child: CircularProgressIndicator()),);
-
-    return Container();
+ */
+    return WaterlooTextButton(text: 'Hi', exceptionHandler: handler.handleException,
+        onPressed: () {
+          var f = FilePicker.platform.pickFiles(withData: true);
+          f.then( (result) {
+            print(result?.files.first.name);
+            var bytes = result?.files.first.bytes;
+          });
+        });
   }
 }
 
@@ -64,3 +60,5 @@ class POCEventHandler implements EventHandler {
   @override
   void handleException(context, Exception ex, StackTrace? st) {}
 }
+
+

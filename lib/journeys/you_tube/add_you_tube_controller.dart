@@ -96,4 +96,5 @@ class AddYouTubeState implements StepInput, RecordYouTubeStateInput {
   String messageReference = '';
   String content = '';
   String videoId = '';
+  String videoIdentifier = '';
 }

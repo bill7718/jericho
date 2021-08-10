@@ -13,9 +13,13 @@ import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/exception_page.dart';
 import 'package:jericho/journeys/landing/landing_controller.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
+import 'package:jericho/journeys/presentation/add_presentation_controller.dart';
+import 'package:jericho/journeys/presentation/record_presentation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
+import 'package:jericho/journeys/you_tube/add_you_tube_controller.dart';
+import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/user_services.dart';
 
@@ -119,6 +123,12 @@ class UserJourneyNavigator {
 
       case AddLiturgyController.previewLiturgyRoute:
         return PreviewLiturgyPage(inputState: input, eventHandler: handler,);
+
+      case AddPresentationController.recordPresentationRoute:
+        return RecordPresentationNamePage(inputState: input, eventHandler: handler,);
+
+      case AddYouTubeController.recordYouTubeRoute:
+        return RecordYouTubePage(inputState: input, eventHandler: handler,);
 
       default:
         throw Exception ('Bad route in get page - $route');

@@ -17,7 +17,7 @@ import 'package:waterloo/you_tube.dart';
 /// Show a page that captures the name for the you tube to be used by this user. This is then passed into the [EventHandler] for processing.
 ///
 class RecordYouTubePage extends StatelessWidget {
-  static const String titleRef = 'recordPresentationNamePage';
+  static const String titleRef = 'recordYoutubePage';
 
   static const String videoNameLabel = 'videoName';
   static const String videoIdLabel = 'videoId';
@@ -86,6 +86,7 @@ class RecordYouTubePage extends StatelessWidget {
 abstract class RecordYouTubeStateInput implements StepInput {
   String get name;
   String get messageReference;
+  String get videoId;
 }
 
 class RecordYouTubeDynamicState
@@ -118,6 +119,8 @@ class RecordYouTubeDynamicState
   String get videoId => _videoId;
 
   RecordYouTubeDynamicState(this.name);
+
+  String toString()=>'$name - $videoId';
 }
 
 abstract class RecordYouTubeStateOutput {

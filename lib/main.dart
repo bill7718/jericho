@@ -13,8 +13,10 @@ import 'package:jericho/services/mock_authentication_service.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/presentation_services.dart';
 import 'package:jericho/services/user_services.dart';
+import 'package:jericho/services/you_tube_services.dart';
 import 'package:jericho/test_pages/generic_journey.dart';
 import 'package:jericho/test_pages/test_record_liturgy.dart';
+import 'package:jericho/test_pages/test_record_youtube.dart';
 import 'package:provider/provider.dart';
 
 import 'journeys/poc_page.dart';
@@ -29,6 +31,7 @@ var firebase = MockFirebaseService();
 var organisationValidator = OrganisationValidator(getter);
 var liturgyValidator = LiturgyValidator(getter);
 var presentationValidator = PresentationValidator(getter);
+var youTubeValidator = YouTubeValidator(getter);
 
 
 void main() {
@@ -47,10 +50,11 @@ class MyApp extends StatelessWidget {
       Provider<Validator>.value(value: validator),
       Provider<OrganisationValidator>.value(value: organisationValidator),
       Provider<LiturgyValidator>.value(value: liturgyValidator),
-      Provider<PresentationValidator>.value(value: presentationValidator)
+      Provider<PresentationValidator>.value(value: presentationValidator),
+      Provider<YouTubeValidator>.value(value: youTubeValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-        //home: HomePage(initialiser: testPreviewLiturgy,)
-       home: POCPage()
+        home: HomePage(initialiser: testRecordYouTube,)
+       //home: POCPage()
     ));
   }
 }

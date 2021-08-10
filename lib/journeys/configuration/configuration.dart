@@ -9,9 +9,11 @@ import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
 import 'package:jericho/journeys/landing/landing_page.dart';
+import 'package:jericho/journeys/presentation/record_presentation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/validators.dart';
+import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
 import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/organisation_services.dart';
 
@@ -34,6 +36,8 @@ class ConfigurationGetter implements ErrorMessageGetter {
     RecordLiturgyNamePage.titleRef: 'Liturgy Name',
     PreviewLiturgyPage.titleRef : 'Preview and Confirm',
     RecordLiturgyContentPage.titleRef : 'Liturgy Content',
+    RecordYouTubePage.titleRef: 'You Tube Video',
+    RecordPresentationNamePage.titleRef: 'Talk',
 
 
 
@@ -44,6 +48,8 @@ class ConfigurationGetter implements ErrorMessageGetter {
     CapturePasswordPage.confirmPasswordLabel: 'Confirm Password',
     NewOrganisationPage.organisationNameLabel: 'Your Organisation Name',
     RecordLiturgyNamePage.liturgyNameLabel: 'Liturgy Name',
+    RecordYouTubePage.videoNameLabel: 'Video Name',
+    RecordYouTubePage.videoIdLabel : 'Video Id / Url',
 
 
     /// button text

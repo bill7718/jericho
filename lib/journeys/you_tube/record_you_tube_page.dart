@@ -14,9 +14,9 @@ import 'package:waterloo/waterloo_text_field.dart';
 import 'package:waterloo/you_tube.dart';
 
 ///
-/// Show a page that captures the name for the liturgy to be used by this user. This is then passed into the [EventHandler] for processing.
+/// Show a page that captures the name for the you tube to be used by this user. This is then passed into the [EventHandler] for processing.
 ///
-class RecordPresentationNamePage extends StatelessWidget {
+class RecordYouTubePage extends StatelessWidget {
   static const String titleRef = 'recordPresentationNamePage';
 
   static const String videoNameLabel = 'videoName';
@@ -25,7 +25,7 @@ class RecordPresentationNamePage extends StatelessWidget {
   final dynamic inputState;
   final EventHandler eventHandler;
 
-  const RecordPresentationNamePage({Key? key, required this.inputState, required this.eventHandler})
+  const RecordYouTubePage({Key? key, required this.inputState, required this.eventHandler})
       : super(
           key: key,
         );

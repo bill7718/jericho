@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -43,7 +42,6 @@ class PreviewLiturgyPage extends StatelessWidget {
     NotusDocument doc = NotusDocument.fromJson(list2);
     final spans = buildTextSpans(doc);
     final getter = Provider.of<ConfigurationGetter>(context);
-    GlobalKey key = GlobalKey();
     final error = FormError();
 
     return Scaffold(

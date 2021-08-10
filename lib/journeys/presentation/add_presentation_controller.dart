@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:jericho/journeys/event_handler.dart';
-import 'package:jericho/journeys/presentation/record_presentation.dart';
+import 'package:jericho/journeys/presentation/record_presentation_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/presentation_services.dart';
 
@@ -89,7 +89,7 @@ class AddPresentationController extends UserJourneyController {
   }
 }
 
-class AddPresentationState implements StepInput, RecordPresentationStepInput {
+class AddPresentationState implements StepInput, RecordPresentationStateInput {
   String name = '';
   String messageReference = '';
   String content = '';

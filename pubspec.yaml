@@ -21,6 +21,8 @@ dependencies:
   injector: ^2.0.0
   zefyrka: ^1.0.10
   file_picker: ^3.0.4
+  youtube_plyr_iframe: ^2.0.7
+  http: ^0.13.3
 
 
 

@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/document_server_service.dart';
 
@@ -135,4 +136,24 @@ class PresentationServicesException implements Exception {
 
   @override
   String toString() => _message;
+}
+
+class PresentationValidator {
+
+  static const String nameError = 'presentationNameError';
+
+  final ErrorMessageGetter _getter;
+
+  PresentationValidator(this._getter);
+
+  String? validatePresentationName(String? name) {
+    var n = name ?? '';
+
+    if (n.isEmpty) {
+      return _getter.getErrorMessage(nameError);
+    }
+
+    return null;
+  }
+
 }

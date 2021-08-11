@@ -93,12 +93,23 @@ class LiturgyServices {
     return c.future;
   }
 
+  Future<GetAllLiturgyResponse> getAllLiturgy(GetAllLiturgyRequest request) async {
+    var c = Completer<GetAllLiturgyResponse>();
+    try {
+      if (request.organisationId.isEmpty ) {
+        throw LiturgyServicesException('Invalid request - ${request.organisationId} ');
+      }
+
+      var list = await _data.query(_liturgyCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+
+      c.complete(GetAllLiturgyResponse(true, data: list));
+    } catch (ex) {
+      c.completeError(ex);
+    }
+    return c.future;
+  }
+
 }
-
-
-
-
-
 
 abstract class LiturgyServiceResponse {
   final bool valid;
@@ -135,6 +146,20 @@ class GetLiturgyResponse extends LiturgyServiceResponse {
   final String text;
 
   GetLiturgyResponse(bool valid, {this.id = '', this.name = '', this.text= '', String message = '', String reference = ''})
+      : super(valid, message: message, reference: reference);
+}
+
+class GetAllLiturgyRequest {
+  final String organisationId;
+
+  GetAllLiturgyRequest({required this.organisationId});
+}
+
+class GetAllLiturgyResponse extends LiturgyServiceResponse {
+
+  final List<Map<String, dynamic>> data;
+
+  GetAllLiturgyResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
 

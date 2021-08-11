@@ -75,6 +75,22 @@ class YouTubeServices {
 
     return c.future;
   }
+
+  Future<GetAllYouTubeResponse> getAllPresentation(GetAllYouTubeRequest request) async {
+    var c = Completer<GetAllYouTubeResponse>();
+    try {
+      if (request.organisationId.isEmpty ) {
+        throw YouTubeServicesException('Invalid request - ${request.organisationId} ');
+      }
+
+      var list = await _data.query(_youTubeCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+
+      c.complete(GetAllYouTubeResponse(true, data: list));
+    } catch (ex) {
+      c.completeError(ex);
+    }
+    return c.future;
+  }
 }
 
 abstract class YouTubeServiceResponse {
@@ -124,6 +140,21 @@ class CreateYouTubeResponse extends YouTubeServiceResponse {
   CreateYouTubeResponse(bool valid, {this.id = '', String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
+
+class GetAllYouTubeRequest {
+  final String organisationId;
+
+  GetAllYouTubeRequest({required this.organisationId});
+}
+
+class GetAllYouTubeResponse extends YouTubeServiceResponse {
+
+  final List<Map<String, dynamic>> data;
+
+  GetAllYouTubeResponse(bool valid, {required this.data, String message = '', String reference = ''})
+      : super(valid, message: message, reference: reference);
+}
+
 
 class YouTubeServicesException implements Exception {
   final String _message;

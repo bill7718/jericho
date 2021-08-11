@@ -77,6 +77,23 @@ class PresentationServices {
     }
     return c.future;
   }
+
+
+  Future<GetAllPresentationResponse> getAllPresentation(GetAllPresentationRequest request) async {
+    var c = Completer<GetAllPresentationResponse>();
+    try {
+      if (request.organisationId.isEmpty ) {
+        throw PresentationServicesException('Invalid request - ${request.organisationId} ');
+      }
+
+      var list = await _data.query(_presentationCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+
+      c.complete(GetAllPresentationResponse(true, data: list));
+    } catch (ex) {
+      c.completeError(ex);
+    }
+    return c.future;
+  }
 }
 
 abstract class PresentationServiceResponse {
@@ -126,6 +143,20 @@ class CheckPresentationRequest {
 class  CheckPresentationResponse extends PresentationServiceResponse {
 
   CheckPresentationResponse(bool valid, { String message = '', String reference = ''})
+      : super(valid, message: message, reference: reference);
+}
+
+class GetAllPresentationRequest {
+  final String organisationId;
+
+  GetAllPresentationRequest({required this.organisationId});
+}
+
+class GetAllPresentationResponse extends PresentationServiceResponse {
+
+  final List<Map<String, dynamic>> data;
+
+  GetAllPresentationResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
 

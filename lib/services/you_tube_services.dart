@@ -76,7 +76,7 @@ class YouTubeServices {
     return c.future;
   }
 
-  Future<GetAllYouTubeResponse> getAllPresentation(GetAllYouTubeRequest request) async {
+  Future<GetAllYouTubeResponse> getAllYouTube(GetAllYouTubeRequest request) async {
     var c = Completer<GetAllYouTubeResponse>();
     try {
       if (request.organisationId.isEmpty ) {

@@ -42,6 +42,7 @@
 - styling of the core solution
 - styling of the playing of services 
 - where the email isa duplicate offer the user the option to login instead
+- ability to remove widgets when the size of the window is too small
 
 - unit test and docs for eventhandlerbutton
 

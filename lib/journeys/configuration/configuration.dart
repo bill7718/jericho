@@ -12,6 +12,7 @@ import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/presentation/record_presentation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
+import 'package:jericho/journeys/service/record_service_page.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
 import 'package:jericho/services/liturgy_services.dart';
@@ -38,6 +39,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     RecordLiturgyContentPage.titleRef : 'Liturgy Content',
     RecordYouTubePage.titleRef: 'You Tube Video',
     RecordPresentationNamePage.titleRef: 'Talk',
+    RecordServicePage.titleRef: 'Service',
 
 
 
@@ -50,6 +52,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     RecordLiturgyNamePage.liturgyNameLabel: 'Liturgy Name',
     RecordYouTubePage.videoNameLabel: 'Video Name',
     RecordYouTubePage.videoIdLabel : 'Video Id / Url',
+    RecordServicePage.filterLabel: 'Filter',
 
 
     /// button text

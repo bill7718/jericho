@@ -15,8 +15,6 @@ class POCPage extends StatelessWidget {
 
   final EventHandler handler;
 
-  //https://pub.dev/packages/native_pdf_view/example
-
   const POCPage({Key? key, this.handler = const POCEventHandler()})
       : super(
           key: key,

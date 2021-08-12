@@ -3,9 +3,11 @@ import 'dart:typed_data';
 
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/presentation/record_presentation_page.dart';
+import 'package:jericho/journeys/service/record_service_name.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
 import 'package:jericho/services/presentation_services.dart';
+import 'package:jericho/services/service_services.dart';
 import 'package:jericho/services/you_tube_services.dart';
 
 ///
@@ -14,13 +16,14 @@ import 'package:jericho/services/you_tube_services.dart';
 ///
 class AddServiceController extends UserJourneyController {
   static const String recordServiceRoute = '/recordService';
+  static const String recordServiceNameRoute = '/recordServiceName';
 
-  static const String duplicateYouTube = 'duplicateYouTube';
+  static const String duplicateService = 'duplicateService';
 
   String _currentRoute = '';
-  final AddYouTubeState _state = AddYouTubeState();
+  final AddServiceState _state = AddServiceState();
   final UserJourneyNavigator _navigator;
-  final YouTubeServices _services;
+  final ServiceServices _services;
   final SessionState _session;
 
   AddServiceController(this._navigator, this._services, this._session);
@@ -38,27 +41,29 @@ class AddServiceController extends UserJourneyController {
         case '':
           switch (event) {
             case UserJourneyController.initialEvent:
-              _currentRoute = recordServiceRoute;
+              _currentRoute = recordServiceNameRoute;
               _navigator.goDownTo(context, _currentRoute, this, _state);
               c.complete();
               break;
 
             default:
-              throw UserJourneyException('Invalid Event for AddYouTubeController $event');
+              throw UserJourneyException('Invalid Event for AddServiceController $event');
           }
           break;
 
-        case recordServiceRoute:
+        case recordServiceNameRoute:
           switch (event) {
             case UserJourneyController.nextEvent:
-              var o = output as RecordYouTubeStateOutput;
+              var o = output as RecordServiceNameStateOutput;
               var checkResponse =
-                  await _services.checkYouTube(CheckYouTubeRequest(_session.organisationId, o.name));
+                  await _services.checkService(CheckServiceRequest(_session.organisationId, o.name));
               if (checkResponse.valid) {
-                await _services.createYouTube(CreateYouTubeRequest(_session.organisationId, o.name, o.videoId));
-                _navigator.goUp(context);
+                _currentRoute = recordServiceRoute;
+                _state.name = o.name;
+                _navigator.goTo(context, _currentRoute, this, _state);
+
               } else {
-                _state.messageReference = duplicateYouTube;
+                _state.messageReference = duplicateService;
                 _state.name = o.name;
                 _navigator.goTo(context, _currentRoute, this, _state);
               }
@@ -91,10 +96,9 @@ class AddServiceController extends UserJourneyController {
   }
 }
 
-class AddYouTubeState implements StepInput, RecordYouTubeStateInput {
+class AddServiceState implements StepInput, RecordServiceNameStateInput {
   String name = '';
   String messageReference = '';
-  String content = '';
-  String videoId = '';
-  String videoIdentifier = '';
+
+  List<Map<String, String>> serviceContents = <Map<String, String>>[];
 }

@@ -12,7 +12,7 @@ class ServiceServices {
 
   ServiceServices(this._data);
 
-  Future<CheckServiceResponse> checkYouTube(CheckServiceRequest request) async {
+  Future<CheckServiceResponse> checkService(CheckServiceRequest request) async {
     var c = Completer<CheckServiceResponse>();
     try {
       var list =

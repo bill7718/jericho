@@ -4,6 +4,7 @@ import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:provider/provider.dart';
+import 'package:waterloo/change_notifier_list.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
@@ -27,12 +28,12 @@ class RecordServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final i = inputState as RecordServiceStateInput;
-    var acceptedItems = NamedItemList();
+    var acceptedItems = ChangeNotifierList<Item>();
     final getter = Provider.of<ConfigurationGetter>(context);
     final error = FormError();
 
     final state = RecordServiceDynamicState();
-    final serviceItems = NamedItemList();
+    ChangeNotifierList<Item> serviceItems = ChangeNotifierList<Item>();
     for (var item in i.items) {
       serviceItems.add((Item(item[nameLabel], item[typeLabel])));
     }
@@ -52,14 +53,20 @@ class RecordServicePage extends StatelessWidget {
                   children: [
                     Expanded(
                         flex: 2,
-                        child: DragTarget<NamedItem>(
+                        child: DragTarget<Item>(
                           builder: (context, list, _) {
-                            return FilteredList<NamedItem>(items: serviceItems.items, widgetBuilder: ( item) {
-                              return DraggableNamedItem(
-                                item: item,
-                                selectOnDrag: true,
-                              );
-                            });
+                            return FilteredList<Item>(
+                                items: serviceItems.list,
+                                widgetBuilder: (Item item) {
+                                  return DraggableNamedItem(
+                                    item: item,
+                                    selectOnDrag: true,
+                                    icon: Icons.add,
+                                    onPressed: () {
+                                      acceptedItems.add(Item(item.name, item.type));
+                                    },
+                                  );
+                                });
                           },
                           onWillAccept: (data) => true,
                           onAccept: (data) {
@@ -73,49 +80,20 @@ class RecordServicePage extends StatelessWidget {
                     Expanded(
                         flex: 2,
                         child: Card(
-                            child: ChangeNotifierProvider<NamedItemList>.value(
-                                value: acceptedItems,
-                                child: Consumer<NamedItemList>(
-                                  builder: (context, list, _) {
-                                    return DragTarget<NamedItem>(
-                                      builder: (context, list, _) {
-                                        var widgets = <Widget>[];
-                                        for (var item in acceptedItems.items) {
-                                          widgets.add(DragTarget<NamedItem>(
-                                              builder: (context, list, _) {
-                                                return DraggableNamedItem(
-                                                  item: item,
-                                                  selectOnDrag: false,
-                                                );
-                                              },
-                                              onWillAccept: (data) => true,
-                                              onAccept: (data) {
-                                                if (acceptedItems.items.contains(data)) {
-                                                  acceptedItems.add(data, beforeItem: item);
-                                                } else {
-                                                  acceptedItems.add(Item(data.name, data.type), beforeItem: item);
-                                                }
-                                              }));
-                                        }
-                                        return Column(children: [
-                                          Expanded(
-                                              flex: 8,
-                                              child: ListView(
-                                                children: widgets,
-                                              )),
-                                          Expanded(
-                                            flex: 2,
-                                            child: Container(),
-                                          )
-                                        ]);
-                                      },
-                                      onWillAccept: (data) => true,
-                                      onAccept: (data) {
-                                        acceptedItems.add(Item(data.name, data.type));
-                                      },
-                                    );
-                                  },
-                                ))))
+                            child: DropTargetListView<Item>(
+                          list: acceptedItems,
+                          clone: (item) {
+                            return Item(item.name, item.type);
+                          },
+                          widgetBuilder: (item) {
+                            return DraggableNamedItem(
+                              item: item,
+                              selectOnDrag: false,
+                               icon: Icons.delete,
+                              onPressed: ()=> acceptedItems.remove(item),
+                            );
+                          },
+                        )))
                   ],
                 ),
               ),
@@ -156,53 +134,14 @@ abstract class RecordServiceStateOutput implements StepOutput {
   List<Map<String, dynamic>> get items;
 }
 
-class NamedItemList with ChangeNotifier {
-  List<NamedItem> items = <NamedItem>[];
 
-  List<NamedItem> filteredItems = <NamedItem>[];
 
-  String _filter = '';
-
-  String get filter => _filter;
-
-  setFilter(String f) {
-    if (f != _filter) {
-      _filter = f;
-      notifyListeners();
-    }
-  }
-
-  add(NamedItem item, {NamedItem? beforeItem}) {
-    if (beforeItem != null) {
-      items.remove(item);
-      filteredItems.remove(item);
-      var i = items.lastIndexOf(beforeItem);
-      items.insert(i, item);
-      var fi = filteredItems.lastIndexOf(beforeItem);
-      if (fi > -1) {
-        filteredItems.insert(i, item);
-      } else {
-        filteredItems.add(item);
-      }
-    } else {
-      items.add(item);
-      filteredItems.add(item);
-    }
-
-    notifyListeners();
-  }
-
-  remove(NamedItem item) {
-    items.remove(item);
-    notifyListeners();
-  }
-}
-
-abstract class NamedItem extends Filterable {
+abstract class NamedItem {
   String get key;
   String get name;
   String get type;
 }
+
 
 class Item extends Filterable implements NamedItem {
   static int dummyScore = 1;
@@ -228,14 +167,17 @@ class Item extends Filterable implements NamedItem {
 class DraggableNamedItem extends StatelessWidget {
   final NamedItem item;
   final bool selectOnDrag;
+  final Function? onPressed;
+  final IconData? icon;
 
-  DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true});
+  DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon});
 
   @override
   Widget build(BuildContext context) {
     return Draggable<NamedItem>(
       data: item,
-      child: NamedItemTile(item: item),
+      child: NamedItemTile(item: item,
+        onPressed: onPressed, icon: icon,),
       feedback: Container(width: 200, child: Card(child: NamedItemTile(item: item))),
       childWhenDragging: NamedItemTile(
         item: item,
@@ -247,15 +189,24 @@ class DraggableNamedItem extends StatelessWidget {
 }
 
 class NamedItemTile extends StatelessWidget {
+
+
   final NamedItem item;
   final bool selected;
   final bool enabled;
+  final Function? onPressed;
+  final IconData? icon;
 
-  NamedItemTile({Key? key, required this.item, this.selected = false, this.enabled = true});
+  NamedItemTile({Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon}) : super (key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      trailing: icon == null ? null : IconButton(icon: Icon(icon), onPressed: () {
+        if (onPressed != null) {
+          onPressed!();
+        }
+      }, ),
       title: Text(item.name),
       shape: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       selected: selected,
@@ -265,7 +216,7 @@ class NamedItemTile extends StatelessWidget {
   }
 }
 
-abstract class Filterable {
+abstract class Filterable extends Object {
   int score(String filter);
 }
 
@@ -327,5 +278,60 @@ class FilterValue with ChangeNotifier {
       _filter = f;
       notifyListeners();
     }
+  }
+}
+
+class DropTargetListView<T extends Object> extends StatelessWidget {
+  final ChangeNotifierList<T> list;
+  final Function widgetBuilder;
+  final Function clone;
+
+  DropTargetListView({Key? key, required this.list, required this.widgetBuilder, required this.clone})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ChangeNotifierProvider<ChangeNotifierList<T>>.value(
+        value: list,
+        child: Consumer<ChangeNotifierList<T>>(
+          builder: (context, l, _) {
+            return Container (
+              child : DragTarget<T>(
+              builder: (context, l2, _) {
+                var widgets = <Widget>[];
+                for (var item in list.list) {
+                  widgets.add(DragTarget<T>(
+                      builder: (context, l3, _) {
+                        return widgetBuilder(item);
+                      },
+                      onWillAccept: (data) => true,
+                      onAccept: (data) {
+                        if (list.list.contains(data)) {
+                          list.add(data, beforeItem: item);
+                        } else {
+                          list.add(clone(data), beforeItem: item);
+                        }
+                      }));
+                }
+                return Column(children: [
+                  Expanded(
+                      flex: 8,
+                      child: ListView(
+                        children: widgets,
+                      )),
+                  Expanded(
+                    flex: 2,
+                    child: Container(),
+                  )
+                ]);
+              },
+              onWillAccept: (data) => true,
+              onAccept: (data) {
+                list.add(clone(data));
+              },
+            ));
+          },
+        ));
   }
 }

@@ -1,6 +1,4 @@
 # jericho
 
-
-
 ## Getting Started
 

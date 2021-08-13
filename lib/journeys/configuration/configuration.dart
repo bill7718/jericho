@@ -1,6 +1,7 @@
 
 
-import 'package:jericho/journeys/liturgy/preivew_liturgy_page.dart';
+
+import 'package:jericho/journeys/liturgy/preview_liturgy_page.dart';
 import 'package:jericho/journeys/liturgy/record_liturgy_content_page.dart';
 import 'package:jericho/journeys/liturgy/record_liturgy_name_page.dart';
 import 'package:jericho/journeys/login/login_controller.dart';

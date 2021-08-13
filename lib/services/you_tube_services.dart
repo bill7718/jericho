@@ -4,7 +4,7 @@ import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 
 class YouTubeServices {
-  static const String _youTubeCollectionName = 'YouTube';
+  static const String youTubeCollectionName = 'YouTube';
 
   static const String _nameFieldName = 'name';
   static const String _organisationIdFieldName = 'organisationId';
@@ -18,7 +18,7 @@ class YouTubeServices {
     var c = Completer<CheckYouTubeResponse>();
     try {
       var list =
-          await _data.query(_youTubeCollectionName, field: _organisationIdFieldName, value: request.organisationId);
+          await _data.query(youTubeCollectionName, field: _organisationIdFieldName, value: request.organisationId);
       for (var item in list) {
         if (item[_nameFieldName] == request.name) {
           c.complete(CheckYouTubeResponse(false));
@@ -38,7 +38,7 @@ class YouTubeServices {
       if (request.organisationId.isEmpty || request.id.isEmpty) {
         throw (YouTubeServicesException('Invalid request - ${request.organisationId} - ${request.id}'));
       }
-      var data = await _data.get(_youTubeCollectionName, request.id);
+      var data = await _data.get(youTubeCollectionName, request.id);
 
       c.complete(GetYouTubeResponse(true, name: data[_nameFieldName]));
     } catch (ex) {
@@ -55,13 +55,13 @@ class YouTubeServices {
         throw (YouTubeServicesException('Invalid request - ${request.organisationId} - ${request.name} - ${request.videoId}'));
       }
 
-      var list = await _data.query(_youTubeCollectionName, field: _organisationIdFieldName, value: request.organisationId);
+      var list = await _data.query(youTubeCollectionName, field: _organisationIdFieldName, value: request.organisationId);
       for (var item in list) {
         if (item[_nameFieldName] == request.name) {
           throw (YouTubeServicesException('Invalid request duplicate video name - ${request.organisationId} - ${request.name}'));
         }
       }
-      var id = await _data.set(_youTubeCollectionName, <String, dynamic> {
+      var id = await _data.set(youTubeCollectionName, <String, dynamic> {
         _organisationIdFieldName: request.organisationId,
         _nameFieldName : request.name,
         _videoIdFieldName : request.videoId
@@ -83,7 +83,7 @@ class YouTubeServices {
         throw YouTubeServicesException('Invalid request - ${request.organisationId} ');
       }
 
-      var list = await _data.query(_youTubeCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+      var list = await _data.query(youTubeCollectionName, field:_organisationIdFieldName, value: request.organisationId );
 
       c.complete(GetAllYouTubeResponse(true, data: list));
     } catch (ex) {
@@ -150,6 +150,7 @@ class GetAllYouTubeRequest {
 class GetAllYouTubeResponse extends YouTubeServiceResponse {
 
   final List<Map<String, dynamic>> data;
+  final String type = YouTubeServices.youTubeCollectionName;
 
   GetAllYouTubeResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);

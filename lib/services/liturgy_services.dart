@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 
@@ -9,7 +10,7 @@ import 'package:jericho/services/data_service.dart';
 ///
 class LiturgyServices {
 
-  static const String _liturgyCollectionName = 'Liturgy';
+  static const String liturgyCollectionName = 'Liturgy';
 
   static const String _nameFieldName = 'name';
   static const String _textFieldName = 'text';
@@ -40,19 +41,19 @@ class LiturgyServices {
 
     try {
       if (request.id.isNotEmpty) {
-        var data = await _data.get(_liturgyCollectionName, request.id);
-        c.complete(GetLiturgyResponse(true, id: request.id, name: data[_nameFieldName], text: data[_textFieldName]));
+        var data = await _data.get(liturgyCollectionName, request.id);
+        c.complete(GetLiturgyResponse(true, map: data));
       } else {
         if (request.organisationId.isEmpty || request.name.isEmpty) {
           throw LiturgyServicesException('Invalid request - ${request.organisationId} - ${request.name}');
         }
-        var list = await _data.query(_liturgyCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+        var list = await _data.query(liturgyCollectionName, field:_organisationIdFieldName, value: request.organisationId );
         if (list.isEmpty) {
           c.complete(GetLiturgyResponse(false));
         } else {
           for (var item in list) {
             if (item[_nameFieldName] == request.name) {
-              c.complete(GetLiturgyResponse(true, id: request.id, name: item[_nameFieldName], text: item[_textFieldName]));
+              c.complete(GetLiturgyResponse(true, map: item));
               return c.future;
             }
           }
@@ -83,7 +84,7 @@ class LiturgyServices {
       liturgy[_nameFieldName] = request.name;
       liturgy[_organisationIdFieldName] = request.organisationId;
       liturgy[_textFieldName] = request.text;
-      var id = await _data.set(_liturgyCollectionName, liturgy);
+      var id = await _data.set(liturgyCollectionName, liturgy);
 
       c.complete(CreateLiturgyResponse(true, id: id));
     } catch (ex) {
@@ -100,7 +101,7 @@ class LiturgyServices {
         throw LiturgyServicesException('Invalid request - ${request.organisationId} ');
       }
 
-      var list = await _data.query(_liturgyCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+      var list = await _data.query(liturgyCollectionName, field:_organisationIdFieldName, value: request.organisationId );
 
       c.complete(GetAllLiturgyResponse(true, data: list));
     } catch (ex) {
@@ -141,11 +142,12 @@ class GetLiturgyRequest {
 }
 
 class GetLiturgyResponse extends LiturgyServiceResponse {
-  final String id;
-  final String name;
-  final String text;
+  String get id => map[idFieldName];
+  String get name => map[LiturgyServices._nameFieldName];
+  String get text => map[LiturgyServices._textFieldName];
+  final Map<String, dynamic> map;
 
-  GetLiturgyResponse(bool valid, {this.id = '', this.name = '', this.text= '', String message = '', String reference = ''})
+  GetLiturgyResponse(bool valid, {this.map = const <String, dynamic>{}, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
 
@@ -158,6 +160,7 @@ class GetAllLiturgyRequest {
 class GetAllLiturgyResponse extends LiturgyServiceResponse {
 
   final List<Map<String, dynamic>> data;
+  final String type = LiturgyServices.liturgyCollectionName;
 
   GetAllLiturgyResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);

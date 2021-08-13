@@ -44,7 +44,7 @@ class AddServiceController extends MappedJourneyController {
           UserJourneyController.backEvent: recordServiceNameRoute
         },
         previewServiceRoute: {
-          UserJourneyController.nextEvent: handleNextOnRecordService,
+          UserJourneyController.nextEvent: handleNextOnPreviewService,
           UserJourneyController.backEvent: recordServiceRoute
         },
       };
@@ -57,6 +57,9 @@ class AddServiceController extends MappedJourneyController {
     if (checkResponse.valid) {
       currentRoute = recordServiceRoute;
       _state.name = o.name;
+      var allItems = await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
+      _state.serviceItems.clear();
+      _state.serviceItems.addAll(allItems.data);
       navigator.goTo(context, currentRoute, this, _state);
     } else {
       _state.messageReference = duplicateService;
@@ -73,8 +76,8 @@ class AddServiceController extends MappedJourneyController {
 
     var o = output as RecordServiceStateOutput;
     currentRoute = previewServiceRoute;
-    _state.serviceContents.clear();
-    _state.serviceContents.addAll(o.serviceContents);
+    _state.fullServiceContent.clear();
+    _state.fullServiceContent.addAll(o.serviceContents);
     navigator.goTo(context, currentRoute, this, _state);
 
     c.complete();
@@ -84,11 +87,16 @@ class AddServiceController extends MappedJourneyController {
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    //TODO call create service
+    var response = await _services
+        .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.serviceItems));
 
-    navigator.goUp(context);
+    if (response.valid) {
+      navigator.goUp(context);
+      c.complete();
+    } else {
+      c.completeError(UserJourneyException('failed to create service ${_state.name} : ${_state.serviceItems}'));
+    }
 
-    c.complete();
     return c.future;
   }
 }
@@ -98,5 +106,9 @@ class AddServiceState
   String name = '';
   String messageReference = '';
 
-  List<Map<String, String>> serviceContents = <Map<String, String>>[];
+  List<Map<String, dynamic>> serviceItems = <Map<String, dynamic>>[];
+
+  List<Map<String, dynamic>> fullServiceContent = <Map<String, dynamic>>[];
+
+
 }

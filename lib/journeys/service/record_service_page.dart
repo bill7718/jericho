@@ -34,8 +34,8 @@ class RecordServicePage extends StatelessWidget {
 
     final state = RecordServiceDynamicState();
     ChangeNotifierList<Item> serviceItems = ChangeNotifierList<Item>();
-    for (var item in i.serviceContents) {
-      serviceItems.add((Item(item[nameLabel]!, item[typeLabel]!)));
+    for (var item in i.serviceItems) {
+      serviceItems.add((Item(item['name'], item['type'])));
     }
 
     return Scaffold(
@@ -119,19 +119,19 @@ class RecordServicePage extends StatelessWidget {
 
 abstract class RecordServiceStateInput implements StepInput {
   String get name;
-  List<Map<String, String>> get serviceContents;
+  List<Map<String, dynamic>> get serviceItems;
 
 }
 
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
-  final List<Map<String, String>> serviceContents;
+  final List<Map<String, dynamic>> serviceContents;
 
   RecordServiceDynamicState({this.serviceContents = const []});
 }
 
 abstract class RecordServiceStateOutput implements StepOutput {
 
-  List<Map<String, String>>  get serviceContents;
+  List<Map<String, dynamic>>  get serviceContents;
 }
 
 
@@ -169,6 +169,7 @@ class DraggableNamedItem extends StatelessWidget {
   final bool selectOnDrag;
   final Function? onPressed;
   final IconData? icon;
+
 
   DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon});
 

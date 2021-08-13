@@ -9,7 +9,7 @@ import 'package:jericho/services/document_server_service.dart';
 
 class PresentationServices {
 
-  static const String _presentationCollectionName = 'Presentation';
+  static const String presentationCollectionName = 'Presentation';
 
   static const String _nameFieldName = 'name';
   static const String _organisationIdFieldName = 'organisationId';
@@ -26,13 +26,13 @@ class PresentationServices {
         throw (PresentationServicesException('Invalid request - ${request.organisationId} - ${request.name} - ${request.data.length}'));
       }
 
-      var list = await _data.query(_presentationCollectionName, field: _organisationIdFieldName, value: request.organisationId);
+      var list = await _data.query(presentationCollectionName, field: _organisationIdFieldName, value: request.organisationId);
       for (var item in list) {
         if (item[_nameFieldName] == request.name) {
           throw (PresentationServicesException('Invalid request duplicate file name - ${request.organisationId} - ${request.name}'));
         }
       }
-      var id = await _data.set(_presentationCollectionName, <String, dynamic> {
+      var id = await _data.set(presentationCollectionName, <String, dynamic> {
         _organisationIdFieldName: request.organisationId,
         _nameFieldName : request.name
       });
@@ -64,7 +64,7 @@ class PresentationServices {
   Future<CheckPresentationResponse> checkPresentation(CheckPresentationRequest request) async {
     var c = Completer<CheckPresentationResponse>();
     try {
-      var list = await _data.query(_presentationCollectionName, field: _organisationIdFieldName, value: request.organisationId);
+      var list = await _data.query(presentationCollectionName, field: _organisationIdFieldName, value: request.organisationId);
       for (var item in list) {
         if (item[_nameFieldName] == request.name) {
           c.complete(CheckPresentationResponse(false));
@@ -86,7 +86,7 @@ class PresentationServices {
         throw PresentationServicesException('Invalid request - ${request.organisationId} ');
       }
 
-      var list = await _data.query(_presentationCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+      var list = await _data.query(presentationCollectionName, field:_organisationIdFieldName, value: request.organisationId );
 
       c.complete(GetAllPresentationResponse(true, data: list));
     } catch (ex) {
@@ -155,6 +155,7 @@ class GetAllPresentationRequest {
 class GetAllPresentationResponse extends PresentationServiceResponse {
 
   final List<Map<String, dynamic>> data;
+  final String type = PresentationServices.presentationCollectionName;
 
   GetAllPresentationResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);

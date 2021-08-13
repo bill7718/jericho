@@ -1,13 +1,31 @@
 
 
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/constants.dart';
 import 'package:zefyrka/zefyrka.dart';
 
 const TextStyle coreStyle = TextStyle( fontSize: fontSize, color: Colors.white, fontFamily: 'Raleway');
 
+
+NotusDocument buildDocument(String content) {
+  var list = JsonDecoder().convert(content);
+  var list2 = [];
+  for (var item in list) {
+    var newItem = item;
+    newItem['insert'] = item['insert'] + '\n';
+    list2.add(newItem);
+  }
+
+  NotusDocument doc = NotusDocument.fromJson(list2);
+  return doc;
+}
+
+
 List<TextSpan> buildTextSpans(NotusDocument doc) {
+
   var response = <TextSpan>[];
 
   for (var node in doc.root.children) {

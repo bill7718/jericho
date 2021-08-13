@@ -153,8 +153,11 @@ class AddLiturgyController extends UserJourneyController {
 
 class AddLiturgyState implements StepInput, RecordLiturgyNameStateInput, RecordLiturgyContentStateInput {
 
+  @override
   String name = '';
+  @override
   String messageReference = '';
+  @override
   String content = '';
 
 }

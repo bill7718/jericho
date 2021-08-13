@@ -24,8 +24,8 @@ class PreviewLiturgyPage extends StatelessWidget {
 
   const PreviewLiturgyPage({Key? key, required this.inputState, required this.eventHandler})
       : super(
-    key: key,
-  );
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +45,34 @@ class PreviewLiturgyPage extends StatelessWidget {
     final error = FormError();
 
     return Scaffold(
-      appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
-      body: Column(children: <Widget>[
-      WaterlooFormMessage(
-      error: error,
-
-    ),
-     PreviewContent(spans: spans,),
-        WaterlooButtonRow(children: <Widget>[
-          WaterlooTextButton(
-            text: getter.getButtonText(previousButton),
-            exceptionHandler: eventHandler.handleException,
-            onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
+        appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
+        body: Column(children: <Widget>[
+          WaterlooFormMessage(
+            error: error,
           ),
-          WaterlooTextButton(
-            text: getter.getButtonText(cancelButton),
-            exceptionHandler: eventHandler.handleException,
-            onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.cancelEvent),
+          PreviewContent(
+            spans: spans,
           ),
-          WaterlooTextButton(
-            text: getter.getButtonText(confirmButton),
-            exceptionHandler: eventHandler.handleException,
-            onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.confirmEvent),
-          ),
-
-        ])
-    ]));
-
+          WaterlooButtonRow(children: <Widget>[
+            WaterlooTextButton(
+              text: getter.getButtonText(previousButton),
+              exceptionHandler: eventHandler.handleException,
+              onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
+            ),
+            WaterlooTextButton(
+              text: getter.getButtonText(cancelButton),
+              exceptionHandler: eventHandler.handleException,
+              onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.cancelEvent),
+            ),
+            WaterlooTextButton(
+              text: getter.getButtonText(confirmButton),
+              exceptionHandler: eventHandler.handleException,
+              onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.confirmEvent),
+            ),
+          ])
+        ]));
   }
 }
-
 
 abstract class PreviewLiturgyStateInput implements StepInput {
   String get name;

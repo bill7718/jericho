@@ -10,15 +10,12 @@ class TestRecordService extends GenericJourneyInput {
 
 class TestRecordServiceStateInput implements RecordServiceStateInput {
   TestRecordServiceStateInput() {
-    serviceContents.addAll([
-      {'name': 'Hello', 'type': 'ThisType'},
-      {'name': 'Hello2', 'type': 'ThisType'}
-    ]);
+
   }
 
   @override
   String get name => '';
 
   @override
-  List<Map<String, String>> serviceContents = [];
+  List<Map<String, dynamic>> serviceItems = [];
 }

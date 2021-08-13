@@ -3,7 +3,7 @@
 
 import 'package:jericho/journeys/event_handler.dart';
 
-class RecordServiceNameStateInput extends StepOutput {
+class RecordServiceNameStateInput extends StepInput {
 
   final String name;
 
@@ -14,5 +14,6 @@ class RecordServiceNameStateInput extends StepOutput {
 abstract class RecordServiceNameStateOutput extends StepOutput {
 
   String get name;
+
 
 }

@@ -61,6 +61,62 @@ abstract class UserJourneyController implements EventHandler {
 
 }
 
+abstract class MappedJourneyController extends UserJourneyController {
+
+  static const String goUp = 'GoUp';
+  static const String goDown = 'down:';
+
+  static const String initialRoute = '';
+
+  Map<String, Map<String, dynamic>> get functionMap;
+  final UserJourneyNavigator _navigator;
+
+  MappedJourneyController(this._navigator);
+
+  UserJourneyNavigator get navigator =>_navigator;
+
+  StepInput get state;
+
+  set currentRoute (String s);
+
+  @override
+  Future<void> handleEvent(context, {String event = '', StepOutput output = UserJourneyController.emptyOutput}) async {
+
+    var m = functionMap[currentRoute];
+
+    if ( m == null ) {
+      throw UserJourneyException('Invalid current route for current Journey $currentRoute : ${functionMap}');
+    } else {
+      var action = m[event];
+      if (action == null) {
+        throw UserJourneyException('Invalid event $event for current Journey : route $currentRoute : ${functionMap}');
+      } else {
+        if (action is Function) {
+          return action(context, output);
+        }
+        if (action is String) {
+          if (action == goUp) {
+            _navigator.goUp(context);
+          } else {
+            if (action.startsWith(goDown)) {
+              currentRoute = action.substring(goDown.length);
+              _navigator.goDownTo(context, action, this, state);
+            } else {
+              currentRoute = action;
+              _navigator.goTo(context, action, this, state);
+            }
+
+          }
+        }
+      }
+
+    }
+  }
+}
+
+
+
+
 class UserJourneyNavigator {
 
   void goTo(dynamic context, String route, EventHandler handler, StepInput input) {

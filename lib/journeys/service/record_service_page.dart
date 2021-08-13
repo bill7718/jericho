@@ -34,8 +34,8 @@ class RecordServicePage extends StatelessWidget {
 
     final state = RecordServiceDynamicState();
     ChangeNotifierList<Item> serviceItems = ChangeNotifierList<Item>();
-    for (var item in i.items) {
-      serviceItems.add((Item(item[nameLabel], item[typeLabel])));
+    for (var item in i.serviceContents) {
+      serviceItems.add((Item(item[nameLabel]!, item[typeLabel]!)));
     }
 
     return Scaffold(
@@ -117,21 +117,21 @@ class RecordServicePage extends StatelessWidget {
   }
 }
 
-class RecordServiceStateInput implements StepInput {
-  final String name;
-  final List<Map<String, dynamic>> items;
+abstract class RecordServiceStateInput implements StepInput {
+  String get name;
+  List<Map<String, String>> get serviceContents;
 
-  RecordServiceStateInput({this.name = '', this.items = const []});
 }
 
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
-  final List<Map<String, dynamic>> items;
+  final List<Map<String, String>> serviceContents;
 
-  RecordServiceDynamicState({this.items = const []});
+  RecordServiceDynamicState({this.serviceContents = const []});
 }
 
 abstract class RecordServiceStateOutput implements StepOutput {
-  List<Map<String, dynamic>> get items;
+
+  List<Map<String, String>>  get serviceContents;
 }
 
 

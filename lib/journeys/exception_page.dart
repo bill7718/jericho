@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
 
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';

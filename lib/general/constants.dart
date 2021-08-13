@@ -1,4 +1,9 @@
-
+///
+/// Contains App Level constants.
+///
+/// This is used to ensure that constants have the same value across multitple libraries
+///
+library constants;
 
 /// Labels
 
@@ -15,7 +20,7 @@ const String cancelButton = 'Cancel';
 const String confirmButton = 'Confirm';
 
 
-// error references
+/// error references
 
 const String duplicateUser = 'duplicateUser';
 

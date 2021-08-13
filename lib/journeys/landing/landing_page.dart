@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/configuration.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
+import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/widgets/event_handler_button.dart';

@@ -1,7 +1,7 @@
 
 import 'dart:async';
 
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 

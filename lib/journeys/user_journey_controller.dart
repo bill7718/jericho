@@ -1,4 +1,7 @@
-
+///
+/// Controls the flow within a user journey
+///
+library user_journey;
 
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';

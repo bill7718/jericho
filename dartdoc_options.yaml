@@ -9,5 +9,10 @@ dartdoc:
     - unresolved-export
     - unresolved-doc-reference
   include:
+    - constants
+    - configuration
+    - liturgy
     - presentation
+    - user_journey
+
 

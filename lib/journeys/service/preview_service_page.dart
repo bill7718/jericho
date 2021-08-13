@@ -2,7 +2,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/services/notus_document_helper.dart';
 import 'package:jericho/widgets/preview_content.dart';

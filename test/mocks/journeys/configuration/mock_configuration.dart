@@ -1,4 +1,4 @@
-import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
 
 class MockConfigurationGetter implements ConfigurationGetter {
   @override

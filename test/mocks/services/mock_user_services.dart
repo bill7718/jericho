@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 import 'package:jericho/services/user_services.dart';
 
 class MockUserServices implements UserServices {

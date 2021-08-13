@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 
 import 'package:provider/provider.dart';
 

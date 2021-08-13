@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
-import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/data_service.dart';

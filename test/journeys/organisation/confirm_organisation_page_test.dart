@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 

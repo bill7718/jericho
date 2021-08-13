@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/constants.dart';
+import 'package:jericho/general/constants.dart';
 
 class RichTextPreview extends StatelessWidget {
 

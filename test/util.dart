@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:jericho/journeys/configuration/configuration.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/organisation_services.dart';

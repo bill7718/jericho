@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class PreviewContent extends StatelessWidget {
   final List<TextSpan> spans;
 
-  PreviewContent({Key? key, required this.spans})
+  const PreviewContent({Key? key, required this.spans})
       : super(
           key: key,
         );
@@ -30,7 +30,7 @@ class PreviewContent extends StatelessWidget {
               widgets.add(Container(
                   width: previewScale * screenWidth,
                   height: previewScale * screenHeight,
-                  padding: EdgeInsets.all(margin * previewScale),
+                  padding: const EdgeInsets.all(margin * previewScale),
                   color: Colors.black,
                   child: RichText(
                     text: TextSpan(children: currentSpans),
@@ -41,7 +41,7 @@ class PreviewContent extends StatelessWidget {
             return SimpleGridView(
               children: widgets,
               numberOfColumns: 3,
-              spacing: EdgeInsets.all(5),
+              spacing: const EdgeInsets.all(5),
             );
           }
         }));
@@ -49,7 +49,7 @@ class PreviewContent extends StatelessWidget {
 }
 
 class SpanSplit extends ChangeNotifier {
-  List<SpanRange> _split = <SpanRange>[];
+  final List<SpanRange> _split = <SpanRange>[];
 
   setSplits(List<SpanRange> s) {
     _split.clear();
@@ -73,7 +73,7 @@ class HeightMeasurer extends StatelessWidget {
   final List<TextSpan> spans;
   final Function heightCallback;
 
-  HeightMeasurer({Key? key, required this.width, required this.spans, required this.heightCallback}) : super(key: key);
+  const HeightMeasurer({Key? key, required this.width, required this.spans, required this.heightCallback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +107,8 @@ class TextSplitter extends StatefulWidget {
 
   final Function callback;
 
-  TextSplitter(
-      {this.width = defaultWidth, this.maxHeight = defaultHeight, required this.spans, required this.callback});
+  const TextSplitter(
+      {Key? key , this.width = defaultWidth, this.maxHeight = defaultHeight, required this.spans, required this.callback}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TextSplitterState();
@@ -178,7 +178,7 @@ class SimpleGridView extends StatelessWidget {
   final int numberOfColumns;
   final EdgeInsets spacing;
 
-  SimpleGridView({required this.children, this.numberOfColumns = 3, this.spacing = const EdgeInsets.all(0)});
+  const SimpleGridView({Key? key, required this.children, this.numberOfColumns = 3, this.spacing = const EdgeInsets.all(0)})  : super(key: key);
 
   @override
   Widget build(BuildContext context) {

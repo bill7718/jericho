@@ -1,7 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/configuration_getter.dart';
+import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
@@ -11,14 +10,16 @@ import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
-import 'package:zefyrka/zefyrka.dart';
 
 ///
 /// Show a page that previews the way in which the Liturgy will appear when it is displayed.
+/// {@category Pages}
 ///
 class PreviewLiturgyPage extends StatelessWidget {
 
-  /// Reference for the title in the [AppBar]
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'previewLiturgyPage';
 
   final dynamic inputState;
@@ -38,16 +39,7 @@ class PreviewLiturgyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final i = inputState as PreviewLiturgyStateInput;
 
-    var list = const JsonDecoder().convert(i.content);
-    var list2 = [];
-    for (var item in list) {
-      var newItem = item;
-      newItem['insert'] = item['insert'] + '\n';
-      list2.add(newItem);
-    }
-
-    NotusDocument doc = NotusDocument.fromJson(list2);
-    final spans = buildTextSpans(doc);
+    final spans = buildTextSpans(buildDocument(i.content));
     final getter = Provider.of<ConfigurationGetter>(context);
     final error = FormError();
 
@@ -82,7 +74,7 @@ class PreviewLiturgyPage extends StatelessWidget {
 }
 
 ///
-/// Defines the required input fields for this page
+/// {@macro inputState}
 ///
 abstract class PreviewLiturgyStateInput implements StepInput {
   String get name;

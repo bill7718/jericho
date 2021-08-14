@@ -8,12 +8,20 @@ class MockLiturgyServices implements LiturgyServices {
 
   static const String existingLiturgyName = 'alreadyHere';
 
-  List<String> serviceCalls = <String>[];
+  List<dynamic> requests =[];
 
   @override
   Future<CreateLiturgyResponse> createLiturgy(CreateLiturgyRequest request) {
-    // TODO: implement createLiturgy
-    throw UnimplementedError();
+    var c = Completer<CreateLiturgyResponse>();
+    requests.add(request);
+    if (request.name == existingLiturgyName) {
+      c.completeError('Duplicate liturgy name');
+      c.complete(CreateLiturgyResponse(false));
+    } else {
+      c.complete(CreateLiturgyResponse(true));
+    }
+
+    return c.future;
   }
 
   @override
@@ -25,7 +33,7 @@ class MockLiturgyServices implements LiturgyServices {
   @override
   Future<GetLiturgyResponse> getLiturgy(GetLiturgyRequest request) {
     var c = Completer<GetLiturgyResponse>();
-    serviceCalls.add('getLiturgy');
+    requests.add(request);
     if (request.name == existingLiturgyName) {
       c.complete(GetLiturgyResponse(true));
     } else {

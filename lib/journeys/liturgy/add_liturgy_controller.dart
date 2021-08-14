@@ -120,12 +120,9 @@ class AddLiturgyController extends MappedJourneyController {
   Future<void> handleConfirmOnPreview(context, StepOutput output) async {
     var c = Completer<void>();
 
-    var response = await _services.createLiturgy(CreateLiturgyRequest(_session.organisationId, _state.name, _state.content));
-    if (response.valid) {
-      navigator.goUp(context);
-    } else {
-      throw UserJourneyException('Failure to create liturgy');
-    }
+    await _services.createLiturgy(CreateLiturgyRequest(_session.organisationId, _state.name, _state.content));
+    navigator.goUp(context);
+
     currentRoute = previewLiturgyRoute;
     navigator.goTo(context, currentRoute, this, _state);
 

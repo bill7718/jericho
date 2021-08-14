@@ -21,10 +21,8 @@ class PreviewLiturgyPage extends StatelessWidget {
   /// Reference for the title in the [AppBar]
   static const String titleRef = 'previewLiturgyPage';
 
-  /// This is the input data for this page this must be a [PreviewLiturgyPageStateInput] object
   final dynamic inputState;
 
-  /// The EventHandler for this page
   final EventHandler eventHandler;
 
   const PreviewLiturgyPage({Key? key, required this.inputState, required this.eventHandler})

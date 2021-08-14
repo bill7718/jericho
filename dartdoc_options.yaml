@@ -5,6 +5,8 @@ dartdoc:
       markdown: README.md
     "Liturgy Journeys":
       markdown: lib/journeys/liturgy/liturgy_journeys.md
+    Pages:
+      markdown: doc/categories/pages.md
   ignore:
     - broken-link
     - missing-from-search-index

@@ -1,11 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/journeys/liturgy/liturgy.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/services/liturgy_services.dart';
 
 import '../../mocks/mocks.dart';
 import '../../mocks/services/mock_liturgy_services.dart';
 
 void main() {
+
+  var orgId = 'org1';
+
   MockUserNavigator navigator = MockUserNavigator();
   MockLiturgyServices services = MockLiturgyServices();
   SessionState session = SessionState();
@@ -19,7 +23,7 @@ void main() {
     session = SessionState();
     context = 'hello';
     controller = AddLiturgyController(navigator, services, session);
-    session.organisationId = 'org1';
+    session.organisationId = orgId;
   });
 
   group('Test Add Liturgy Controller', () {
@@ -106,6 +110,48 @@ void main() {
             expect(i.name, 'Hello');
             expect(i.content, 'Some new content');
             expect(i.messageReference.isEmpty, true);
+          });
+    });
+
+    group('Test Preview Liturgy', ()
+    {
+      setUp(() async {
+        await controller.handleEvent(context, event: UserJourneyController.initialEvent);
+        var output = RecordLiturgyNameDynamicState('Hello');
+        await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
+        var output2 = RecordLiturgyContentDynamicState(content: 'Some Content');
+        await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output2);
+        services.requests.clear();
+      });
+
+      testWidgets('When the user selects back from the Preview  page I expect to return to the contents page ',
+              (WidgetTester tester) async {
+            await controller.handleEvent(context, event: UserJourneyController.backEvent);
+            expect(navigator.currentRoute, AddLiturgyController.recordLiturgyContentRoute);
+            expect(navigator.currentInput is RecordLiturgyContentStateInput, true);
+            var i = navigator.currentInput as RecordLiturgyContentStateInput;
+            expect(i.name, 'Hello');
+          });
+
+      testWidgets('When the user selects cancel from the Preview page I expect the journey to be terminated ',
+              (WidgetTester tester) async {
+            await controller.handleEvent(context, event: UserJourneyController.cancelEvent);
+            expect(navigator.level, 0);
+          });
+
+      testWidgets('When the user selects confirm from the Record Content page I expect the system to Create the Liturgy Item and terminate the journey ',
+              (WidgetTester tester) async {
+
+            await controller.handleEvent(context, event: UserJourneyController.confirmEvent);
+            expect(navigator.level, 0);
+            expect(navigator.currentInput is PreviewLiturgyStateInput, true, reason: navigator.currentInput.runtimeType.toString());
+            expect(services.requests.length, 1);
+            expect(services.requests.first is CreateLiturgyRequest, true);
+            var request = services.requests.first as CreateLiturgyRequest;
+            expect(request.name, 'Hello');
+            expect(request.text, 'Some Content');
+            expect(request.organisationId, orgId);
+
           });
     });
   });

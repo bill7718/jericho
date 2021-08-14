@@ -15,10 +15,17 @@ import 'package:waterloo/waterloo_text_field.dart';
 
 ///
 /// Show a page that captures the name for the liturgy to be used by this user. This is then passed into the [EventHandler] for processing.
-///
+/// {@category Pages}
 class RecordLiturgyNamePage extends StatelessWidget {
+
+  ///
+  /// Screen reference for the title that appears in the [AppBar]
+  ///
   static const String titleRef = 'recordLiturgyNamePage';
 
+  ///
+  /// Screen reference for the label used for the liturgy name
+  ///
   static const String liturgyNameLabel = 'liturgyName';
 
   final dynamic inputState;
@@ -92,10 +99,10 @@ class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
   RecordLiturgyNameDynamicState(this.name);
 
 
+  @override
   String toString()=>'Name $name';
 }
 
 abstract class RecordLiturgyNameStateOutput implements StepOutput {
   String get name;
-
 }

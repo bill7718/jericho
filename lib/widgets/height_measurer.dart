@@ -22,12 +22,9 @@ class HeightMeasurer extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey _key = GlobalKey();
 
-    Timer(delay, () {
-      var box = _key.currentContext?.findRenderObject();
-      if (box != null) {
-        heightCallback((box as RenderBox).size.height);
-      }
-    });
+
+    getHeight(_key);
+
 
     return Offstage(
         child: SizedBox(
@@ -37,5 +34,16 @@ class HeightMeasurer extends StatelessWidget {
               key: _key,
               text: TextSpan(children: spans),
             ))));
+  }
+
+  void getHeight(GlobalKey k) {
+    var box = k.currentContext?.findRenderObject();
+    if (box != null) {
+      heightCallback((box as RenderBox).size.height);
+    } else {
+      scheduleMicrotask(() {
+        getHeight(k);
+      });
+    }
   }
 }

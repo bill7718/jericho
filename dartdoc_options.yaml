@@ -12,11 +12,17 @@ dartdoc:
     - missing-from-search-index
     - unresolved-export
     - unresolved-doc-reference
+    - non-canonical-found
+    - unknown-file
   include:
+    - templates
     - constants
     - configuration
+    - event_handler
     - liturgy
     - presentation
     - user_journey
+
+
 
 

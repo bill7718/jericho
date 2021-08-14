@@ -1,4 +1,7 @@
-
+///
+/// Incorporates simple helper methods for dealing with [NotusDocument]s
+///
+library notus_document_helper;
 
 
 import 'dart:convert';
@@ -11,7 +14,7 @@ const TextStyle coreStyle = TextStyle( fontSize: fontSize, color: Colors.white, 
 
 
 NotusDocument buildDocument(String content) {
-  var list = JsonDecoder().convert(content);
+  var list = const JsonDecoder().convert(content);
   var list2 = [];
   for (var item in list) {
     var newItem = item;
@@ -45,7 +48,7 @@ List<TextSpan> getSpans(Node node, {TextStyle style = coreStyle}) {
     }
   } else {
     if (node is LineNode) {
-      response.add(TextSpan(text: '\n\n', style: coreStyle));
+      response.add(const TextSpan(text: '\n\n', style: coreStyle));
       for (var n in node.children) {
         response.addAll(getSpans(n));
       }

@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
+import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_message.dart';
@@ -30,11 +31,13 @@ class MockPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final Validator validator = Validator(getter);
     final OrganisationValidator orgValidator = OrganisationValidator(getter);
+    final LiturgyValidator liturgyValidator = LiturgyValidator(getter);
     var defaultProviders = <Provider>[
       Provider<UserJourneyNavigator>.value(value: navigator),
       Provider<ConfigurationGetter>.value(value: getter),
       Provider<Validator>.value(value: validator),
       Provider<OrganisationValidator>.value(value: orgValidator),
+      Provider<LiturgyValidator>.value(value: liturgyValidator),
     ];
 
     var p = <Provider>[];
@@ -72,6 +75,14 @@ void checkTextInputFields(List<String> expectedLabels, { bool obscure = false })
   expect(findUnexpectedTextInputFields(expectedLabels), findsNothing);
 }
 
+void checkTextInputFieldValue(String label, String text) {
+  Finder f = find.byWidgetPredicate((widget) => widget is WaterlooTextField && widget.label == label);
+  expect(f, findsOneWidget);
+
+  Finder f2 = find.descendant(of: f, matching: find.text(text));
+  expect(f2, findsOneWidget);
+}
+
 Future<void> enterText(WidgetTester tester, String label, String text, { obscure = false}) {
   var c = Completer<void>();
   tester.enterText(findTextInputFieldByLabel(label, obscure: obscure), text).then((v) {
@@ -82,6 +93,8 @@ Future<void> enterText(WidgetTester tester, String label, String text, { obscure
 
   return c.future;
 }
+
+
 
 Future<void> tap(String text, WidgetTester tester) async {
   var c = Completer<void>();
@@ -114,6 +127,11 @@ void checkButtons(List<String> expectedButtons) {
 
 void checkFormError(String message) {
   Finder f = find.byWidgetPredicate((widget) => widget is WaterlooFormMessage && widget.error.error == message);
+  expect(f, findsOneWidget);
+}
+
+void checkFormMessage(String message) {
+  Finder f = find.byWidgetPredicate((widget) => widget is WaterlooFormMessage && widget.text == message && widget.error.error.isEmpty);
   expect(f, findsOneWidget);
 }
 

@@ -1,3 +1,4 @@
+library event_handler;
 
 import 'package:jericho/journeys/user_journey_controller.dart';
 

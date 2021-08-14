@@ -2,7 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/configuration_getter.dart';
+import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
@@ -16,10 +16,11 @@ import 'package:waterloo/waterloo_text_field.dart';
 ///
 /// Show a page that captures the name for the liturgy to be used by this user. This is then passed into the [EventHandler] for processing.
 /// {@category Pages}
+///
 class RecordLiturgyNamePage extends StatelessWidget {
 
   ///
-  /// Screen reference for the title that appears in the [AppBar]
+  /// {@macro titleRef}
   ///
   static const String titleRef = 'recordLiturgyNamePage';
 
@@ -83,26 +84,29 @@ class RecordLiturgyNamePage extends StatelessWidget {
 }
 
 
-
+///
+/// {@macro inputState}
+///
 abstract class RecordLiturgyNameStateInput implements StepInput {
   String get name;
   String get messageReference;
 }
 
+///
+/// {@macro dynamicState}
+///
 class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
-
   @override
   String name = '';
 
   setName(String n)=>name=n;
-
   RecordLiturgyNameDynamicState(this.name);
 
-
-  @override
-  String toString()=>'Name $name';
 }
 
+///
+/// {@macro outputState}
+///
 abstract class RecordLiturgyNameStateOutput implements StepOutput {
   String get name;
 }

@@ -94,7 +94,7 @@ class TestPreviewLiturgyStateInput implements PreviewLiturgyStateInput {
   String makeLine(String c, { bool bold = false}) {
     var m = <String, dynamic>{};
     m['insert'] = c;
-    return JsonEncoder().convert(m) + ',';
+    return const JsonEncoder().convert(m) + ',';
   }
 
   @override

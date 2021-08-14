@@ -102,13 +102,13 @@ void main() {
 
       testWidgets('When the user selects next from the Record Content page I expect the system to go to the preview liturgy page ',
               (WidgetTester tester) async {
-        var output = RecordLiturgyContentDynamicState(content: 'Some new content');
+        var output = RecordLiturgyContentDynamicState(content: '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]');
             await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
             expect(navigator.currentRoute, AddLiturgyController.previewLiturgyRoute);
             expect(navigator.currentInput is PreviewLiturgyStateInput, true, reason: navigator.currentInput.runtimeType.toString());
             var i = navigator.currentInput as PreviewLiturgyStateInput;
             expect(i.name, 'Hello');
-            expect(i.content, 'Some new content');
+            expect(i.content, '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]');
             expect(i.messageReference.isEmpty, true);
           });
     });
@@ -119,7 +119,7 @@ void main() {
         await controller.handleEvent(context, event: UserJourneyController.initialEvent);
         var output = RecordLiturgyNameDynamicState('Hello');
         await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output);
-        var output2 = RecordLiturgyContentDynamicState(content: 'Some Content');
+        var output2 = RecordLiturgyContentDynamicState(content: '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]');
         await controller.handleEvent(context, event: UserJourneyController.nextEvent, output: output2);
         services.requests.clear();
       });
@@ -149,7 +149,7 @@ void main() {
             expect(services.requests.first is CreateLiturgyRequest, true);
             var request = services.requests.first as CreateLiturgyRequest;
             expect(request.name, 'Hello');
-            expect(request.text, 'Some Content');
+            expect(request.text, '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]');
             expect(request.organisationId, orgId);
 
           });

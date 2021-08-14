@@ -178,6 +178,7 @@ class LiturgyServicesException implements Exception {
 class LiturgyValidator {
 
   static const String nameError = 'liturgyNameError';
+  static const String contentError = 'liturgyContentError';
 
   final ErrorMessageGetter _getter;
 
@@ -188,6 +189,16 @@ class LiturgyValidator {
 
     if (n.isEmpty) {
       return _getter.getErrorMessage(nameError);
+    }
+
+    return null;
+  }
+
+  String? validateLiturgyContent(String? content) {
+    var c = content ?? '';
+
+    if (c.isEmpty) {
+      return _getter.getErrorMessage(contentError);
     }
 
     return null;

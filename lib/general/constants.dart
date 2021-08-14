@@ -33,5 +33,5 @@ const String userIdFieldName = 'userId';
 const double screenHeight = 600;
 const double screenWidth = 800;
 const double margin = 10;
-const double fontSize = 58;
+const double fontSize = 40;
 const double previewScale = 0.30;

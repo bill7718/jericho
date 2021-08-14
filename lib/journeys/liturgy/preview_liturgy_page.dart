@@ -49,8 +49,8 @@ class PreviewLiturgyPage extends StatelessWidget {
           WaterlooFormMessage(
             error: error,
           ),
-          PreviewContent(
-            spans: spans,
+          Expanded( child: PreviewContent(
+            spans: spans,),
           ),
           WaterlooButtonRow(children: <Widget>[
             WaterlooTextButton(

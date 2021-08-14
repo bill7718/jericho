@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
+import 'package:jericho/widgets/simple_grid_view.dart';
 
 import 'package:provider/provider.dart';
 
@@ -38,11 +39,16 @@ class PreviewContent extends StatelessWidget {
                   )));
             }
 
+            //return GridView.count(crossAxisCount: 3,children: widgets);
+
+
             return SimpleGridView(
               children: widgets,
               numberOfColumns: 3,
               spacing: const EdgeInsets.all(5),
             );
+
+
           }
         }));
   }
@@ -73,7 +79,8 @@ class HeightMeasurer extends StatelessWidget {
   final List<TextSpan> spans;
   final Function heightCallback;
 
-  const HeightMeasurer({Key? key, required this.width, required this.spans, required this.heightCallback}) : super(key: key);
+  const HeightMeasurer({Key? key, required this.width, required this.spans, required this.heightCallback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +94,7 @@ class HeightMeasurer extends StatelessWidget {
     });
 
     return Offstage(
-        child: Container(
+        child: SizedBox(
             width: width,
             child: Card(
                 child: RichText(
@@ -108,7 +115,12 @@ class TextSplitter extends StatefulWidget {
   final Function callback;
 
   const TextSplitter(
-      {Key? key , this.width = defaultWidth, this.maxHeight = defaultHeight, required this.spans, required this.callback}) : super(key: key);
+      {Key? key,
+      this.width = defaultWidth,
+      this.maxHeight = defaultHeight,
+      required this.spans,
+      required this.callback})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TextSplitterState();
@@ -173,51 +185,4 @@ class SpanRange {
   SpanRange(this.start, this.end);
 }
 
-class SimpleGridView extends StatelessWidget {
-  final List<Widget> children;
-  final int numberOfColumns;
-  final EdgeInsets spacing;
 
-  const SimpleGridView({Key? key, required this.children, this.numberOfColumns = 3, this.spacing = const EdgeInsets.all(0)})  : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var rows = <Widget>[];
-    var rowContents = <Widget>[];
-    rowContents.add(
-      Container(
-        margin: spacing,
-      ),
-    );
-    for (var item in children) {
-      rowContents.add(item);
-      rowContents.add(
-        Container(
-          margin: spacing,
-        ),
-      );
-      if (rowContents.length == 2 * numberOfColumns + 1) {
-        rows.add(Row(
-          children: rowContents,
-        ));
-        rows.add(Container(
-          margin: spacing,
-        ));
-        rowContents = <Widget>[];
-        rowContents.add(
-          Container(
-            margin: spacing,
-          ),
-        );
-      }
-    }
-
-    rows.add(Row(
-      children: rowContents,
-    ));
-
-    return Column(
-      children: rows,
-    );
-  }
-}

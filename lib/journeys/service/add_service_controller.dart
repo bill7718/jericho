@@ -28,6 +28,7 @@ class AddServiceController extends MappedJourneyController {
   @override
   String currentRoute = MappedJourneyController.initialRoute;
 
+  @override
   StepInput get state => _state;
 
   @override

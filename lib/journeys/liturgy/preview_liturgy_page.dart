@@ -17,9 +17,14 @@ import 'package:zefyrka/zefyrka.dart';
 /// Show a page that previews the way in which the Liturgy will appear when it is displayed.
 ///
 class PreviewLiturgyPage extends StatelessWidget {
+
+  /// Reference for the title in the [AppBar]
   static const String titleRef = 'previewLiturgyPage';
 
+  /// This is the input data for this page this must be a [PreviewLiturgyPageStateInput] object
   final dynamic inputState;
+
+  /// The EventHandler for this page
   final EventHandler eventHandler;
 
   const PreviewLiturgyPage({Key? key, required this.inputState, required this.eventHandler})
@@ -27,11 +32,15 @@ class PreviewLiturgyPage extends StatelessWidget {
           key: key,
         );
 
+  ///
+  /// This build method converts the content in the form of a [NotusDocument] to a
+  /// set of [TextSpan]s. These are passed into a [PreviewContent] widget that displays the content
+  ///
   @override
   Widget build(BuildContext context) {
     final i = inputState as PreviewLiturgyStateInput;
 
-    var list = JsonDecoder().convert(i.content);
+    var list = const JsonDecoder().convert(i.content);
     var list2 = [];
     for (var item in list) {
       var newItem = item;
@@ -74,6 +83,9 @@ class PreviewLiturgyPage extends StatelessWidget {
   }
 }
 
+///
+/// Defines the required input fields for this page
+///
 abstract class PreviewLiturgyStateInput implements StepInput {
   String get name;
   String get messageReference;

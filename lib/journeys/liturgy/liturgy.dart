@@ -1,6 +1,6 @@
 ///
 /// Classes that control the display of Liturgy items in the Application
-/// {@category LiturgyJourneys}
+///
 library liturgy;
 
 export 'add_liturgy_controller.dart';

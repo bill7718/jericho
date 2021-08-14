@@ -3,7 +3,7 @@ dartdoc:
   categories:
     ReadMe:
       markdown: README.md
-    LiturgyJourneys:
+    "Liturgy Journeys":
       markdown: lib/journeys/liturgy/liturgy_journeys.md
   ignore:
     - broken-link

@@ -11,7 +11,7 @@ import 'package:jericho/services/liturgy_services.dart';
 ///
 /// Controls the flow of control when a user wants to Add a new Liturgy item
 ///
-/// {@category LiturgyJourneys}
+/// {@category Liturgy Journeys}
 ///
 class AddLiturgyController extends MappedJourneyController {
 

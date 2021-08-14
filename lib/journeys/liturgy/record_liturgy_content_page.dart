@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:jericho/journeys/configuration/configuration_getter.dart';
+import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
@@ -38,7 +38,7 @@ class RecordLiturgyContentPage extends StatelessWidget {
 
     ZefyrController controller = ZefyrController();
     if (i.content.isNotEmpty) {
-      var list = JsonDecoder().convert(i.content);
+      var list = const JsonDecoder().convert(i.content);
       var list2 = [];
       for (var item in list) {
         var newItem = item;
@@ -49,7 +49,7 @@ class RecordLiturgyContentPage extends StatelessWidget {
     }
     controller.addListener(() {
       var json = controller.document.toJson();
-      state.content = JsonEncoder().convert(json).replaceAll('\n', '');
+      state.content = const JsonEncoder().convert(json).replaceAll('\n', '');
     });
 
     return Scaffold(
@@ -107,10 +107,12 @@ abstract class RecordLiturgyContentStateInput implements StepInput {
 }
 
 class RecordLiturgyContentDynamicState implements RecordLiturgyContentStateOutput {
+  @override
   String content;
 
   RecordLiturgyContentDynamicState({this.content = ''});
 
+  @override
   String toString()=>content;
 }
 

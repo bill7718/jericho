@@ -84,6 +84,7 @@ abstract class RecordLiturgyNameStateInput implements StepInput {
 
 class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
 
+  @override
   String name = '';
 
   setName(String n)=>name=n;

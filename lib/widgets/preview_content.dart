@@ -43,14 +43,11 @@ class PreviewContent extends StatelessWidget {
 
             //return GridView.count(crossAxisCount: 3,children: widgets);
 
-
             return SimpleGridView(
               children: widgets,
               numberOfColumns: 3,
               spacing: const EdgeInsets.all(5),
             );
-
-
           }
         }));
   }
@@ -126,17 +123,36 @@ class _TextSplitterState extends State<TextSplitter> {
     } else {
       separators.add(SpanRange(rangeStart, rangeEnd));
       rangeStart = rangeEnd;
-
       rangeEnd = widget.spans.length;
+
+      rangeStart = nextNonEmptyIndex(widget.spans, rangeStart);
+
       if (rangeStart == rangeEnd || attemptCount > maxAttemptCount) {
         widget.callback(
           separators,
         );
       } else {
-        if (widget.spans[rangeStart].text == '\n\n') {
-          rangeStart++;
-        }
         setState(() {});
+      }
+    }
+  }
+
+  int nextNonEmptyIndex(List<TextSpan> spans, int startIndex) {
+    var i = startIndex;
+    if (i == spans.length) {
+      return i;
+    }
+    String? s = spans[i].text;
+    if (s == null) {
+      i++;
+      return nextNonEmptyIndex(spans, i);
+    } else {
+      s = s.replaceAll('\n', '');
+      if (s.trim().isEmpty) {
+        i++;
+        return nextNonEmptyIndex(spans, i);
+      } else {
+        return i;
       }
     }
   }
@@ -148,5 +164,3 @@ class SpanRange {
 
   SpanRange(this.start, this.end);
 }
-
-

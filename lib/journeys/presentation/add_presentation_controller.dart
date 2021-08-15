@@ -15,6 +15,7 @@ import 'package:jericho/services/presentation_services.dart';
 ///
 ///
 class AddPresentationController extends UserJourneyController {
+
   static const String recordPresentationRoute = '/recordPresentation';
 
   static const String duplicatePresentation = 'duplicatePresentation';
@@ -94,7 +95,9 @@ class AddPresentationController extends UserJourneyController {
 }
 
 class AddPresentationState implements StepInput, RecordPresentationStateInput {
+  @override
   String name = '';
+  @override
   String messageReference = '';
   String content = '';
   Uint8List data = Uint8List(0);

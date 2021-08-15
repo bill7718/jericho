@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/organisation/capture_organisation_controller.dart';
 import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
 import 'package:jericho/journeys/organisation/new_organisation_page.dart';
@@ -15,13 +16,24 @@ void main() {
   CaptureOrganisationController controller = CaptureOrganisationController(navigator, services, session);
   var context = '';
 
-  setUp(() {
-    navigator = MockUserNavigator();
-    services = MockOrganisationServices();
-    session = SessionState();
-    context = 'hello';
-    controller = CaptureOrganisationController(navigator, services, session);
-  });
+
+
+  group ('Test CaptureOrganisation Controller', () {
+    setUp(() {
+      navigator = MockUserNavigator();
+      services = MockOrganisationServices();
+      session = SessionState();
+      context = 'hello';
+      controller = CaptureOrganisationController(navigator, services, session);
+      navigator.level = 1;
+    });
+
+    testWidgets(
+        'When I get the current state object I expect to retrieve it ',
+            (WidgetTester tester) async {
+          var s = controller.state;
+          expect(s is StepInput, true);
+        });
 
   group('Start of journey', () {
     testWidgets(
@@ -78,7 +90,7 @@ void main() {
 
     testWidgets('When the user selects back the system goes to the welcome page', (WidgetTester tester) async {
       await controller.handleEvent(context, event: UserJourneyController.backEvent);
-      expect(navigator.currentRoute, UserJourneyController.welcomePageRoute);
+      expect(navigator.level, 0);
       expect(navigator.currentJourney.isEmpty, true);
     });
 
@@ -119,7 +131,7 @@ void main() {
 
     testWidgets('When the user selects back the system goes to the welcome page', (WidgetTester tester) async {
       await controller.handleEvent(context, event: UserJourneyController.backEvent);
-      expect(navigator.currentRoute, UserJourneyController.welcomePageRoute);
+      expect(navigator.level, 0);
       expect(navigator.currentJourney.isEmpty, true);
     });
 
@@ -135,5 +147,6 @@ void main() {
         expect(ex.toString().contains(CaptureOrganisationController.newOrganisationRoute), true);
       }
     });
+  });
   });
 }

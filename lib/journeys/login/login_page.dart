@@ -54,13 +54,13 @@ class LoginPage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.email,
-              valueBinder: state.setEmail,
+              valueBinder: (v) => { state.email = v },
               label: getter.getLabel(emailLabel),
               validator: validator.validateEmail,
             ),
             WaterlooTextField(
               initialValue: state.password,
-              valueBinder: state.setPassword,
+              valueBinder: (v) => { state.password = v },
               obscure: true,
               label: getter.getLabel(passwordLabel),
               validator: validator.validatePassword,
@@ -111,14 +111,9 @@ abstract class LoginStateOutput implements StepOutput {
 class LoginDynamicState implements LoginStateOutput {
   @override
   String password;
+
   @override
   String email;
-
-  /// {@macro setter}
-  setPassword(String? p)=>password = p ?? '';
-
-  /// {@macro setter}
-  setEmail(String? e)=>email = e ?? '';
 
   LoginDynamicState(this.email, this.password);
 }

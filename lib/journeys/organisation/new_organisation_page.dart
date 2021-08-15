@@ -1,14 +1,6 @@
 
-
-
-
-
 import 'package:jericho/journeys/event_handler.dart';
-
-
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:jericho/journeys/configuration/configuration_getter.dart';
@@ -25,8 +17,12 @@ import 'package:waterloo/waterloo_text_field.dart';
 
 ///
 /// Show a page that captures the organisation to be used by this user. This is then passed into the [EventHandler] for processing.
-///
+/// {@category Pages}
 class NewOrganisationPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'newOrganisationPage';
 
   static const String organisationNameLabel = 'organisationName';
@@ -58,7 +54,7 @@ class NewOrganisationPage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.organisationName,
-              valueBinder: state.setName,
+              valueBinder: (v) => { state.organisationName = v },
               label: getter.getLabel(organisationNameLabel),
               validator: validator.validateOrganisationName,
             ),
@@ -87,22 +83,32 @@ class NewOrganisationPage extends StatelessWidget {
 
 
 
-
+///
+/// {@macro inputState}
+///
 abstract class NewOrganisationStateInput implements StepInput {
 
   String get organisationName;
 }
 
+///
+/// {@macro outputState}
+///
 abstract class NewOrganisationStateOutput implements StepOutput {
 
   String get organisationName;
 }
 
+///
+/// {@macro dynamicState}
+///
 class NewOrganisationDynamicState implements NewOrganisationStateOutput {
 
+  @override
   String organisationName;
 
   NewOrganisationDynamicState(this.organisationName);
 
+  /// {@macro setter}
   setName(String n)=>organisationName=n;
 }

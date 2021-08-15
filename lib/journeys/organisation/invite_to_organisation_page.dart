@@ -15,8 +15,12 @@ import 'package:waterloo/waterloo_text_field.dart';
 
 ///
 /// Show a page that captures the email address of the user who is to be invited
-///
+/// {@category Pages}
 class InviteToOrganisationPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'inviteToOrganisationPage';
 
   final dynamic inputState;
@@ -72,18 +76,24 @@ class InviteToOrganisationPage extends StatelessWidget {
   }
 }
 
-
+///
+/// {@macro dynamicState}
+///
 class InviteToOrganisationDynamicState implements InviteToOrganisationOutputState {
 
+  @override
   String email;
 
+  /// {@macro setter}
   setEmail(String? e)=>email = e ?? '';
 
   InviteToOrganisationDynamicState({this.email = ''});
 
 }
 
-
+///
+/// {@macro outputState}
+///
 abstract class InviteToOrganisationOutputState implements StepOutput {
 
   String get email;

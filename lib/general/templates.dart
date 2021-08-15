@@ -39,9 +39,5 @@ import 'package:waterloo/waterloo_text_field.dart';
 ///
 /// {@endtemplate}
 ///
-/// {@template setter}
-/// This method is passed into a [WaterlooTextField] widget as a callback. It binds the content of the field to this
-/// value in the State object
-/// {@endtemplate}
 ///
 var dummyValue = 1; // this code is needed otherwise the templates are not used by the docs

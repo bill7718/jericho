@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:jericho/journeys/organisation/invite_to_organisation_page.dart';
+import 'invite_to_organisation_page.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/organisation_services.dart';
@@ -9,84 +9,58 @@ import 'package:jericho/services/organisation_services.dart';
 /// Controls the flow of control when a user invites another user to use the service
 ///
 ///
-class InviteToOrganisationController extends UserJourneyController {
+class InviteToOrganisationController extends MappedJourneyController {
   static const String inviteToOrganisationRoute = '/inviteOrganisation';
 
-  String _currentRoute = '';
+  @override
+  String currentRoute = '';
+
+  /// {@macro journeyState}
   final InviteToOrganisationState _state = InviteToOrganisationState();
-  final UserJourneyNavigator _navigator;
+
+  /// Server communication for organisation data
   final OrganisationServices _services;
+
+  /// {@macro sessionState}
   final SessionState _session;
 
-  InviteToOrganisationController(this._navigator, this._services, this._session);
+  InviteToOrganisationController(UserJourneyNavigator navigator, this._services, this._session) : super(navigator);
 
   @override
-  Future<void> handleEvent(dynamic context,
-      {String event = UserJourneyController.initialEvent,
-      StepOutput output = UserJourneyController.emptyOutput}) async {
+  StepInput get state => _state;
+
+  @override
+  Map<String, Map<String, dynamic>> get functionMap => {
+        MappedJourneyController.initialRoute: {
+          UserJourneyController.initialEvent: MappedJourneyController.goDown + inviteToOrganisationRoute
+        },
+        inviteToOrganisationRoute: {
+          UserJourneyController.backEvent: MappedJourneyController.goUp,
+          UserJourneyController.nextEvent: handleNextOnInvite,
+        },
+      };
+
+  ///
+  /// Creates the invitation and returns to the calling page
+  ///
+  Future<void> handleNextOnInvite(context, StepOutput output) async {
     var c = Completer<void>();
-    try {
-      switch (_currentRoute) {
-        case '':
-          switch (event) {
-            case UserJourneyController.initialEvent:
 
-              _currentRoute = inviteToOrganisationRoute;
-              _navigator.goDownTo(context, _currentRoute, this, _state);
-              c.complete();
-              break;
+    var r = output as InviteToOrganisationOutputState;
+    _state.email = r.email;
+    await _services.createOrganisationInvitation(
+        CreateOrganisationInvitationRequest(_state.email ?? '', _session.organisationId, _session.organisationName));
 
-            default:
-              throw UserJourneyException('Invalid Event for InviteToOrganisationController $event');
-          }
-          break;
+    navigator.goUp(context);
 
-
-
-        case inviteToOrganisationRoute:
-          switch (event) {
-            case UserJourneyController.nextEvent:
-              var r = output as InviteToOrganisationOutputState;
-              _state.email = r.email;
-              await _services.createOrganisationInvitation(
-                      CreateOrganisationInvitationRequest(_state.email ?? '', _session.organisationId, _session.organisationName));
-
-              _navigator.goUp(context);
-              c.complete();
-              break;
-
-            case UserJourneyController.backEvent:
-              _navigator.goUp(context);
-              c.complete();
-              break;
-
-            default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event - ${_currentRoute}');
-          }
-
-          break;
-
-        default:
-          throw UserJourneyException('Invalid current route for Capture Organisation Journey $_currentRoute');
-      }
-    } catch (ex) {
-      if (ex is UserJourneyException) {
-        c.completeError(ex);
-      } else {
-        c.completeError(UserJourneyException(ex.toString()));
-      }
-    }
+    c.complete();
     return c.future;
   }
-
-  @override
-  String get currentRoute => _currentRoute;
 }
 
 ///
-/// Holds the internal state of the capture organisation journey
+/// {@macro journeyState}
 ///
 class InviteToOrganisationState implements StepInput {
-
   String? email;
 }

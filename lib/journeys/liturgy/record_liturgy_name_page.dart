@@ -56,7 +56,7 @@ class RecordLiturgyNamePage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.name,
-              valueBinder: state.setName,
+              valueBinder: (v) => { state.name = v },
               label: getter.getLabel(liturgyNameLabel),
               validator: validator.validateLiturgyName,
             ),
@@ -99,7 +99,6 @@ class RecordLiturgyNameDynamicState implements RecordLiturgyNameStateOutput {
   @override
   String name = '';
 
-  setName(String n)=>name=n;
   RecordLiturgyNameDynamicState(this.name);
 
 }

@@ -53,7 +53,7 @@ class RecordPresentationNamePage extends StatelessWidget {
               builder: (consumerContext, value, _ ) {
                 return WaterlooTextField(
                   initialValue: state.name,
-                  valueBinder: state.setName,
+                  valueBinder: (v) => { state.name = v } ,
                   label: getter.getLabel(presentationNameLabel),
                   validator: validator.validatePresentationName,
                 );
@@ -95,11 +95,11 @@ abstract class RecordPresentationStateInput implements StepInput {
 }
 
 class RecordPresentationDynamicState  with ChangeNotifier implements RecordPresentationStateOutput, StepOutput {
+  @override
   String name = '';
+  @override
   Uint8List data = Uint8List(0);
   String _fileName = '';
-
-  setName(String n)=>name=n;
 
   set fileName(String f) {
     _fileName = f;

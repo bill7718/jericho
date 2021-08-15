@@ -17,118 +17,116 @@ import 'package:jericho/services/organisation_services.dart';
 /// If the user does not want to join the provided organisation or they think they should be joining one but are not invited
 /// the system allows them to quit the journey without being linked ot an organisation.
 ///
-/// In this case they are taken bakc to the welcome page with no journey in scope.
+/// In this case they are taken back to the welcome page with no journey in scope.
 ///
 ///
-class CaptureOrganisationController extends UserJourneyController {
+class CaptureOrganisationController extends MappedJourneyController {
+
+  /// The route for the [NewOrganisationPage]
   static const String newOrganisationRoute = '/newOrganisation';
+
+  /// The route for the [ConfirmOrganisationPage]
   static const String confirmOrganisationRoute = '/confirmOrganisation';
 
-  String _currentRoute = '';
+  @override
+  String currentRoute = '';
+
+  /// {@macro journeyState}
   final CaptureOrganisationState _state = CaptureOrganisationState();
-  final UserJourneyNavigator _navigator;
+
+  /// Server communication for organisation data
   final OrganisationServices _services;
+
+  /// {@macro sessionState}
   final SessionState _session;
 
-  CaptureOrganisationController(this._navigator, this._services, this._session);
+  CaptureOrganisationController(UserJourneyNavigator navigator, this._services, this._session) : super(navigator);
 
   @override
-  Future<void> handleEvent(dynamic context,
-      {String event = UserJourneyController.startEvent,
-      StepOutput output = UserJourneyController.emptyOutput}) async {
-    var c = Completer<void>();
-    try {
-      switch (_currentRoute) {
-        case '':
-          switch (event) {
-            case UserJourneyController.startEvent:
-              var response =
-                  await _services.checkOrganisationInvitation(CheckOrganisationInvitationRequest(_session.email));
-
-              if (response.invitationFound) {
-                _state.organisationName = response.organisationName;
-                _state.organisationId = response.organisationId;
-
-                _currentRoute = confirmOrganisationRoute;
-                _navigator.goTo(context, _currentRoute, this, _state);
-              } else {
-                _currentRoute = newOrganisationRoute;
-                _navigator.goTo(context, _currentRoute, this, _state);
-              }
-
-              c.complete();
-              break;
-
-            default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event');
-          }
-          break;
-
-        case confirmOrganisationRoute:
-          switch (event) {
-            case UserJourneyController.nextEvent:
-              await _services.acceptOrganisationInvitation(
-                  AcceptOrganisationInvitationRequest(_session.userId, _session.email, _state.organisationId));
-
-              _session.organisationId = _state.organisationId;
-              _session.organisationName = _state.organisationName;
-
-              _navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
-              c.complete();
-              break;
-
-            case UserJourneyController.backEvent:
-              _navigator.leaveJourney(context, UserJourneyController.welcomePageRoute);
-              c.complete();
-              break;
-
-            default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event - ${_currentRoute}');
-          }
-
-          break;
-
-        case newOrganisationRoute:
-          switch (event) {
-            case UserJourneyController.nextEvent:
-              var r = output as NewOrganisationStateOutput;
-              _state.organisationName = r.organisationName;
-              var response =
-                  await _services.createOrganisation(CreateOrganisationRequest(r.organisationName, _session.userId));
-              _state.organisationId = response.organisationId;
-
-              _session.organisationId = response.organisationId;
-              _session.organisationName = r.organisationName;
-              _navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
-              c.complete();
-              break;
-
-            case UserJourneyController.backEvent:
-              _navigator.leaveJourney(context, UserJourneyController.welcomePageRoute);
-              c.complete();
-              break;
-
-            default:
-              throw UserJourneyException('Invalid Event for Capture Organisation $event - ${_currentRoute}');
-          }
-
-          break;
-
-        default:
-          throw UserJourneyException('Invalid current route for Capture Organisation Journey $_currentRoute');
-      }
-    } catch (ex) {
-      if (ex is UserJourneyException) {
-        c.completeError(ex);
-      } else {
-        c.completeError(UserJourneyException(ex.toString()));
-      }
+  Map<String, Map<String, dynamic>> get functionMap => {
+    MappedJourneyController.initialRoute: {
+      UserJourneyController.startEvent: handleInitial
+    },
+    confirmOrganisationRoute: {
+      UserJourneyController.backEvent: MappedJourneyController.goUp,
+      UserJourneyController.nextEvent: handleNextOnConfirmOrganisation,
+    },
+    newOrganisationRoute: {
+      UserJourneyController.backEvent: MappedJourneyController.goUp,
+      UserJourneyController.nextEvent: handleNextOnNewOrganisation,
     }
+  };
+
+  ///
+  /// Check to see if the user has been invited.
+  ///
+  /// If the user is invited, show the page that confirms the invitation
+  /// If the user is not invited, show hte page that allows them to create a new organisation
+  ///
+  Future<void> handleInitial(context, StepOutput output) async {
+    var c = Completer<void>();
+
+    var response =
+    await _services.checkOrganisationInvitation(CheckOrganisationInvitationRequest(_session.email));
+
+    if (response.invitationFound) {
+      _state.organisationName = response.organisationName;
+      _state.organisationId = response.organisationId;
+
+      currentRoute = confirmOrganisationRoute;
+      navigator.goTo(context, currentRoute, this, _state);
+    } else {
+      currentRoute = newOrganisationRoute;
+      navigator.goTo(context, currentRoute, this, _state);
+    }
+
+    c.complete();
+    return c.future;
+  }
+
+  ///
+  /// Calls a service to record the acceptance of the invitation.
+  /// Then populate the [SessionState] with the organisation details
+  ///
+  Future<void> handleNextOnConfirmOrganisation(context, StepOutput output) async {
+    var c = Completer<void>();
+
+    await _services.acceptOrganisationInvitation(
+        AcceptOrganisationInvitationRequest(_session.userId, _session.email, _state.organisationId));
+
+    _session.organisationId = _state.organisationId;
+    _session.organisationName = _state.organisationName;
+
+    navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
+
+    c.complete();
+    return c.future;
+  }
+
+  ///
+  /// Calls a service to record the new organisation
+  /// Then populate the [SessionState] with the organisation details
+  ///
+  Future<void> handleNextOnNewOrganisation(context, StepOutput output) async {
+    var c = Completer<void>();
+
+    var r = output as NewOrganisationStateOutput;
+    _state.organisationName = r.organisationName;
+    var response =
+    await _services.createOrganisation(CreateOrganisationRequest(r.organisationName, _session.userId));
+    _state.organisationId = response.organisationId;
+
+    _session.organisationId = response.organisationId;
+    _session.organisationName = r.organisationName;
+    navigator.gotoNextJourney(context, UserJourneyController.landingPageJourney, _session);
+
+    c.complete();
     return c.future;
   }
 
   @override
-  String get currentRoute => _currentRoute;
+  StepInput get state => _state;
+
 }
 
 ///

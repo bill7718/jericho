@@ -21,6 +21,7 @@ dartdoc:
     - event_handler
     - login
     - liturgy
+    - organisation
     - presentation
     - user_journey
     - widgets

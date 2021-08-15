@@ -10,10 +10,17 @@ import 'package:waterloo/waterloo_text_button.dart';
 
 ///
 /// Show a page that allows the user to confirm the organisation to which they have been invited. This confirmation is then passed into the [EventHandler] for processing.
-///
+/// {@category Pages}
 class ConfirmOrganisationPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'confirmOrganisationPage';
 
+  ///
+  /// {@macro initialMessage}
+  ///
   static const String confirmOrganisationTextRef = 'confirmOrganisationFormText';
 
   final dynamic inputState;
@@ -55,6 +62,9 @@ class ConfirmOrganisationPage extends StatelessWidget {
   }
 }
 
+///
+/// {@macro inputState}
+///
 abstract class ConfirmOrganisationStateInput implements StepInput {
   String get organisationName;
 }

@@ -19,6 +19,7 @@ dartdoc:
     - constants
     - configuration
     - event_handler
+    - login
     - liturgy
     - presentation
     - user_journey

@@ -16,8 +16,12 @@ import 'package:waterloo/waterloo_text_field.dart';
 ///
 /// Show a page that captures email address and password.
 /// This is then passed into the [EventHandler] for processing where it is used to log the user in to the system.
-///
+/// {@category Pages}
 class LoginPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'loginPage';
 
   final dynamic inputState;
@@ -84,25 +88,36 @@ class LoginPage extends StatelessWidget {
   }
 }
 
+///
+/// {@macro inputState}
+///
 abstract class LoginStateInput implements StepInput {
   String get password;
   String get email;
   String get messageReference;
 }
 
-
+///
+/// {@macro outputState}
+///
 abstract class LoginStateOutput implements StepOutput {
   String get password;
   String get email;
 }
 
+///
+/// {@macro dynamicState}
+///
 class LoginDynamicState implements LoginStateOutput {
   @override
   String password;
   @override
   String email;
 
+  /// {@macro setter}
   setPassword(String? p)=>password = p ?? '';
+
+  /// {@macro setter}
   setEmail(String? e)=>email = e ?? '';
 
   LoginDynamicState(this.email, this.password);

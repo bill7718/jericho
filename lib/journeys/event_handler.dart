@@ -7,6 +7,9 @@ abstract class EventHandler {
   Future<void> handleEvent( dynamic context,
       {String event = '', StepOutput output = UserJourneyController.emptyOutput});
 
+  ///
+  /// Process an Exception thrown by the Application
+  ///
   void handleException(dynamic context, Exception ex, StackTrace? st );
 }
 

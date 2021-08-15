@@ -57,6 +57,9 @@ abstract class UserJourneyController implements EventHandler {
   ///
   String get currentRoute;
 
+  ///
+  /// Handles an exception by showing the [ExceptionPage]
+  ///
   @override
   void handleException(dynamic context, Exception ex, StackTrace? st) {
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
@@ -286,6 +289,13 @@ class UserJourneyException implements Exception {
   String toString() => _message;
 }
 
+/// {@macro sessionState}
+///
+/// Set up on login on registration
+///
+/// Contains getters and setters designed to ensure that values in this
+/// object can only be set once
+///
 class SessionState {
   String _userId = '';
   String _email = '';

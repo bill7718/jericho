@@ -33,28 +33,41 @@ void main() {
       checkFormError('');
     });
 
-    /*
-    testWidgets('When the system initiates Record Liturgy Name with a name in the input state then this name is shown',
-            (WidgetTester tester) async {
-          MockPage page = MockPage(RecordLiturgyNamePage(
-            eventHandler: handler,
-            inputState: MockRecordLiturgyNameStateInput(name: 'Brian'),
-          ));
-          await tester.pumpWidget(page);
-
-          checkTextInputFieldValue(page.getter.getLabel(RecordLiturgyNamePage.liturgyNameLabel), 'Brian');
-        });
-
     testWidgets('When the user clicks the previous button the system invokes the previous event',
             (WidgetTester tester) async {
-          MockPage page = MockPage(RecordLiturgyNamePage(
+          MockPage page = MockPage(PreviewLiturgyPage(
             eventHandler: handler,
-            inputState: MockRecordLiturgyNameStateInput(),
+            inputState: MockPreviewLiturgyStateInput(content: '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]'),
           ));
           await tester.pumpWidget(page);
           await tap(page.getter.getButtonText(previousButton), tester);
           expect(handler.lastEvent, UserJourneyController.backEvent);
         });
+
+    testWidgets('When the user clicks the cancel button the system invokes the cancel event',
+            (WidgetTester tester) async {
+          MockPage page = MockPage(PreviewLiturgyPage(
+            eventHandler: handler,
+            inputState: MockPreviewLiturgyStateInput(content: '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]'),
+          ));
+          await tester.pumpWidget(page);
+          await tap(page.getter.getButtonText(cancelButton), tester);
+          expect(handler.lastEvent, UserJourneyController.cancelEvent);
+        });
+
+    testWidgets('When the user clicks the confirm button the system invokes the confirm event',
+            (WidgetTester tester) async {
+          MockPage page = MockPage(PreviewLiturgyPage(
+            eventHandler: handler,
+            inputState: MockPreviewLiturgyStateInput(content: '[{"insert":"Hear the commandments which God has given to his people, and examine your hearts."}]'),
+          ));
+          await tester.pumpWidget(page);
+          await tap(page.getter.getButtonText(confirmButton), tester);
+          expect(handler.lastEvent, UserJourneyController.confirmEvent);
+        });
+
+    /*
+
 
     testWidgets(
         'When the user clicks the next button without any data input the system does not invoke an event and error messages are shown',

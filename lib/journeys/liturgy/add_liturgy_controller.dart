@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/liturgy/liturgy.dart';
-import 'package:zefyrka/zefyrka.dart';
 import 'record_liturgy_content_page.dart';
 import 'record_liturgy_name_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
@@ -32,16 +31,13 @@ class AddLiturgyController extends MappedJourneyController {
   @override
   String currentRoute = '';
 
-  /// The state object for this journey
+  /// {@macro journeyState}
   final AddLiturgyState _state = AddLiturgyState();
 
   /// This object handles the server communication
   final LiturgyServices _services;
 
-  /// The overall session data (e.g. user name and email)
-  ///
-  /// It contains the id of the organisation of the logged in user
-  ///
+  /// {@macro sessionState}
   final SessionState _session;
 
   AddLiturgyController(UserJourneyNavigator navigator, this._services, this._session) : super(navigator);

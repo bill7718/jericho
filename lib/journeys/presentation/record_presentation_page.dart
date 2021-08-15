@@ -16,9 +16,13 @@ import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/waterloo_text_field.dart';
 
 ///
-/// Show a page that captures the name for the liturgy to be used by this user. This is then passed into the [EventHandler] for processing.
-///
+/// Show a page that captures a presentation for this user. This is then passed into the [EventHandler] for processing.
+/// {@category Pages}
 class RecordPresentationNamePage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'recordPresentationNamePage';
 
   static const String presentationNameLabel = 'presentationName';
@@ -88,12 +92,17 @@ class RecordPresentationNamePage extends StatelessWidget {
 }
 
 
-
+///
+/// {@macro inputState}
+///
 abstract class RecordPresentationStateInput implements StepInput {
   String get name;
   String get messageReference;
 }
 
+///
+/// {@macro dynamicState}
+///
 class RecordPresentationDynamicState  with ChangeNotifier implements RecordPresentationStateOutput, StepOutput {
   @override
   String name = '';
@@ -114,7 +123,9 @@ class RecordPresentationDynamicState  with ChangeNotifier implements RecordPrese
   RecordPresentationDynamicState(this.name);
 }
 
-
+///
+/// {@macro outputState}
+///
 abstract class RecordPresentationStateOutput {
 
   String get name;

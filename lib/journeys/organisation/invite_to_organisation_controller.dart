@@ -8,7 +8,6 @@ import 'package:jericho/services/organisation_services.dart';
 ///
 /// Controls the flow of control when a user invites another user to use the service
 ///
-///
 class InviteToOrganisationController extends MappedJourneyController {
   static const String inviteToOrganisationRoute = '/inviteOrganisation';
 

@@ -82,7 +82,9 @@ abstract class MappedJourneyController extends UserJourneyController {
   static const String initialRoute = '';
 
   ///
-  /// Maps the route and event to the action taken by the system in response to that event
+  /// Maps the route and event to the action taken by the system in response to that event.
+  ///
+  /// See [handleEvent] which provides an explanation of how this data is used.
   ///
   Map<String, Map<String, dynamic>> get functionMap;
 

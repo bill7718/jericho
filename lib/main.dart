@@ -55,8 +55,8 @@ class MyApp extends StatelessWidget {
       Provider<PresentationValidator>.value(value: presentationValidator),
       Provider<YouTubeValidator>.value(value: youTubeValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-        home: HomePage(initialiser: testPreviewLiturgy,)
-       //home: POCPage()
+        //home: HomePage(initialiser: testPreviewLiturgy,)
+       home: POCPage()
     ));
   }
 }

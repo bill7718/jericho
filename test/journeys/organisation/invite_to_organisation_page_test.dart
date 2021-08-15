@@ -20,7 +20,7 @@ void main() {
         (WidgetTester tester) async {
       MockPage page = MockPage(InviteToOrganisationPage(
         eventHandler: handler,
-        inputState: EmptyStepInput(),
+        inputState: const EmptyStepInput(),
       ));
       await tester.pumpWidget(page);
 

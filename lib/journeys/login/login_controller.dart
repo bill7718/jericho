@@ -14,7 +14,7 @@ class LoginController extends MappedJourneyController {
   /// The route for the [LoginPage]
   static const String loginRoute = '/login';
 
-  /// The error reference used if the fails to login successfully
+  /// The error reference used if the user fails to login successfully
   /// see also [ConfigurationGetter]
   static const String loginFailure = 'loginFailure';
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:jericho/journeys/organisation/confirm_organisation_page.dart';
-import 'package:jericho/journeys/organisation/new_organisation_page.dart';
+import 'confirm_organisation_page.dart';
+import 'new_organisation_page.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/organisation_services.dart';
@@ -135,6 +135,7 @@ class CaptureOrganisationController extends UserJourneyController {
 /// Holds the internal state of the capture organisation journey
 ///
 class CaptureOrganisationState implements StepInput, ConfirmOrganisationStateInput, NewOrganisationStateInput {
+  @override
   String organisationName = '';
   String organisationId = '';
 }

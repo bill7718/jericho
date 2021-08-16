@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/widgets/drop_target_list_view.dart';
 import 'package:jericho/widgets/filtered_list.dart';
@@ -29,15 +30,12 @@ class RecordServicePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final i = inputState as RecordServiceStateInput;
-    var acceptedItems = ChangeNotifierList<Item>();
+    var acceptedItems = ChangeNotifierList<ServiceItem>();
     final getter = Provider.of<ConfigurationGetter>(context);
     final error = FormError();
 
     final state = RecordServiceDynamicState();
-    ChangeNotifierList<Item> serviceItems = ChangeNotifierList<Item>();
-    for (var item in i.serviceItems) {
-      serviceItems.add((Item(item['name'], item['type'])));
-    }
+    ChangeNotifierList<ServiceItem> serviceItems = ChangeNotifierList<ServiceItem>();
 
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
@@ -54,17 +52,17 @@ class RecordServicePage extends StatelessWidget {
                   children: [
                     Expanded(
                         flex: 2,
-                        child: DragTarget<Item>(
+                        child: DragTarget<ServiceItem>(
                           builder: (context, list, _) {
-                            return FilteredList<Item>(
+                            return FilteredList<ServiceItem>(
                                 items: serviceItems.list,
-                                builder: (context, Item item) {
+                                builder: (context, ServiceItem item) {
                                   return DraggableNamedItem(
                                     item: item,
                                     selectOnDrag: true,
                                     icon: Icons.add,
                                     onPressed: () {
-                                      acceptedItems.add(Item(item.name, item.type));
+                                      acceptedItems.add(item.clone());
                                     },
                                   );
                                 });
@@ -81,7 +79,7 @@ class RecordServicePage extends StatelessWidget {
                     Expanded(
                         flex: 2,
                         child: Card(
-                            child: DropTargetListView<Item>(
+                            child: DropTargetListView<ServiceItem>(
                           list: acceptedItems,
                           builder: (context, item) {
                             return DraggableNamedItem(
@@ -117,7 +115,7 @@ class RecordServicePage extends StatelessWidget {
 
 abstract class RecordServiceStateInput implements StepInput {
   String get name;
-  List<Map<String, dynamic>> get serviceItems;
+  List<ServiceItem> get serviceItems;
 }
 
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {

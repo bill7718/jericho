@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/service/service_item.dart';
 
 import 'preview_service_page.dart';
 import 'record_service_name_page.dart';
@@ -67,10 +68,13 @@ class AddServiceController extends MappedJourneyController {
     if (checkResponse.valid) {
       currentRoute = recordServiceRoute;
       _state.name = o.name;
-      var allItems =
-          await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
+      var allItems = await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
+
       _state.serviceItems.clear();
-      _state.serviceItems.addAll(allItems.data);
+      for (var i in allItems.data) {
+        _state.serviceItems.add(ServiceItem(i));
+      }
+
       navigator.goTo(context, currentRoute, this, _state);
     } else {
       _state.messageReference = duplicateServiceErrorReference;
@@ -99,14 +103,15 @@ class AddServiceController extends MappedJourneyController {
     return c.future;
   }
 
+
   ///
   /// Create the service in the database and leave the journey
   ///
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    var response =
-        await _services.createService(CreateServiceRequest(_session.organisationId, _state.name, _state.serviceItems));
+    var response = await _services
+        .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.fullServiceContent));
 
     if (response.valid) {
       navigator.goUp(context);
@@ -128,8 +133,10 @@ class AddServiceState
   String messageReference = '';
 
   @override
-  List<Map<String, dynamic>> serviceItems = <Map<String, dynamic>>[];
+  List<ServiceItem> serviceItems = <ServiceItem>[];
 
   @override
   List<Map<String, dynamic>> fullServiceContent = <Map<String, dynamic>>[];
+
+
 }

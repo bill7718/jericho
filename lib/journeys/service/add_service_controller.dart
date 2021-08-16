@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:jericho/journeys/event_handler.dart';
 
-import 'package:jericho/journeys/service/preview_service_page.dart';
-import 'package:jericho/journeys/service/record_service_name_page.dart';
-import 'package:jericho/journeys/service/record_service_page.dart';
+import 'preview_service_page.dart';
+import 'record_service_name_page.dart';
+import 'record_service_page.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 
 import 'package:jericho/services/service_services.dart';
@@ -11,13 +11,12 @@ import 'package:jericho/services/service_services.dart';
 ///
 /// Controls the flow of control when a user wants to Add a presentation item
 ///
-///
 class AddServiceController extends MappedJourneyController {
   static const String recordServiceRoute = '/recordService';
   static const String recordServiceNameRoute = '/recordServiceName';
   static const String previewServiceRoute = '/previewService';
 
-  static const String duplicateService = 'duplicateService';
+  static const String duplicateServiceErrorReference = 'duplicateService';
 
   final AddServiceState _state = AddServiceState();
   final ServiceServices _services;
@@ -50,6 +49,16 @@ class AddServiceController extends MappedJourneyController {
         },
       };
 
+  ///
+  /// Check to see if the name is in use
+  ///
+  /// If it is not in use then
+  /// - save the name to the journey state
+  /// - retrieve all possible service items (e.g. songs, liturgy) from the database
+  /// - add those items into the journey state and go to the page that adds those items into the service
+  ///
+  /// If the name is in use then return to the name page with error [duplicateServiceErrorReference]
+  ///
   Future<void> handleNextOnRecordName(context, StepOutput output) async {
     var c = Completer<void>();
 
@@ -58,12 +67,13 @@ class AddServiceController extends MappedJourneyController {
     if (checkResponse.valid) {
       currentRoute = recordServiceRoute;
       _state.name = o.name;
-      var allItems = await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
+      var allItems =
+          await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
       _state.serviceItems.clear();
       _state.serviceItems.addAll(allItems.data);
       navigator.goTo(context, currentRoute, this, _state);
     } else {
-      _state.messageReference = duplicateService;
+      _state.messageReference = duplicateServiceErrorReference;
       _state.name = o.name;
       navigator.goTo(context, currentRoute, this, _state);
     }
@@ -72,6 +82,10 @@ class AddServiceController extends MappedJourneyController {
     return c.future;
   }
 
+  ///
+  /// Store the current service items in the journey state nad go to the
+  /// review page
+  ///
   Future<void> handleNextOnRecordService(context, StepOutput output) async {
     var c = Completer<void>();
 
@@ -85,11 +99,14 @@ class AddServiceController extends MappedJourneyController {
     return c.future;
   }
 
+  ///
+  /// Create the service in the database and leave the journey
+  ///
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    var response = await _services
-        .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.serviceItems));
+    var response =
+        await _services.createService(CreateServiceRequest(_session.organisationId, _state.name, _state.serviceItems));
 
     if (response.valid) {
       navigator.goUp(context);
@@ -115,6 +132,4 @@ class AddServiceState
 
   @override
   List<Map<String, dynamic>> fullServiceContent = <Map<String, dynamic>>[];
-
-
 }

@@ -3,12 +3,13 @@ import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
+import 'package:jericho/widgets/drop_target_list_view.dart';
+import 'package:jericho/widgets/filtered_list.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/change_notifier_list.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
-import 'package:waterloo/waterloo_text_field.dart';
 
 class RecordServicePage extends StatelessWidget {
   static const String titleRef = 'recordServicePage';
@@ -57,7 +58,7 @@ class RecordServicePage extends StatelessWidget {
                           builder: (context, list, _) {
                             return FilteredList<Item>(
                                 items: serviceItems.list,
-                                widgetBuilder: (Item item) {
+                                builder: (context, Item item) {
                                   return DraggableNamedItem(
                                     item: item,
                                     selectOnDrag: true,
@@ -82,15 +83,12 @@ class RecordServicePage extends StatelessWidget {
                         child: Card(
                             child: DropTargetListView<Item>(
                           list: acceptedItems,
-                          clone: (item) {
-                            return Item(item.name, item.type);
-                          },
-                          widgetBuilder: (item) {
+                          builder: (context, item) {
                             return DraggableNamedItem(
                               item: item,
                               selectOnDrag: false,
-                               icon: Icons.delete,
-                              onPressed: ()=> acceptedItems.remove(item),
+                              icon: Icons.delete,
+                              onPressed: () => acceptedItems.remove(item),
                             );
                           },
                         )))
@@ -120,30 +118,25 @@ class RecordServicePage extends StatelessWidget {
 abstract class RecordServiceStateInput implements StepInput {
   String get name;
   List<Map<String, dynamic>> get serviceItems;
-
 }
 
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
+  @override
   final List<Map<String, dynamic>> serviceContents;
 
   RecordServiceDynamicState({this.serviceContents = const []});
 }
 
 abstract class RecordServiceStateOutput implements StepOutput {
-
-  List<Map<String, dynamic>>  get serviceContents;
+  List<Map<String, dynamic>> get serviceContents;
 }
 
-
-
 abstract class NamedItem {
-  String get key;
   String get name;
   String get type;
 }
 
-
-class Item extends Filterable implements NamedItem {
+class Item extends Scored implements NamedItem, Clone<Item> {
   static int dummyScore = 1;
 
   @override
@@ -159,11 +152,13 @@ class Item extends Filterable implements NamedItem {
   }
 
   @override
-  String get key => name;
-
-  @override
   int score(String filter) {
     return _score;
+  }
+
+  @override
+  Item clone() {
+    return Item(name, type);
   }
 }
 
@@ -173,15 +168,18 @@ class DraggableNamedItem extends StatelessWidget {
   final Function? onPressed;
   final IconData? icon;
 
-
-  const DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon}) : super(key: key);
+  const DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Draggable<NamedItem>(
       data: item,
-      child: NamedItemTile(item: item,
-        onPressed: onPressed, icon: icon,),
+      child: NamedItemTile(
+        item: item,
+        onPressed: onPressed,
+        icon: icon,
+      ),
       feedback: SizedBox(width: 200, child: Card(child: NamedItemTile(item: item))),
       childWhenDragging: NamedItemTile(
         item: item,
@@ -193,149 +191,34 @@ class DraggableNamedItem extends StatelessWidget {
 }
 
 class NamedItemTile extends StatelessWidget {
-
-
   final NamedItem item;
   final bool selected;
   final bool enabled;
   final Function? onPressed;
   final IconData? icon;
 
-  const NamedItemTile({Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon}) : super (key: key);
+  const NamedItemTile(
+      {Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      trailing: icon == null ? null : IconButton(icon: Icon(icon), onPressed: () {
-        if (onPressed != null) {
-          onPressed!();
-        }
-      }, ),
+      trailing: icon == null
+          ? null
+          : IconButton(
+              icon: Icon(icon),
+              onPressed: () {
+                if (onPressed != null) {
+                  onPressed!();
+                }
+              },
+            ),
       title: Text(item.name),
       shape: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
       selected: selected,
       enabled: enabled,
       dense: true,
     );
-  }
-}
-
-abstract class Filterable extends Object {
-  int score(String filter);
-}
-
-class FilteredList<T extends Filterable> extends StatelessWidget {
-  final List<T> items;
-  final Function widgetBuilder;
-  final filterValue = FilterValue();
-  static const String filterLabel = 'Filter';
-
-  FilteredList({Key? key, required this.items, required this.widgetBuilder}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        WaterlooTextField(valueBinder: filterValue.setFilter, label: filterLabel, validator: (v) {}),
-        Expanded(
-            child: ChangeNotifierProvider<FilterValue>.value(
-                value: filterValue,
-                child: Consumer<FilterValue>(builder: (context, filterValue, _) {
-                  var filteredItems = <T>[];
-                  for (var item in items) {
-                    if (item.score(filterValue.filter) > 0) {
-                      filteredItems.add(item);
-                    }
-                  }
-                  filteredItems.sort((a, b) {
-                    if (a.score(filterValue.filter) > b.score(filterValue.filter)) {
-                      return -1;
-                    } else {
-                      return 1;
-                    }
-                  });
-
-                  var widgets = <Widget>[];
-                  for (var item in filteredItems) {
-                    widgets.add(widgetBuilder(item));
-                  }
-
-                  return Card(
-                      child: ListView(
-                    children: widgets,
-                  ));
-                })))
-      ],
-    );
-  }
-}
-
-class FilterValue with ChangeNotifier {
-  String _filter = '';
-
-  String get filter => _filter;
-
-  setFilter(String f) {
-    if (f != filter) {
-      _filter = f;
-      notifyListeners();
-    }
-  }
-}
-
-class DropTargetListView<T extends Object> extends StatelessWidget {
-  final ChangeNotifierList<T> list;
-  final Function widgetBuilder;
-  final Function clone;
-
-  const DropTargetListView({Key? key, required this.list, required this.widgetBuilder, required this.clone})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-
-    return ChangeNotifierProvider<ChangeNotifierList<T>>.value(
-        value: list,
-        child: Consumer<ChangeNotifierList<T>>(
-          builder: (context, l, _) {
-            return Container (
-              child : DragTarget<T>(
-              builder: (context, l2, _) {
-                var widgets = <Widget>[];
-                for (var item in list.list) {
-                  widgets.add(DragTarget<T>(
-                      builder: (context, l3, _) {
-                        return widgetBuilder(item);
-                      },
-                      onWillAccept: (data) => true,
-                      onAccept: (data) {
-                        if (list.list.contains(data)) {
-                          list.add(data, beforeItem: item);
-                        } else {
-                          list.add(clone(data), beforeItem: item);
-                        }
-                      }));
-                }
-                return Column(children: [
-                  Expanded(
-                      flex: 8,
-                      child: ListView(
-                        children: widgets,
-                      )),
-                  Expanded(
-                    flex: 2,
-                    child: Container(),
-                  )
-                ]);
-              },
-              onWillAccept: (data) => true,
-              onAccept: (data) {
-                list.add(clone(data));
-              },
-            ));
-          },
-        ));
   }
 }

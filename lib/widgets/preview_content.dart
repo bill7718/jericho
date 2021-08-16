@@ -41,13 +41,15 @@ class PreviewContent extends StatelessWidget {
                   )));
             }
 
-            //return GridView.count(crossAxisCount: 3,children: widgets);
-
+            return GridView.count(crossAxisCount: 3,children: widgets);
+            /*
             return SimpleGridView(
               children: widgets,
               numberOfColumns: 3,
               spacing: const EdgeInsets.all(5),
             );
+
+             */
           }
         }));
   }

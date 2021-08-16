@@ -4,7 +4,6 @@ import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
-import 'package:jericho/widgets/drop_target_list_view.dart';
 import 'package:jericho/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/change_notifier_list.dart';
@@ -55,6 +54,7 @@ class RecordServicePage extends StatelessWidget {
                         child: DragTarget<ServiceItem>(
                           builder: (context, list, _) {
                             return FilteredList<ServiceItem>(
+                                label: filterLabel,
                                 items: serviceItems.list,
                                 builder: (context, ServiceItem item) {
                                   return DraggableNamedItem(

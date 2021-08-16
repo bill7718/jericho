@@ -61,7 +61,7 @@ class DropTargetListView<T extends Clone<T>> extends StatelessWidget {
                   )
                 ]);
               },
-              onWillAccept: (data) => true,
+              onWillAccept: (data) => (data is T),
               onAccept: (data) {
                 list.add(data.clone());
               },
@@ -70,7 +70,6 @@ class DropTargetListView<T extends Clone<T>> extends StatelessWidget {
         ));
   }
 }
-
 
 abstract class Clone<T> {
   /// Returns a clone of this Object

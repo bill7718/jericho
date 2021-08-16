@@ -14,7 +14,6 @@ import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/waterloo_text_field.dart';
 
-
 ///
 /// Show a page that captures the organisation to be used by this user. This is then passed into the [EventHandler] for processing.
 /// {@category Pages}

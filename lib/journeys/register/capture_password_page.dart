@@ -16,10 +16,17 @@ import 'package:waterloo/waterloo_text_field.dart';
 ///
 /// Show a page that captures the users password.
 /// Check that the passwords are the same before passing them to the [EventHandler] for processing.
-///
+/// {@category Pages}
 class CapturePasswordPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'capturePasswordPage';
+
   static const String confirmPasswordLabel = 'confirmPassword';
+
+  /// code used for the error message displayed when the 2 passwords don't match
   static const String passwordMismatch = 'mismatchError';
 
   final dynamic inputState;
@@ -52,14 +59,14 @@ class CapturePasswordPage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.password,
-              valueBinder: state.setPassword,
+              valueBinder: (v) => { state.password = v } ,
               label: getter.getLabel(passwordLabel),
               validator: validator.validatePassword,
               obscure: true,
             ),
             WaterlooTextField(
               initialValue: state.copyPassword,
-              valueBinder: state.setCopyPassword,
+              valueBinder: (v) => { state.copyPassword = v } ,
               label: getter.getLabel(confirmPasswordLabel),
               validator: validator.validatePassword,
               obscure: true,
@@ -90,7 +97,7 @@ class CapturePasswordPage extends StatelessWidget {
   }
 }
 
-
+/// {@macro inputState}
 abstract class CapturePasswordStateInput implements StepInput {
 
   String get password;
@@ -100,18 +107,17 @@ abstract class CapturePasswordStateInput implements StepInput {
 
 }
 
+/// {@macro outputState}
 abstract class CapturePasswordStateOutput implements StepOutput {
   String get password;
 }
 
+/// {@macro dynamicState}
 class  CapturePasswordDynamicState implements CapturePasswordStateOutput {
 
   @override
   String password;
   String copyPassword = '';
-
-  setPassword(String? p)=>password = p ?? '';
-  setCopyPassword(String? p)=>copyPassword = p ?? '';
 
   CapturePasswordDynamicState(this.password);
 

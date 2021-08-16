@@ -53,13 +53,13 @@ class PersonalDetailsPage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.name,
-              valueBinder: state.setName,
+              valueBinder: (v) => { state.name = v } ,
               label: getter.getLabel(nameLabel),
               validator: validator.validateName,
             ),
             WaterlooTextField(
               initialValue: state.email,
-              valueBinder: state.setEmail,
+              valueBinder: (v) => { state.email = v } ,
               label: getter.getLabel(emailLabel),
               validator: validator.validateEmail,
             ),
@@ -111,9 +111,6 @@ class PersonalDetailsDynamicState implements PersonalDetailsStateOutput {
   String name;
   @override
   String email;
-
-  setName(String? n)=>name = n ?? '';
-  setEmail(String? e)=>email = e ?? '';
 
   PersonalDetailsDynamicState(this.name, this.email);
 }

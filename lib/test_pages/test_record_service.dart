@@ -9,9 +9,7 @@ class TestRecordService extends GenericJourneyInput {
 }
 
 class TestRecordServiceStateInput implements RecordServiceStateInput {
-  TestRecordServiceStateInput() {
-
-  }
+  TestRecordServiceStateInput();
 
   @override
   String get name => '';

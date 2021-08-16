@@ -49,7 +49,7 @@ class InviteToOrganisationPage extends StatelessWidget {
               error: error,
             ),
             WaterlooTextField(
-              valueBinder: state.setEmail,
+              valueBinder: (v) => { state.email = v },
               label: getter.getLabel(emailLabel),
               validator: validator.validateEmail,
             ),
@@ -83,9 +83,6 @@ class InviteToOrganisationDynamicState implements InviteToOrganisationOutputStat
 
   @override
   String email;
-
-  /// {@macro setter}
-  setEmail(String? e)=>email = e ?? '';
 
   InviteToOrganisationDynamicState({this.email = ''});
 

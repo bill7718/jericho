@@ -12,6 +12,7 @@ import 'package:jericho/services/mock_firebase_service.dart';
 import 'package:jericho/services/mock_authentication_service.dart';
 import 'package:jericho/services/organisation_services.dart';
 import 'package:jericho/services/presentation_services.dart';
+import 'package:jericho/services/service_services.dart';
 import 'package:jericho/services/user_services.dart';
 import 'package:jericho/services/you_tube_services.dart';
 import 'package:jericho/test_pages/generic_journey.dart';
@@ -33,6 +34,7 @@ var organisationValidator = OrganisationValidator(getter);
 var liturgyValidator = LiturgyValidator(getter);
 var presentationValidator = PresentationValidator(getter);
 var youTubeValidator = YouTubeValidator(getter);
+var serviceValidator = ServiceValidator(getter);
 
 
 
@@ -54,6 +56,7 @@ class MyApp extends StatelessWidget {
       Provider<LiturgyValidator>.value(value: liturgyValidator),
       Provider<PresentationValidator>.value(value: presentationValidator),
       Provider<YouTubeValidator>.value(value: youTubeValidator),
+      Provider<ServiceValidator>.value(value: serviceValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
         //home: HomePage(initialiser: testPreviewLiturgy,)
        home: POCPage()

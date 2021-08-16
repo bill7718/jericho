@@ -41,7 +41,7 @@ class RecordServicePage extends StatelessWidget {
     return Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: Container(
-          margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
+          margin: const EdgeInsets.fromLTRB(20, 20, 20, 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +146,9 @@ abstract class NamedItem {
 class Item extends Filterable implements NamedItem {
   static int dummyScore = 1;
 
+  @override
   final String name;
+  @override
   final String type;
 
   int _score = 0;
@@ -156,6 +158,7 @@ class Item extends Filterable implements NamedItem {
     dummyScore++;
   }
 
+  @override
   String get key => name;
 
   @override
@@ -171,7 +174,7 @@ class DraggableNamedItem extends StatelessWidget {
   final IconData? icon;
 
 
-  DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon});
+  const DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +182,7 @@ class DraggableNamedItem extends StatelessWidget {
       data: item,
       child: NamedItemTile(item: item,
         onPressed: onPressed, icon: icon,),
-      feedback: Container(width: 200, child: Card(child: NamedItemTile(item: item))),
+      feedback: SizedBox(width: 200, child: Card(child: NamedItemTile(item: item))),
       childWhenDragging: NamedItemTile(
         item: item,
         selected: selectOnDrag,
@@ -198,7 +201,7 @@ class NamedItemTile extends StatelessWidget {
   final Function? onPressed;
   final IconData? icon;
 
-  NamedItemTile({Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon}) : super (key: key);
+  const NamedItemTile({Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon}) : super (key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -287,7 +290,7 @@ class DropTargetListView<T extends Object> extends StatelessWidget {
   final Function widgetBuilder;
   final Function clone;
 
-  DropTargetListView({Key? key, required this.list, required this.widgetBuilder, required this.clone})
+  const DropTargetListView({Key? key, required this.list, required this.widgetBuilder, required this.clone})
       : super(key: key);
 
   @override

@@ -24,6 +24,7 @@ dartdoc:
     - organisation
     - presentation
     - register
+    - service
     - user_journey
     - widgets
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:jericho/general/constants.dart';
+import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/presentation_services.dart';
@@ -276,4 +277,24 @@ class ServiceServicesException implements Exception {
 
   @override
   String toString() => _message;
+}
+
+class ServiceValidator {
+
+  static const String nameError = 'serviceNameError';
+
+  final ErrorMessageGetter _getter;
+
+  ServiceValidator(this._getter);
+
+  String? validateServiceName(String? name) {
+    var n = name ?? '';
+
+    if (n.isEmpty) {
+      return _getter.getErrorMessage(nameError);
+    }
+
+    return null;
+  }
+
 }

@@ -7,6 +7,8 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/organisation_services.dart';
+import 'package:jericho/services/service_services.dart';
+import 'package:jericho/services/you_tube_services.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
@@ -32,12 +34,16 @@ class MockPage extends StatelessWidget {
     final Validator validator = Validator(getter);
     final OrganisationValidator orgValidator = OrganisationValidator(getter);
     final LiturgyValidator liturgyValidator = LiturgyValidator(getter);
+    final youTubeValidator = YouTubeValidator(getter);
+    final serviceValidator = ServiceValidator(getter);
     var defaultProviders = <Provider>[
       Provider<UserJourneyNavigator>.value(value: navigator),
       Provider<ConfigurationGetter>.value(value: getter),
       Provider<Validator>.value(value: validator),
       Provider<OrganisationValidator>.value(value: orgValidator),
       Provider<LiturgyValidator>.value(value: liturgyValidator),
+      Provider<YouTubeValidator>.value(value: youTubeValidator),
+      Provider<ServiceValidator>.value(value: serviceValidator),
     ];
 
     var p = <Provider>[];

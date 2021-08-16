@@ -1,7 +1,6 @@
 library templates;
 
 import 'package:waterloo/waterloo_form_message.dart';
-import 'package:waterloo/waterloo_text_field.dart';
 ///
 /// {@template template_name}
 ///  Some shared docs

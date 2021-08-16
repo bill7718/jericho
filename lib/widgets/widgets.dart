@@ -6,3 +6,4 @@ library widgets;
 export 'height_measurer.dart';
 export 'filtered_list.dart';
 export 'drop_target_list_view.dart';
+export 'named_item_widgets.dart';

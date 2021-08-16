@@ -5,7 +5,7 @@ import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/widgets/drop_target_list_view.dart';
-import 'package:jericho/widgets/filtered_list.dart';
+import 'package:jericho/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/change_notifier_list.dart';
 import 'package:waterloo/waterloo_form_container.dart';
@@ -127,96 +127,4 @@ class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput 
 
 abstract class RecordServiceStateOutput implements StepOutput {
   List<Map<String, dynamic>> get serviceContents;
-}
-
-abstract class NamedItem {
-  String get name;
-  String get type;
-}
-
-class Item extends Scored implements NamedItem, Clone<Item> {
-  static int dummyScore = 1;
-
-  @override
-  final String name;
-  @override
-  final String type;
-
-  int _score = 0;
-
-  Item(this.name, this.type) {
-    _score = dummyScore;
-    dummyScore++;
-  }
-
-  @override
-  int score(String filter) {
-    return _score;
-  }
-
-  @override
-  Item clone() {
-    return Item(name, type);
-  }
-}
-
-class DraggableNamedItem extends StatelessWidget {
-  final NamedItem item;
-  final bool selectOnDrag;
-  final Function? onPressed;
-  final IconData? icon;
-
-  const DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.icon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Draggable<NamedItem>(
-      data: item,
-      child: NamedItemTile(
-        item: item,
-        onPressed: onPressed,
-        icon: icon,
-      ),
-      feedback: SizedBox(width: 200, child: Card(child: NamedItemTile(item: item))),
-      childWhenDragging: NamedItemTile(
-        item: item,
-        selected: selectOnDrag,
-        enabled: selectOnDrag,
-      ),
-    );
-  }
-}
-
-class NamedItemTile extends StatelessWidget {
-  final NamedItem item;
-  final bool selected;
-  final bool enabled;
-  final Function? onPressed;
-  final IconData? icon;
-
-  const NamedItemTile(
-      {Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.icon})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      trailing: icon == null
-          ? null
-          : IconButton(
-              icon: Icon(icon),
-              onPressed: () {
-                if (onPressed != null) {
-                  onPressed!();
-                }
-              },
-            ),
-      title: Text(item.name),
-      shape: Border(top: BorderSide(color: Theme.of(context).dividerColor)),
-      selected: selected,
-      enabled: enabled,
-      dense: true,
-    );
-  }
 }

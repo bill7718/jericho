@@ -1,6 +1,7 @@
 import 'package:jericho/journeys/service/service.dart';
 import 'package:jericho/widgets/drop_target_list_view.dart';
 import 'package:jericho/widgets/filtered_list.dart';
+import 'package:jericho/widgets/named_item_widgets.dart';
 
 class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
   final Map<String, dynamic> _data;

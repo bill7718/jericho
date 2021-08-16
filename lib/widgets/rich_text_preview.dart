@@ -6,7 +6,7 @@ class RichTextPreview extends StatelessWidget {
 
   final List<TextSpan> spans;
 
-  RichTextPreview({ Key? key, required this.spans}) : super(key: key);
+  const RichTextPreview({ Key? key, required this.spans}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

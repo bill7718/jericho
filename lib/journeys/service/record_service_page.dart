@@ -11,6 +11,10 @@ import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';
 
+///
+/// Records the items in a service by allowing a user to drag and drop
+/// the various items in a service on to the service schedule
+///
 class RecordServicePage extends StatelessWidget {
   static const String titleRef = 'recordServicePage';
   static const String typeLabel = 'type';

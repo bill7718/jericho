@@ -1,6 +1,11 @@
 import 'package:jericho/widgets/widgets.dart';
 
+
+/// Represents the data associated with an item that is to be added to the service
+///
 class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
+
+  /// Holds the data for this item that is stored on the database
   final Map<String, dynamic> _data;
 
   ServiceItem(this._data);
@@ -22,11 +27,11 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
     var response = 0;
 
     for (var item in list) {
-      if (name.contains(item)) {
+      if (name.contains(item) || name.toLowerCase().contains(item)) {
         response = response + 100 * item.length * item.length;
       }
       var text = _data['text'] ?? '';
-      if (text.contains(item)) {
+      if (text.contains(item)|| text.toLowerCase().contains(item)) {
         response = response + 10 * item.length * item.length;
       }
     }

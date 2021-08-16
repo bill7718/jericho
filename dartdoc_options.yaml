@@ -15,7 +15,7 @@ dartdoc:
     - non-canonical-found
     - unknown-file
   include:
-    - templates
+ #   - templates
     - constants
     - configuration
     - event_handler

@@ -15,8 +15,12 @@ import 'package:waterloo/waterloo_text_field.dart';
 
 ///
 /// Show a page that captures email address and name. This is then passed into the [EventHandler] for processing.
-///
+/// {@category Pages}
 class PersonalDetailsPage extends StatelessWidget {
+
+  ///
+  /// {@macro titleRef}
+  ///
   static const String titleRef = 'personalDetailsPage';
 
   final dynamic inputState;
@@ -82,17 +86,26 @@ class PersonalDetailsPage extends StatelessWidget {
   }
 }
 
+///
+/// {@macro inputState}
+///
 abstract class PersonalDetailsStateInput implements StepInput {
   String get name;
   String get email;
   String get messageReference;
 }
 
+///
+/// {@macro outputState}
+///
 abstract class PersonalDetailsStateOutput implements StepOutput {
   String get name;
   String get email;
 }
 
+///
+/// {@macro dynamicState}
+///
 class PersonalDetailsDynamicState implements PersonalDetailsStateOutput {
   @override
   String name;

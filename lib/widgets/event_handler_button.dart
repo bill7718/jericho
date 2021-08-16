@@ -10,7 +10,7 @@ class EventHandlerButton extends StatelessWidget {
   final String event;
   final EventHandler handler;
 
-  EventHandlerButton({ Key? key, required this.text, required this.event, required this.handler}) : super(key: key);
+  const EventHandlerButton({ Key? key, required this.text, required this.event, required this.handler}) : super(key: key);
 
 
   @override
@@ -24,3 +24,4 @@ class EventHandlerButton extends StatelessWidget {
 
 
 }
+

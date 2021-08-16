@@ -108,7 +108,4 @@ class NewOrganisationDynamicState implements NewOrganisationStateOutput {
   String organisationName;
 
   NewOrganisationDynamicState(this.organisationName);
-
-  /// {@macro setter}
-  setName(String n)=>organisationName=n;
 }

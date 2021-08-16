@@ -14,6 +14,8 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
   @override
   String get type => _data['type'];
 
+  Map<String, dynamic> get data =>_data;
+
   @override
   clone() => ServiceItem(_data);
 

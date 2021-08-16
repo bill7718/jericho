@@ -96,7 +96,7 @@ class AddServiceController extends MappedJourneyController {
     var o = output as RecordServiceStateOutput;
     currentRoute = previewServiceRoute;
     _state.fullServiceContent.clear();
-    _state.fullServiceContent.addAll(o.serviceContents);
+    _state.fullServiceContent.addAll(o.fullServiceContents);
     navigator.goTo(context, currentRoute, this, _state);
 
     c.complete();

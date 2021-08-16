@@ -103,7 +103,10 @@ class RecordServicePage extends StatelessWidget {
                     text: getter.getButtonText(nextButton),
                     exceptionHandler: eventHandler.handleException,
                     onPressed: () {
-                      //TODO pass outcome to the next event
+                      state.fullServiceContents.clear();
+                      for (var i in acceptedItems.list) {
+                        state.fullServiceContents.add(i.data);
+                      }
                       eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
                     })
               ])
@@ -120,11 +123,11 @@ abstract class RecordServiceStateInput implements StepInput {
 
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
   @override
-  final List<Map<String, dynamic>> serviceContents;
+  final List<Map<String, dynamic>> fullServiceContents;
 
-  RecordServiceDynamicState({this.serviceContents = const []});
+  RecordServiceDynamicState({this.fullServiceContents = const []});
 }
 
 abstract class RecordServiceStateOutput implements StepOutput {
-  List<Map<String, dynamic>> get serviceContents;
+  List<Map<String, dynamic>> get fullServiceContents;
 }

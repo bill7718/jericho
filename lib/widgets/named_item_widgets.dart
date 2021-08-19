@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
 
-
 ///
 /// Wraps a [ListTile] that accepts a [NamedItem] object.
 ///
 /// Includes an [IconButton] and a separate [Icon] that shows the type.
 ///
 class NamedItemTile extends StatelessWidget {
-
-
-
   /// The item
   final NamedItem item;
 
@@ -25,7 +21,6 @@ class NamedItemTile extends StatelessWidget {
 
   /// A button that
   final IconData? actionIcon;
-
 
   const NamedItemTile(
       {Key? key, required this.item, this.selected = false, this.enabled = true, this.onPressed, this.actionIcon})
@@ -49,13 +44,13 @@ class NamedItemTile extends StatelessWidget {
       selected: selected,
       enabled: enabled,
       dense: true,
-      leading: Icon(serviceTypeIcons[item.type]),
+      leading: serviceTypeIcons[item.type] != null ? Icon(serviceTypeIcons[item.type]) : null,
     );
   }
 }
 
+/// An item with a name and type
 abstract class NamedItem {
-
   /// Return the name associated with this item
   String get name;
 
@@ -63,12 +58,21 @@ abstract class NamedItem {
   String get type;
 }
 
-
-
+///
+/// A wrapper around [NamedItemTile] put inside a [Draggable]
+///
 class DraggableNamedItem extends StatelessWidget {
+
+  /// Contains the the nam and type of the item to be displayed on this Widget
   final NamedItem item;
+
+  /// If true the system shows the
   final bool selectOnDrag;
+
+  /// The function called when the Icon Button is clicked
   final Function? onPressed;
+
+  /// The icon to show as the Icon Button
   final IconData? actionIcon;
 
   const DraggableNamedItem({Key? key, required this.item, this.selectOnDrag = true, this.onPressed, this.actionIcon})

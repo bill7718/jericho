@@ -52,7 +52,7 @@ class MockPage extends StatelessWidget {
       p.addAll(defaultProviders);
     }
 
-    return MultiProvider(providers: p, child: MaterialApp(home: child));
+    return MultiProvider(providers: p, child: MaterialApp(home: Card(child: child)));
   }
 }
 
@@ -148,5 +148,15 @@ Future<void> wait({Duration duration = const Duration(milliseconds: 500)}) {
     c.complete();
   });
 
+  return c.future;
+}
+
+Future<void> tapIcon(IconData iconData, WidgetTester tester) async {
+  var c = Completer<void>();
+  var f = find.byWidgetPredicate((widget) => widget is IconButton && widget.icon is Icon  && (widget.icon as Icon).icon == iconData);
+  expect(f, findsOneWidget);
+  await tester.tap(f);
+  await tester.pumpAndSettle();
+  c.complete();
   return c.future;
 }

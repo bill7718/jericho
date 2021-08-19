@@ -10,7 +10,7 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/service_services.dart';
 
 ///
-/// Controls the flow of control when a user wants to Add a presentation item
+/// Controls the flow of control when a user wants to Create a Service
 ///
 class AddServiceController extends MappedJourneyController {
   static const String recordServiceRoute = '/recordService';
@@ -110,15 +110,10 @@ class AddServiceController extends MappedJourneyController {
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    var response = await _services
+    await _services
         .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.fullServiceContent));
-
-    if (response.valid) {
-      navigator.goUp(context);
-      c.complete();
-    } else {
-      c.completeError(UserJourneyException('failed to create service ${_state.name} : ${_state.serviceItems}'));
-    }
+    navigator.goUp(context);
+    c.complete();
 
     return c.future;
   }

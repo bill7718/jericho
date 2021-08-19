@@ -7,6 +7,7 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/change_notifier_list.dart';
+import 'package:waterloo/waterloo.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
 import 'package:waterloo/waterloo_text_button.dart';

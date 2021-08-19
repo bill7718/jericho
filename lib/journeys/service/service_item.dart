@@ -1,4 +1,5 @@
 import 'package:jericho/widgets/widgets.dart';
+import 'package:waterloo/waterloo.dart';
 
 
 /// Represents the data associated with an item that is to be added to the service

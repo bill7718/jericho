@@ -23,6 +23,11 @@ class ServiceServices {
 
   Future<CheckServiceResponse> checkService(CheckServiceRequest request) async {
     var c = Completer<CheckServiceResponse>();
+
+    if (request.organisationId.isEmpty || request.name.isEmpty) {
+      throw ServiceServicesException('Invalid request - ${request.organisationId} ');
+    }
+
     try {
       var list =
       await _data.query(_serviceCollectionName, field: _organisationIdFieldName, value: request.organisationId);

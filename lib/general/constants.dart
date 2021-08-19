@@ -5,6 +5,8 @@
 ///
 library constants;
 
+import 'package:flutter/material.dart';
+
 /// Labels
 
 const String emailLabel = 'email';
@@ -35,3 +37,13 @@ const double screenWidth = 800;
 const double margin = 10;
 const double fontSize = 40;
 const double previewScale = 0.30;
+
+///
+/// A default mapping of Icons against the type of ServiceItem
+///
+const  Map<String, IconData> serviceTypeIcons = {
+  'Liturgy': Icons.clean_hands,
+  'Song' : Icons.music_note_sharp,
+  'YouTube' : Icons.videocam,
+  'Presentation' : Icons.slideshow
+};

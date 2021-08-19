@@ -65,7 +65,7 @@ class RecordServicePage extends StatelessWidget {
                                   return DraggableNamedItem(
                                     item: item,
                                     selectOnDrag: true,
-                                    icon: Icons.add,
+                                    actionIcon: Icons.add,
                                     onPressed: () {
                                       acceptedItems.add(item.clone());
                                     },
@@ -90,7 +90,7 @@ class RecordServicePage extends StatelessWidget {
                             return DraggableNamedItem(
                               item: item,
                               selectOnDrag: false,
-                              icon: Icons.delete,
+                              actionIcon: Icons.delete,
                               onPressed: () => acceptedItems.remove(item),
                             );
                           },

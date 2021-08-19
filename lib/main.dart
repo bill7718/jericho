@@ -20,6 +20,7 @@ import 'package:jericho/test_pages/test_record_liturgy.dart';
 import 'package:jericho/test_pages/test_record_service.dart';
 import 'package:jericho/test_pages/test_record_youtube.dart';
 import 'package:jericho/test_widgets/test_filtered_list.dart';
+import 'package:jericho/test_widgets/test_named_item_tile.dart';
 import 'package:provider/provider.dart';
 
 import 'journeys/poc_page.dart';
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
       Provider<ServiceValidator>.value(value: serviceValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
         //home: HomePage(initialiser: testPreviewLiturgy,)
-        home: Card (child :TestFilteredList())
+        home: Card (child :TestNamedItemTile())
       // home: POCPage()
     ));
   }

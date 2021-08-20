@@ -15,9 +15,12 @@ import 'package:waterloo/waterloo_text_button.dart';
 ///
 /// Records the items in a service by allowing a user to drag and drop
 /// the various items in a service on to the service schedule
-///
+/// {@category Pages}
 class RecordServicePage extends StatelessWidget {
+
+  /// {@macro titleRef}
   static const String titleRef = 'recordServicePage';
+
   static const String typeLabel = 'type';
   static const String nameLabel = 'name';
 
@@ -121,11 +124,14 @@ class RecordServicePage extends StatelessWidget {
   }
 }
 
+/// {@macro inputState}
 abstract class RecordServiceStateInput implements StepInput {
   String get name;
   List<ServiceItem> get serviceItems;
+
 }
 
+/// {@macro dynamicState}
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
   @override
   final List<Map<String, dynamic>> fullServiceContents;
@@ -133,6 +139,7 @@ class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput 
   RecordServiceDynamicState({this.fullServiceContents = const []});
 }
 
+/// {@macro outputState}
 abstract class RecordServiceStateOutput implements StepOutput {
   List<Map<String, dynamic>> get fullServiceContents;
 }

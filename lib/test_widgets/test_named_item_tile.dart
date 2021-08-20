@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:jericho/widgets/named_item_widgets.dart';
+import 'package:jericho/widgets/widgets_vm.dart';
 import 'package:waterloo/waterloo.dart';
 
 class TestNamedItemTile extends StatelessWidget {

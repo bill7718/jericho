@@ -110,10 +110,9 @@ class AddServiceController extends MappedJourneyController {
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    await _services
+    var response = await _services
         .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.fullServiceContent));
     navigator.goUp(context);
-    c.complete();
 
     return c.future;
   }

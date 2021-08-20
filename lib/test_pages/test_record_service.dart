@@ -17,4 +17,5 @@ class TestRecordServiceStateInput implements RecordServiceStateInput {
 
   @override
   List<ServiceItem> serviceItems = [];
+
 }

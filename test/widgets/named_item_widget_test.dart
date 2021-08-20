@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:jericho/widgets/named_item_widgets.dart';
+import 'package:jericho/widgets/widgets_vm.dart';
 import '../util.dart';
 
 void main() {

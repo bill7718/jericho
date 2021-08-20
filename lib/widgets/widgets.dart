@@ -3,5 +3,6 @@
 ///
 library widgets;
 
+export 'widgets_vm.dart';
 export 'height_measurer.dart';
 export 'named_item_widgets.dart';

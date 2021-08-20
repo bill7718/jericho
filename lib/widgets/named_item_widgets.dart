@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
+import 'widgets_vm.dart';
 
 ///
 /// Wraps a [ListTile] that accepts a [NamedItem] object.
@@ -49,14 +50,7 @@ class NamedItemTile extends StatelessWidget {
   }
 }
 
-/// An item with a name and type
-abstract class NamedItem {
-  /// Return the name associated with this item
-  String get name;
 
-  /// Return the type of the item.
-  String get type;
-}
 
 ///
 /// A wrapper around [NamedItemTile] put inside a [Draggable]

@@ -1,10 +1,11 @@
-import 'package:jericho/widgets/widgets.dart';
-import 'package:waterloo/waterloo.dart';
+import 'package:jericho/general/constants.dart';
+import 'package:jericho/widgets/widgets_vm.dart';
+import 'package:waterloo/waterloo_vm.dart';
 
-
+///
 /// Represents the data associated with an item that is to be added to the service
 ///
-class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
+class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceElement {
 
   /// Holds the data for this item that is stored on the database
   final Map<String, dynamic> _data;
@@ -18,6 +19,11 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
   String get type => _data['type'];
 
   Map<String, dynamic> get data =>_data;
+
+  String get id =>_data[idFieldName];
+
+  @override
+  String get serviceElement=>'$type/$id';
 
   @override
   clone() => ServiceItem(_data);
@@ -39,4 +45,18 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem> {
 
     return response;
   }
+}
+
+///
+/// A wrapper around a String that contains the Serice item type and the id
+/// separated by a "/" character
+///
+/// This constitutes the reference for the object that contains teh data for this ServiceElement on the database
+///
+class ServiceElement {
+
+  final String serviceElement;
+
+  ServiceElement(this.serviceElement);
+
 }

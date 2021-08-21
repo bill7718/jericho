@@ -124,7 +124,7 @@ void main() {
         var request = services.requests.last as CreateServiceRequest;
         expect(request.name, serviceName);
         expect(request.organisationId, session.organisationId);
-        expect(request.serviceContents.first['id'], MockServiceServices.serviceItems.first['id']);
+        expect(request.serviceElements.first.id, MockServiceServices.serviceItems.first.id);
 
       });
 

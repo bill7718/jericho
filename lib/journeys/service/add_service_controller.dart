@@ -71,9 +71,7 @@ class AddServiceController extends MappedJourneyController {
       var allItems = await _services.getAllServiceItems(GetAllServiceItemsRequest(organisationId: _session.organisationId));
 
       _state.serviceItems.clear();
-      for (var i in allItems.data) {
-        _state.serviceItems.add(ServiceItem(i));
-      }
+      _state.serviceItems.addAll(allItems.data);
 
       navigator.goTo(context, currentRoute, this, _state);
     } else {
@@ -110,8 +108,8 @@ class AddServiceController extends MappedJourneyController {
   Future<void> handleNextOnPreviewService(context, StepOutput output) async {
     var c = Completer<void>();
 
-    var response = await _services
-        .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.fullServiceContent));
+    await _services
+        .createService(CreateServiceRequest(_session.organisationId, _state.name, _state.serviceItems));
     navigator.goUp(context);
 
     return c.future;
@@ -129,8 +127,10 @@ class AddServiceState
   @override
   List<ServiceItem> serviceItems = <ServiceItem>[];
 
+
+
   @override
-  List<Map<String, dynamic>> fullServiceContent = <Map<String, dynamic>>[];
+  List<ServiceItem> fullServiceContent = <ServiceItem>[];
 
 
 }

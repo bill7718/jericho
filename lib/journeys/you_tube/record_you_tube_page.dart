@@ -33,7 +33,7 @@ class RecordYouTubePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final i = inputState as RecordYouTubeStateInput;
-    final state = RecordYouTubeDynamicState(i.name);
+    final state = RecordYouTubeDynamicState(i.name, i.videoId);
     final getter = Provider.of<ConfigurationGetter>(context);
     final validator = Provider.of<YouTubeValidator>(context);
     GlobalKey key = GlobalKey();
@@ -49,17 +49,17 @@ class RecordYouTubePage extends StatelessWidget {
             ),
             WaterlooTextField(
               initialValue: state.name,
-              valueBinder: state.setName,
+              valueBinder: (v) { state.name = v; },
               label: getter.getLabel(videoNameLabel),
               validator: validator.validateName,
             ),
             WaterlooTextField(
-              initialValue: state.videoIdentifier,
-              valueBinder: state.setIdentifier,
+              initialValue: state.videoId,
+              valueBinder: (v) { state.videoId = v; },
               label: getter.getLabel(videoIdLabel),
               validator: validator.validateVideoIdentifier,
             ),
-            WaterlooYouTubeThumbnail(videoIdProvider: state),
+            NotifiableYouTubeThumbnail(videoId: state.videoIdentifier),
             WaterlooButtonRow(children: <Widget>[
               WaterlooTextButton(
                 text: getter.getButtonText(previousButton),
@@ -90,36 +90,36 @@ abstract class RecordYouTubeStateInput implements StepInput {
 }
 
 class RecordYouTubeDynamicState
-    with ChangeNotifier
-    implements RecordYouTubeStateOutput, StepOutput, YouTubeVideoIdProvider {
-  String name = '';
-  String _videoId = '';
-  String videoIdentifier = '';
+    implements RecordYouTubeStateOutput, StepOutput {
 
-  setIdentifier(String i) {
-    // https://www.youtube.com/watch?v=pucJTYK7_Yo
-    videoIdentifier = i;
-    var start = i.indexOf('v=');
+  RecordYouTubeDynamicState(this.name, String? videoId) {
+    this.videoId = videoId ?? '';
+  }
+
+  @override
+  String name = '';
+
+  ValueNotifier<String> videoIdentifier = ValueNotifier<String>('');
+
+  @override
+  String get videoId =>videoIdentifier.value;
+
+  set videoId (String v) {
+    var start = v.indexOf('v=');
     if (start == -1) {
-      _videoId = i;
-      notifyListeners();
+      videoIdentifier.value = v;
     } else {
-      var end = i.indexOf('&', start);
+      var end = v.indexOf('&', start);
       if (end == -1) {
-        _videoId = i.substring(start + 2);
+        videoIdentifier.value = v.substring(start + 2);
       } else {
-        _videoId = i.substring(start + 2, end);
+        videoIdentifier.value = v.substring(start + 2, end);
       }
-      notifyListeners();
     }
   }
 
-  setName(String n) => name = n;
 
-  String get videoId => _videoId;
-
-  RecordYouTubeDynamicState(this.name);
-
+  @override
   String toString()=>'$name - $videoId';
 }
 

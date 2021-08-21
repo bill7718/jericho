@@ -6,6 +6,7 @@ import 'package:jericho/journeys/user_journey_controller.dart';
 
 class GenericJourney extends UserJourneyController {
 
+  @override
   final String currentRoute;
   final StepInput input;
   final UserJourneyNavigator _navigator;

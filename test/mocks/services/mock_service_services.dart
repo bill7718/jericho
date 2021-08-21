@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/services/service_services.dart';
 
 class MockServiceServices implements ServiceServices {
   static const String existingService = 'alreadyHere';
 
-  static const List<Map<String, dynamic>> serviceItems = [
-    {'name': 'Hello', 'type': 'Liturgy', 'text': 'one two three', 'id': 'abc1234'}
+  static  List<ServiceItem> serviceItems = [
+    ServiceItem({'name': 'Hello', 'type': 'Liturgy', 'text': 'one two three', 'id': 'abc1234'})
   ];
 
   List<dynamic> requests = [];
@@ -34,9 +35,9 @@ class MockServiceServices implements ServiceServices {
   Future<CreateServiceResponse> createService(CreateServiceRequest request) {
     var c = Completer<CreateServiceResponse>();
     requests.add(request);
-    if (request.organisationId.isEmpty || request.name.isEmpty || request.serviceContents.isEmpty) {
+    if (request.organisationId.isEmpty || request.name.isEmpty || request.serviceElements.isEmpty) {
       throw ServiceServicesException(
-          'Invalid request - ${request.organisationId} - ${request.name} - ${request.serviceContents}');
+          'Invalid request - ${request.organisationId} - ${request.name} - ${request.serviceElements}');
     }
 
     c.complete(CreateServiceResponse(true, id: 'abc12345'));

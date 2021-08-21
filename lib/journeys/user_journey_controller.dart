@@ -116,11 +116,11 @@ abstract class MappedJourneyController extends UserJourneyController {
     var m = functionMap[currentRoute];
 
     if (m == null) {
-      throw UserJourneyException('Invalid current route for current Journey $currentRoute : ${functionMap}');
+      throw UserJourneyException('Invalid current route for current Journey $currentRoute : $functionMap');
     } else {
       var action = m[event];
       if (action == null) {
-        throw UserJourneyException('Invalid event $event for current Journey : route $currentRoute : ${functionMap}');
+        throw UserJourneyException('Invalid event $event for current Journey : route $currentRoute : $functionMap');
       } else {
         if (action is Function) {
           return action(context, output);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/services/notus_document_helper.dart';
 import 'package:jericho/widgets/preview_content.dart';
 import 'package:jericho/widgets/rich_text_preview.dart';
@@ -25,7 +26,7 @@ class PreviewServiceState extends State<PreviewServicePage> {
   static const String presentation = 'Presentation';
 
   int itemIndex = 0;
-  List<Map<String, dynamic>> contents = [];
+  List<ServiceItem> contents = <ServiceItem>[];
 
   List<Widget> widgets = <Widget>[];
 
@@ -41,9 +42,9 @@ class PreviewServiceState extends State<PreviewServicePage> {
   @override
   Widget build(BuildContext context) {
     if (itemIndex < contents.length) {
-      switch (contents[itemIndex]['type']) {
+      switch (contents[itemIndex].type) {
         case liturgy:
-          var spans = buildTextSpans(buildDocument(contents[itemIndex]['text']));
+          var spans = buildTextSpans(buildDocument(contents[itemIndex].data['text']));
           widgets.add(TextSplitter(
               spans: spans,
               callback: (splits) {
@@ -61,14 +62,14 @@ class PreviewServiceState extends State<PreviewServicePage> {
           break;
 
         case youTube:
-          widgets.add(WaterlooYouTubeThumbnail(videoIdProvider: YouTubeIdProvider(contents[itemIndex])));
+          widgets.add(YouTubeThumbnail(videoId: contents[itemIndex].videoId));
           setState(() {
             itemIndex++;
           });
           break;
 
         case presentation:
-          widgets.add(Text('Talk: ${contents[itemIndex]['name']}'));
+          widgets.add(Text('Talk: ${contents[itemIndex].name}'));
           setState(() {
             itemIndex++;
           });
@@ -86,14 +87,7 @@ class PreviewServiceState extends State<PreviewServicePage> {
 
 abstract class PreviewServiceNameStateInput extends StepInput {
   String get name;
-  List<Map<String, dynamic>> get fullServiceContent;
+  List<ServiceItem> get fullServiceContent;
 }
 
-class YouTubeIdProvider extends YouTubeVideoIdProvider {
-  Map<String, dynamic> map;
 
-  YouTubeIdProvider(this.map);
-
-  @override
-  String get videoId => map['videoId'];
-}

@@ -112,9 +112,7 @@ class RecordServicePage extends StatelessWidget {
                     exceptionHandler: eventHandler.handleException,
                     onPressed: () {
                       state.fullServiceContents.clear();
-                      for (var i in acceptedItems.list) {
-                        state.fullServiceContents.add(i.data);
-                      }
+                      state.fullServiceContents.addAll(acceptedItems.list);
                       eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: state);
                     })
               ])
@@ -134,12 +132,12 @@ abstract class RecordServiceStateInput implements StepInput {
 /// {@macro dynamicState}
 class RecordServiceDynamicState implements RecordServiceStateOutput, StepOutput {
   @override
-  final List<Map<String, dynamic>> fullServiceContents;
+  final List<ServiceItem> fullServiceContents;
 
   RecordServiceDynamicState({this.fullServiceContents = const []});
 }
 
 /// {@macro outputState}
 abstract class RecordServiceStateOutput implements StepOutput {
-  List<Map<String, dynamic>> get fullServiceContents;
+  List<ServiceItem> get fullServiceContents;
 }

@@ -106,7 +106,9 @@ class ValidateUserResponse extends UserServiceResponse {
 }
 
 abstract class CreateUserRequest implements ValidateUserRequest {
+  @override
   String get name;
+  @override
   String get email;
   String get password;
 }

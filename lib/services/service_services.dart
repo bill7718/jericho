@@ -1,18 +1,20 @@
 import 'dart:async';
 
 import 'package:jericho/general/constants.dart';
+import 'package:jericho/journeys/service/service_item.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/services/data_service.dart';
 import 'package:jericho/services/liturgy_services.dart';
 import 'package:jericho/services/presentation_services.dart';
 import 'package:jericho/services/you_tube_services.dart';
+import 'package:jericho/widgets/widgets_vm.dart';
 
 class ServiceServices {
   static const String _serviceCollectionName = 'Service';
 
   static const String _nameFieldName = 'name';
   static const String _organisationIdFieldName = 'organisationId';
-  static const String _serviceContentsFieldName = 'serviceContents';
+  static const String _serviceElementsFieldName = 'serviceElements';
 
   final DataService _data;
   final LiturgyServices _liturgy;
@@ -53,8 +55,13 @@ class ServiceServices {
       }
 
       var list = await _data.query(_serviceCollectionName, field:_organisationIdFieldName, value: request.organisationId );
+      var serviceItems = <ServiceElement>[];
+      for (var item in list) {
+        serviceItems.add(ServiceElement(item[_serviceElementsFieldName]));
+      }
 
-      c.complete(GetAllServiceResponse(true, data: list));
+      c.complete(GetAllServiceResponse(true, data: serviceItems));
+
     } catch (ex) {
       c.completeError(ex);
     }
@@ -66,22 +73,22 @@ class ServiceServices {
     var c = Completer<CreateServiceResponse>();
     try {
 
-      if (request.organisationId.isEmpty || request.name.isEmpty || request.serviceContents.isEmpty ) {
-        throw ServiceServicesException('Invalid request - ${request.organisationId} - ${request.name} - ${request.serviceContents}');
+      if (request.organisationId.isEmpty || request.name.isEmpty || request.serviceElements.isEmpty ) {
+        throw ServiceServicesException('Invalid request - ${request.organisationId} - ${request.name} - ${request.serviceElements}');
       }
 
       var checkResponse = await checkService(CheckServiceRequest(request.organisationId, request.name));
       if (checkResponse.valid) {
 
         var serviceContents = <String>[];
-        for (var item in request.serviceContents) {
-          serviceContents.add('${item['type']}:${item[idFieldName]}');
+        for (var item in request.serviceElements) {
+          serviceContents.add(item.element);
         }
 
         var id = await _data.set(_serviceCollectionName, {
           _organisationIdFieldName : request.organisationId,
           _nameFieldName: request.name,
-          _serviceContentsFieldName: serviceContents
+          _serviceElementsFieldName: serviceContents
         });
         c.complete(CreateServiceResponse(true, id: id));
       } else {
@@ -102,11 +109,15 @@ class ServiceServices {
       }
       var service = await _data.get(_serviceCollectionName, request.id );
 
-      var serviceItems = (service[_serviceContentsFieldName] ?? <String>[]) as List<String> ;
+      var list = service[_serviceElementsFieldName];
+      var serviceElements = <ServiceElement>[];
+      for (var element in list) {
+        serviceElements.add(ServiceElement(element));
+      }
 
-      var r = await getServiceContent(GetServiceContentRequest(serviceItems));
+      var r = await getServiceContent(GetServiceContentRequest(serviceElements));
 
-      c.complete(GetServiceResponse(true, fullServiceContents: r.fullServiceContents));
+      c.complete(GetServiceResponse(true, serviceContents: r.serviceContents));
 
 
     } catch (ex) {
@@ -118,26 +129,21 @@ class ServiceServices {
   Future<GetServiceContentResponse> getServiceContent(GetServiceContentRequest request) async {
     var c = Completer<GetServiceContentResponse>();
     try {
-      if (request.serviceItems.isEmpty ) {
-        throw ServiceServicesException('Invalid request - ${request.serviceItems} ');
+      if (request.serviceElements.isEmpty ) {
+        throw ServiceServicesException('Invalid request - ${request.serviceElements} ');
       }
 
-      var items = <Map<String, dynamic>>[];
+      var contents = <ServiceItem>[];
 
-
-      for (var serviceItem in request.serviceItems) {
-        if (serviceItem.startsWith(LiturgyServices.liturgyCollectionName)) {
-          var data = await _liturgy.getLiturgy(GetLiturgyRequest(id: serviceItem.substring(LiturgyServices.liturgyCollectionName.length + 1)));
-          data.map['type'] = LiturgyServices.liturgyCollectionName;
-          items.add(data.map);
+      for (var serviceElement in request.serviceElements) {
+        if (serviceElement.type == LiturgyServices.liturgyCollectionName) {
+          var data = await _liturgy.getLiturgy(GetLiturgyRequest(id: serviceElement.id));
+          data.map['type'] = serviceElement.type;
+          contents.add(ServiceItem(data.map));
         }
       }
 
-
-      //TODO - rethink this one
-
-      c.complete(GetServiceContentResponse(true, fullServiceContents: items));
-
+      c.complete(GetServiceContentResponse(true, serviceContents: contents));
 
     } catch (ex) {
       c.completeError(ex);
@@ -152,25 +158,27 @@ class ServiceServices {
         throw ServiceServicesException('Invalid request - ${request.organisationId} ');
       }
 
-      var data = <Map<String, dynamic>>[];
+      var data = <ServiceItem>[];
 
       var allLiturgy = await _liturgy.getAllLiturgy(GetAllLiturgyRequest(organisationId: request.organisationId));
       for (var item in allLiturgy.data) {
         item['type'] = allLiturgy.type;
+        data.add(ServiceItem(item));
       }
-      data.addAll(allLiturgy.data);
+
 
       var allYoutube = await _youTube.getAllYouTube(GetAllYouTubeRequest(organisationId: request.organisationId));
       for (var item in allYoutube.data) {
         item['type'] = allYoutube.type;
+        data.add(ServiceItem(item));
       }
-      data.addAll(allYoutube.data);
+
 
       var allPresentation = await _presentation.getAllPresentation(GetAllPresentationRequest(organisationId: request.organisationId));
       for (var item in allPresentation.data) {
         item['type'] = allPresentation.type;
+        data.add(ServiceItem(item));
       }
-      data.addAll(allPresentation.data);
 
       c.complete(GetAllServiceItemsResponse(true, data: data));
     } catch (ex) {
@@ -200,7 +208,7 @@ class GetAllServiceRequest {
 
 class GetAllServiceResponse extends ServiceServiceResponse {
 
-  final List<Map<String, dynamic>> data;
+  final List<ServiceElement> data;
 
   GetAllServiceResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
@@ -221,9 +229,9 @@ class CheckServiceResponse extends ServiceServiceResponse {
 class CreateServiceRequest {
   final String organisationId;
   final String name;
-  final List<Map<String, dynamic>> serviceContents;
+  final List<ServiceElement> serviceElements;
 
-  CreateServiceRequest(this.organisationId, this.name, this.serviceContents);
+  CreateServiceRequest(this.organisationId, this.name, this.serviceElements);
 }
 
 class CreateServiceResponse extends ServiceServiceResponse {
@@ -242,22 +250,22 @@ class GetServiceRequest {
 class GetServiceResponse extends ServiceServiceResponse {
 
   final String name;
-  final List<Map<String, dynamic>> fullServiceContents;
+  final List<ServiceItem> serviceContents;
 
-  GetServiceResponse(bool valid, { this.name = '', this.fullServiceContents = const [],  String message = '', String reference = ''})
+  GetServiceResponse(bool valid, { this.name = '', this.serviceContents = const [],  String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
 
 class GetServiceContentRequest {
-  final List<String> serviceItems;
-  GetServiceContentRequest(this.serviceItems);
+  final List<ServiceElement> serviceElements;
+  GetServiceContentRequest(this.serviceElements);
 }
 
 class GetServiceContentResponse extends ServiceServiceResponse {
 
-  final List<Map<String, dynamic>> fullServiceContents;
+  final List<ServiceItem> serviceContents;
 
-  GetServiceContentResponse(bool valid, { this.fullServiceContents = const [],  String message = '', String reference = ''})
+  GetServiceContentResponse(bool valid, { this.serviceContents = const [],  String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
 }
 
@@ -269,7 +277,7 @@ class GetAllServiceItemsRequest {
 
 class GetAllServiceItemsResponse extends ServiceServiceResponse {
 
-  final List<Map<String, dynamic>> data;
+  final List<ServiceItem> data;
 
   GetAllServiceItemsResponse(bool valid, {required this.data, String message = '', String reference = ''})
       : super(valid, message: message, reference: reference);
@@ -301,5 +309,27 @@ class ServiceValidator {
 
     return null;
   }
+
+}
+
+///
+/// A wrapper around a String that contains the Service item type and the id
+/// separated by a "/" character
+///
+/// This constitutes the reference for the object that contains the data for this ServiceElement on the database
+///
+class ServiceElement  implements NamedItem {
+
+  final String element;
+
+  ServiceElement(this.element);
+
+  @override
+  String get type=> element.split('/').first;
+  String get id=> element.split(':').first.split('/').last;
+  @override
+  String get name=> element.split(':').last;
+
+  String get serviceItemRef => element.split(':').first;
 
 }

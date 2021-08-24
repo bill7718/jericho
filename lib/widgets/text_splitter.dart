@@ -30,6 +30,7 @@ class TextSplitter extends StatefulWidget {
 
 class _TextSplitterState extends State<TextSplitter> {
   static const int maxAttemptCount = 999;
+  static const textScaling = 0.1;
 
   List<SpanRange> separators = <SpanRange>[];
   int rangeStart = 0;
@@ -53,11 +54,13 @@ class _TextSplitterState extends State<TextSplitter> {
     attemptCount++;
     var spansToMeasure = <TextSpan>[];
     spansToMeasure.addAll(widget.spans.getRange(rangeStart, rangeEnd));
-    return HeightMeasurer(width: widget.width, spans: spansToMeasure, heightCallback: heightCallback);
+
+    return HeightMeasurer(width: widget.width, spans: scaleTextSpans(spansToMeasure, textScaling), heightCallback: heightCallback);
   }
 
   void heightCallback(double height) {
-    if (height > widget.maxHeight) {
+    print('Height: $height');
+    if (height > widget.maxHeight * textScaling) {
       setState(() {
         rangeEnd--;
       });
@@ -96,6 +99,14 @@ class _TextSplitterState extends State<TextSplitter> {
         return i;
       }
     }
+  }
+
+  List<TextSpan> scaleTextSpans(List<TextSpan> spans, double scale) {
+    var scaledSpans = <TextSpan>[];
+    for (var span in spans) {
+      scaledSpans.add(TextSpan(text: span.text, style: span.style?.copyWith(fontSize: (span.style?.fontSize ?? 0) * scale)));
+    }
+    return scaledSpans;
   }
 }
 

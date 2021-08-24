@@ -3,15 +3,11 @@
 ///
 library notus_document_helper;
 
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:zefyrka/zefyrka.dart';
-
-
-
 
 NotusDocument buildDocument(String content) {
   var list = const JsonDecoder().convert(content);
@@ -26,13 +22,15 @@ NotusDocument buildDocument(String content) {
   return doc;
 }
 
-
 List<TextSpan> buildTextSpans(NotusDocument doc) {
-
   var response = <TextSpan>[];
 
   for (var node in doc.root.children) {
     response.addAll(getSpans(node));
+  }
+
+  while (response.first.text == '\n') {
+    response.removeAt(0);
   }
 
   return response;
@@ -48,7 +46,8 @@ List<TextSpan> getSpans(Node node, {TextStyle style = coreStyle}) {
     }
   } else {
     if (node is LineNode) {
-      response.add(const TextSpan(text: '\n\n', style: coreStyle));
+      response.add(const TextSpan(text: '\n', style: coreStyle));
+      response.add(const TextSpan(text: '\n', style: coreStyle));
       for (var n in node.children) {
         response.addAll(getSpans(n));
       }
@@ -57,4 +56,3 @@ List<TextSpan> getSpans(Node node, {TextStyle style = coreStyle}) {
 
   return response;
 }
-

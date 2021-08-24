@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:jericho/journeys/configuration/configuration.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/event_handler.dart';
+import 'package:jericho/journeys/service/service.dart';
 import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/notus_document_helper.dart';
 import 'package:jericho/widgets/preview_content.dart';
+import 'package:jericho/widgets/text_splitter.dart';
 import 'package:provider/provider.dart';
 import 'package:waterloo/waterloo_form_container.dart';
 import 'package:waterloo/waterloo_form_message.dart';
@@ -42,16 +44,25 @@ class PreviewLiturgyPage extends StatelessWidget {
     final spans = buildTextSpans(buildDocument(i.content));
     final getter = Provider.of<ConfigurationGetter>(context);
     final error = FormError();
+    final splits = SpanSplit();
 
-    return Scaffold(
+
+    return Stack( children: [
+      Card (
+        child: TextSplitter(
+          spans :spans,
+          callback: ( List<SpanRange> list) {
+            splits.setSplits(list);
+            },
+        )
+      ),
+      Scaffold(
         appBar: WaterlooAppBar.get(title: getter.getPageTitle(titleRef)),
         body: Column(children: <Widget>[
           WaterlooFormMessage(
             error: error,
           ),
-          Expanded( child: PreviewContent(spans: spans))
-           ,
-
+          Expanded( child: PreviewContent(spans: spans, splits: splits,)),
           WaterlooButtonRow(children: <Widget>[
             WaterlooTextButton(
               text: getter.getButtonText(previousButton),
@@ -69,7 +80,7 @@ class PreviewLiturgyPage extends StatelessWidget {
               onPressed: () => eventHandler.handleEvent(context, event: UserJourneyController.confirmEvent),
             ),
           ])
-        ]));
+        ]))]);
   }
 }
 

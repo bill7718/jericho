@@ -28,7 +28,7 @@ class HeightMeasurer extends StatelessWidget {
 
 
     return Offstage(
-        child: SizedBox(
+         child : SizedBox(
             width: width,
             child: Card(
                 child: RichText(

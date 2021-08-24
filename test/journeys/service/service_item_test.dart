@@ -28,7 +28,6 @@ void main() {
     testWidgets('I retrieve the name and type of a service item the correct values are returned  ', (WidgetTester tester) async {
       expect(serviceItemWithText.name, mapWithText['name']);
       expect(serviceItemWithText.type, mapWithText['type']);
-      expect(serviceItemWithText.element.length, 3);
     });
 
     testWidgets('When I compute the score for a service item with no matching value I expect zero ', (WidgetTester tester) async {

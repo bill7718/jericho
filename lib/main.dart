@@ -15,17 +15,18 @@ import 'package:jericho/services/presentation_services.dart';
 import 'package:jericho/services/service_services.dart';
 import 'package:jericho/services/user_services.dart';
 import 'package:jericho/services/you_tube_services.dart';
-import 'package:jericho/test_pages/generic_journey.dart';
+import 'package:provider/provider.dart';
+import 'journeys/validators.dart';
+
+/// imports for test
+import 'journeys/poc_page.dart'; // ignore: unused_import
+import 'package:jericho/test_pages/test_preview_service.dart';
 import 'package:jericho/test_pages/test_record_liturgy.dart'; // ignore: unused_import
 import 'package:jericho/test_pages/test_record_service.dart'; // ignore: unused_import
 import 'package:jericho/test_pages/test_record_youtube.dart'; // ignore: unused_import
 import 'package:jericho/test_widgets/test_filtered_list.dart'; // ignore: unused_import
-import 'package:jericho/test_widgets/test_named_item_tile.dart';
-import 'package:provider/provider.dart';
-
-import 'journeys/poc_page.dart'; // ignore: unused_import
-import 'journeys/validators.dart';
-
+import 'package:jericho/test_widgets/test_named_item_tile.dart'; // ignore: unused_import
+import 'package:jericho/test_pages/generic_journey.dart'; // ignore: unused_import
 
 var navigator = UserJourneyNavigator();
 var getter = ConfigurationGetter();
@@ -60,8 +61,8 @@ class MyApp extends StatelessWidget {
       Provider<YouTubeValidator>.value(value: youTubeValidator),
       Provider<ServiceValidator>.value(value: serviceValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-        //home: HomePage(initialiser: testPreviewLiturgy,)
-        home: Card (child :TestNamedItemTile())
+        home: HomePage(initialiser: testPreviewLiturgy,)
+       // home: Card (child :TestNamedItemTile())
       // home: POCPage()
     ));
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jericho/general/constants.dart';
 
 ///
 /// Adds an [Offstage] widget to the tree.

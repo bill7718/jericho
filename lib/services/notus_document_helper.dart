@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:zefyrka/zefyrka.dart';
 
-const TextStyle coreStyle = TextStyle( fontSize: fontSize, color: Colors.white, fontFamily: 'Raleway');
+
 
 
 NotusDocument buildDocument(String content) {

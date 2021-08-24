@@ -14,6 +14,7 @@ import 'package:jericho/journeys/landing/landing_page.dart';
 import 'package:jericho/journeys/presentation/record_presentation_page.dart';
 import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
+import 'package:jericho/journeys/service/preview_service_page.dart';
 import 'package:jericho/journeys/service/record_service_page.dart';
 import 'package:jericho/journeys/validators.dart';
 import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
@@ -46,6 +47,7 @@ class ConfigurationGetter implements ErrorMessageGetter {
     RecordYouTubePage.titleRef: 'You Tube Video',
     RecordPresentationNamePage.titleRef: 'Talk',
     RecordServicePage.titleRef: 'Service',
+    PreviewServicePage.titleRef: 'Preview Service',
 
 
 

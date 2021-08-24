@@ -1,5 +1,4 @@
 import 'package:jericho/general/constants.dart';
-import 'package:jericho/journeys/service/preview_service_page.dart';
 import 'package:jericho/services/service_services.dart';
 import 'package:jericho/widgets/widgets_vm.dart';
 import 'package:waterloo/waterloo_vm.dart';
@@ -11,6 +10,8 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceE
 
   /// Holds the data for this item that is stored on the database
   final Map<String, dynamic> _data;
+
+  List<List<SpanRange>> ranges = <List<SpanRange>>[];
 
   ServiceItem(this._data);
 
@@ -51,10 +52,6 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceE
 
 
   @override
-  // TODO: implement element
-  String get element => throw UnimplementedError();
-
-  @override
   String get videoId => _data['videoId'];
 }
 
@@ -62,4 +59,14 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceE
 abstract class YouTubeIdProvider  {
 
   String get videoId;
+}
+
+class SpanRange {
+  final int start;
+  final int end;
+
+  SpanRange(this.start, this.end);
+
+  @override
+  String toString()=>'Start : $start End: $end';
 }

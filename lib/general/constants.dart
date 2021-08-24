@@ -35,8 +35,8 @@ const String userIdFieldName = 'userId';
 const double screenHeight = 600;
 const double screenWidth = 800;
 const double margin = 10;
-const double fontSize = 40;
-const double previewScale = 0.30;
+const double fontSize = 60;
+const double previewScale = 0.2;
 
 ///
 /// A default mapping of Icons against the type of ServiceItem
@@ -47,3 +47,5 @@ const  Map<String, IconData> serviceTypeIcons = {
   'YouTube' : Icons.videocam,
   'Presentation' : Icons.slideshow
 };
+
+const TextStyle coreStyle = TextStyle( fontSize: fontSize, color: Colors.white, fontFamily: 'Raleway');

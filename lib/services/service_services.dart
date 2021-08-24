@@ -82,7 +82,7 @@ class ServiceServices {
 
         var serviceContents = <String>[];
         for (var item in request.serviceElements) {
-          serviceContents.add(item.element);
+          serviceContents.add(item.serviceItemRef);
         }
 
         var id = await _data.set(_serviceCollectionName, {
@@ -320,16 +320,16 @@ class ServiceValidator {
 ///
 class ServiceElement  implements NamedItem {
 
-  final String element;
+  final String _element;
 
-  ServiceElement(this.element);
+  ServiceElement(this._element);
 
   @override
-  String get type=> element.split('/').first;
-  String get id=> element.split(':').first.split('/').last;
+  String get type=> _element.split('/').first;
+  String get id=> _element.split(':').first.split('/').last;
   @override
-  String get name=> element.split(':').last;
+  String get name=> _element.split(':').last;
 
-  String get serviceItemRef => element.split(':').first;
+  String get serviceItemRef => _element.split(':').first;
 
 }

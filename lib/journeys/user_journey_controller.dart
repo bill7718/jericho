@@ -22,6 +22,7 @@ import 'package:jericho/journeys/register/capture_password_page.dart';
 import 'package:jericho/journeys/register/personal_details_page.dart';
 import 'package:jericho/journeys/register/register_journey_controller.dart';
 import 'package:jericho/journeys/service/add_service_controller.dart';
+import 'package:jericho/journeys/service/preview_service_page.dart';
 import 'package:jericho/journeys/service/record_service_page.dart';
 import 'package:jericho/journeys/you_tube/add_you_tube_controller.dart';
 import 'package:jericho/journeys/you_tube/record_you_tube_page.dart';
@@ -246,6 +247,12 @@ class UserJourneyNavigator {
 
       case AddServiceController.recordServiceRoute:
         return RecordServicePage(
+          inputState: input,
+          eventHandler: handler,
+        );
+
+      case AddServiceController.previewServiceRoute:
+        return PreviewServicePage(
           inputState: input,
           eventHandler: handler,
         );

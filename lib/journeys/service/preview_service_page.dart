@@ -1,9 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:jericho/general/constants.dart';
+import 'package:jericho/journeys/configuration/configuration_getter.dart';
 import 'package:jericho/journeys/event_handler.dart';
 import 'package:jericho/journeys/service/service_item.dart';
+import 'package:jericho/journeys/user_journey_controller.dart';
 import 'package:jericho/services/notus_document_helper.dart';
 import 'package:jericho/widgets/preview_content.dart';
 import 'package:jericho/widgets/rich_text_preview.dart';
+import 'package:jericho/widgets/text_splitter.dart';
+import 'package:provider/provider.dart';
+import 'package:waterloo/waterloo_form_container.dart';
+import 'package:waterloo/waterloo_form_message.dart';
+import 'package:waterloo/waterloo_text_button.dart';
 import 'package:waterloo/you_tube.dart';
 
 class PreviewServicePage extends StatefulWidget {
@@ -33,8 +43,8 @@ class PreviewServiceState extends State<PreviewServicePage> {
   @override
   initState() {
     super.initState();
-    var i = widget.inputState as PreviewServiceNameStateInput;
-    contents = i.fullServiceContent;
+    var i = widget.inputState as PreviewServiceStateInput;
+    contents.addAll(i.fullServiceContent);
     itemIndex = 0;
     widgets.clear();
   }
@@ -47,9 +57,9 @@ class PreviewServiceState extends State<PreviewServicePage> {
           var spans = buildTextSpans(buildDocument(contents[itemIndex].data['text']));
           widgets.add(TextSplitter(
               spans: spans,
-              callback: (splits) {
+              callback: (List<SpanRange> splits) {
                 setState(() {
-                  widgets.removeLast();
+                  contents[itemIndex].ranges.add(splits);
                   for (var range in splits) {
                     var currentSpans = <TextSpan>[];
                     currentSpans.addAll(spans.getRange(range.start, range.end));
@@ -81,13 +91,56 @@ class PreviewServiceState extends State<PreviewServicePage> {
       }
     }
 
-    return GridView.count(crossAxisCount: 3, children: widgets);
+
+    final getter = Provider.of<ConfigurationGetter>(context);
+    GlobalKey key = GlobalKey();
+    final error = FormError();
+
+    return Scaffold(
+        appBar: WaterlooAppBar.get(title: getter.getPageTitle(PreviewServicePage.titleRef)),
+        body: WaterlooFormContainer(
+          formKey: key,
+          children: <Widget>[
+            WaterlooFormMessage(
+              error: error,
+            ),
+        Expanded(child: GridView.count(crossAxisCount: 3, children: widgets)),
+            WaterlooButtonRow(children: <Widget>[
+              WaterlooTextButton(
+                text: getter.getButtonText(previousButton),
+                exceptionHandler: widget.eventHandler.handleException,
+                onPressed: () =>  widget.eventHandler.handleEvent(context, event: UserJourneyController.backEvent),
+              ),
+              WaterlooTextButton(
+                  text: getter.getButtonText(nextButton),
+                  exceptionHandler:  widget.eventHandler.handleException,
+                  onPressed: () {
+                    var formState = key.currentState as FormState;
+                    if (formState.validate()) {
+                      scheduleMicrotask( () {
+                        widget.eventHandler.handleEvent(context, event: UserJourneyController.nextEvent, output: PreviewServiceStateOutput(contents));
+                      });
+                    }
+                  })
+            ])
+          ],
+        ));
+
   }
 }
 
-abstract class PreviewServiceNameStateInput extends StepInput {
+abstract class PreviewServiceStateInput extends StepInput {
   String get name;
   List<ServiceItem> get fullServiceContent;
 }
 
 
+
+class PreviewServiceStateOutput extends StepOutput {
+
+
+  final List<ServiceItem> fullServiceContent;
+
+  PreviewServiceStateOutput(this.fullServiceContent);
+
+}

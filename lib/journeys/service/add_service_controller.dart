@@ -118,7 +118,7 @@ class AddServiceController extends MappedJourneyController {
 
 /// {@macro journeyState}
 class AddServiceState
-    implements StepInput, RecordServiceNameStateInput, PreviewServiceNameStateInput, RecordServiceStateInput {
+    implements StepInput, RecordServiceNameStateInput, PreviewServiceStateInput, RecordServiceStateInput {
   @override
   String name = '';
   @override

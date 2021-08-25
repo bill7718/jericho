@@ -11,6 +11,7 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceE
   /// Holds the data for this item that is stored on the database
   final Map<String, dynamic> _data;
 
+  /// A list of list of span ranges so that this object can store the display ranges for more than one text item
   List<List<SpanRange>> ranges = <List<SpanRange>>[];
 
   ServiceItem(this._data);
@@ -50,6 +51,11 @@ class ServiceItem with Scored implements NamedItem, Clone<ServiceItem>, ServiceE
     return response;
   }
 
+  void replaceRange(Iterable<SpanRange> i) {
+    ranges.clear();
+    ranges.add(<SpanRange>[]);
+    ranges.first.addAll(i);
+  }
 
   @override
   String get videoId => _data['videoId'];

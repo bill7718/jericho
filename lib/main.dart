@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
       Provider<YouTubeValidator>.value(value: youTubeValidator),
       Provider<ServiceValidator>.value(value: serviceValidator),
     ], child: const MaterialApp(debugShowCheckedModeBanner: false,
-        home: HomePage(initialiser: testPreviewLiturgy,)
+        home: HomePage(initialiser: testPreviewService,)
        // home: Card (child :TestNamedItemTile())
       // home: POCPage()
     ));

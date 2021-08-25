@@ -1,10 +1,38 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:jericho/general/constants.dart';
 import 'package:jericho/journeys/service/service_item.dart';
-
+import 'package:provider/provider.dart';
+import 'package:waterloo/waterloo.dart';
 import 'height_measurer.dart';
+
+class NotifiableTextSplitter extends StatelessWidget {
+  final Function callback;
+  final double width;
+  final ChangeNotifierList<TextSpan> notifiableSpans;
+  final double maxHeight;
+
+  const NotifiableTextSplitter(
+      {Key? key,
+      this.width = TextSplitter.defaultWidth,
+      this.maxHeight = TextSplitter.defaultHeight,
+      required this.notifiableSpans,
+      required this.callback})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<ChangeNotifierList<TextSpan>>.value(
+        value: notifiableSpans,
+        child: Consumer<ChangeNotifierList<TextSpan>>(builder: (consumerContext, provider, _) {
+          return TextSplitter(
+            width: width,
+            maxHeight: maxHeight,
+            callback: callback,
+            spans: notifiableSpans.list,
+          );
+        }));
+  }
+}
 
 class TextSplitter extends StatefulWidget {
   static const double defaultWidth = screenWidth - 2 * margin;
@@ -18,10 +46,10 @@ class TextSplitter extends StatefulWidget {
 
   const TextSplitter(
       {Key? key,
-        this.width = defaultWidth,
-        this.maxHeight = defaultHeight,
-        required this.spans,
-        required this.callback})
+      this.width = defaultWidth,
+      this.maxHeight = defaultHeight,
+      required this.spans,
+      required this.callback})
       : super(key: key);
 
   @override
@@ -30,7 +58,7 @@ class TextSplitter extends StatefulWidget {
 
 class _TextSplitterState extends State<TextSplitter> {
   static const int maxAttemptCount = 999;
-  static const textScaling = 0.1;
+  int textScaling = 10;
 
   List<SpanRange> separators = <SpanRange>[];
   int rangeStart = 0;
@@ -41,7 +69,6 @@ class _TextSplitterState extends State<TextSplitter> {
   @override
   void initState() {
     super.initState();
-
     if (widget.spans.first.text == '\n\n') {
       rangeStart = 1;
     }
@@ -55,21 +82,24 @@ class _TextSplitterState extends State<TextSplitter> {
     var spansToMeasure = <TextSpan>[];
     spansToMeasure.addAll(widget.spans.getRange(rangeStart, rangeEnd));
 
-    return HeightMeasurer(width: widget.width, spans: scaleTextSpans(spansToMeasure, textScaling), heightCallback: heightCallback);
+    return HeightMeasurer(
+        width: widget.width, spans: scaleTextSpans(spansToMeasure,  textScaling), heightCallback: heightCallback);
   }
 
   void heightCallback(double height) {
-    print('Height: $height');
     if (height > widget.maxHeight * textScaling) {
       setState(() {
         rangeEnd--;
       });
     } else {
-      separators.add(SpanRange(rangeStart, rangeEnd));
-      rangeStart = rangeEnd;
-      rangeEnd = widget.spans.length;
+      if (rangeStart < rangeEnd) {
+        separators.add(SpanRange(rangeStart, rangeEnd));
+        rangeStart = rangeEnd;
+        rangeEnd = widget.spans.length;
 
-      rangeStart = nextNonEmptyIndex(widget.spans, rangeStart);
+        rangeStart = nextNonEmptyIndex(widget.spans, rangeStart);
+      }
+
 
       if (rangeStart == rangeEnd || attemptCount > maxAttemptCount) {
         widget.callback(
@@ -101,10 +131,11 @@ class _TextSplitterState extends State<TextSplitter> {
     }
   }
 
-  List<TextSpan> scaleTextSpans(List<TextSpan> spans, double scale) {
+  List<TextSpan> scaleTextSpans(List<TextSpan> spans, int scale) {
     var scaledSpans = <TextSpan>[];
     for (var span in spans) {
-      scaledSpans.add(TextSpan(text: span.text, style: span.style?.copyWith(fontSize: (span.style?.fontSize ?? 0) * scale)));
+      scaledSpans
+          .add(TextSpan(text: span.text, style: span.style?.copyWith(fontSize: (span.style?.fontSize ?? 0) / scale)));
     }
     return scaledSpans;
   }
